@@ -26,11 +26,8 @@ namespace DrugData
         public DbSet<DrugSideEffect> DrugSideEffect { get; set; }
         public DbSet<Cart> Cart { get; set; }
         public DbSet<DrugCart> DrugCart { get; set; }
-
-
-
-
-
+        public DbSet<Order> Order { get; set; }
+        public DbSet<OrderDetail> OrderDetail { get; set; }
 
 
     }

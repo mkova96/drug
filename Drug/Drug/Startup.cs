@@ -29,7 +29,7 @@ namespace Drug
         {
             services.AddMvc();
             services.AddSession();
-
+            services.AddTransient<IOrderRepository, OrderRepository>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped(sp => Cart.GetCart(sp));
