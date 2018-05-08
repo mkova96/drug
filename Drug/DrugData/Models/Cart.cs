@@ -37,6 +37,8 @@ namespace DrugData.Models
 
             session.SetString("CartId", cartID);
 
+            System.Diagnostics.Debug.WriteLine("CARTID"+Guid.Parse(cartID));
+
             return new Cart(context) { CartId = Guid.Parse(cartID) };
         }
 
@@ -49,7 +51,7 @@ namespace DrugData.Models
             {
                 cartAlbum = new DrugCart
                 {
-                    Cart=cart,//paz
+                    Cart=this,
                     Drug = album,
                     Quantity = 1
                 };
@@ -93,13 +95,7 @@ namespace DrugData.Models
         }
         public ICollection<DrugCart> GetCartDrugs()
         {
-            System.Diagnostics.Debug.WriteLine("GETDRUGS");
-            if (DrugCarts == null)
-            {
-                var DrugCarts = _applicationDbContext.DrugCart.Where(c => c.Cart.CartId == CartId).Include(s => s.Drug).ToList();
-                System.Diagnostics.Debug.WriteLine("SIZEE" + DrugCarts.Count);
-            }
-                return DrugCarts ?? (DrugCarts = _applicationDbContext.DrugCart.Where(c => c.Cart.CartId == CartId).Include(s => s.Drug).ToList());
+               return DrugCarts ?? (DrugCarts = _applicationDbContext.DrugCart.Where(c => c.Cart.CartId == CartId).Include(s => s.Drug).ToList());
         }
         public void ClearCart()
         {

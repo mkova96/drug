@@ -25,7 +25,7 @@
                     <td class="text-right">
                         @((line.Quantity * line.Drug.Price).ToString("c"))
                     </td>
-                    <td class="text-center"><a class="glyphicon glyphicon-remove text-danger remove" asp-controller="Cart" asp-action="RemoveFromCart" asp-route-id="@line.Drug.DrugId"></a></td>
+                    <td class="text-center"><a class="glyphicon glyphicon-remove text-danger remove" asp-controller="Cart" asp-action="RemoveFromCart" asp-route-drugId="@line.Drug.DrugId"></a></td>
                 </tr>
             }
         </tbody>
