@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 
 
 
-namespace LijekData.Models
+namespace DrugData.Models
 {
     public class User : IdentityUser
     {

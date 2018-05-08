@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace LijekData.Models
+namespace DrugData.Models
 {
     public class Manufacturer
     {
@@ -17,7 +17,7 @@ namespace LijekData.Models
         public String About { get; set; }
 
 
-        public virtual ICollection<Drug> Drugs { get; set; }
+        public virtual ICollection<Medication> Drugs { get; set; }
 
     }
 }

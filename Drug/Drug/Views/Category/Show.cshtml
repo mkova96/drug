@@ -1,0 +1,14 @@
+﻿@model Disease
+
+<div class="text-center">
+        <h1>
+            @Model.Name.ToString()
+        </h1>
+</div>
+<h2>     O tipu bolesti:</h2>
+<h3>@Model.About</h3>
+<h4> </h4>
+
+<div class="text-center">
+    <a asp-action="Index" class="btn btn-primary">OK</a>
+</div>

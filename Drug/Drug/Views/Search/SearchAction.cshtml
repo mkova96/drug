@@ -1,0 +1,43 @@
+﻿@{
+    ViewData["Title"] = "Rezultati pretrage";
+}
+@model SearchActionViewModel
+<h3>Rezultati</h3>
+
+@if (Model != null && (Model.Categories.Any() | Model.Drugs.Any()|| Model.Manufacturers.Any()/*|| Model.Users.Any()*/))
+{
+<ul class="list-group">
+    @if (Model.Categories != null && Model.Categories.Any())
+    {
+        foreach (var c in Model.Categories)
+        {
+            <a class="list-group-item" asp-controller="Disease" asp-action="Show" asp-route-id="@c.DiseaseId">@c.DiseaseName</a>
+        }
+    }
+    @if (Model.Drugs != null && Model.Drugs.Any())
+    {
+        foreach (var c in Model.Drugs)
+        {
+            <a class="list-group-item" asp-controller="Drug" asp-action="Show" asp-route-id="@c.DrugId">@c.DrugName</a>
+        }
+    }
+    @if (Model.Manufacturers != null && Model.Manufacturers.Any())
+    {
+        foreach (var c in Model.Manufacturers)
+        {
+            <a class="list-group-item" asp-controller="Manufacturer" asp-action="Show" asp-route-id="@c.ManufacturerId">@c.ManufacturerName</a>
+        }
+    }
+    <!--if (Model.Users != null && Model.Users.Any())
+     {
+         foreach (var u in Model.Users)
+         {
+             <a class="list-group-item" asp-controller="User" asp-action="Show" asp-route-id="u.Id">u.Fullname (u.Email)</a>
+         }
+     }-->
+</ul>
+}
+else
+{
+    <p>Nema rezultata o postavljenom upitu.</p>
+}

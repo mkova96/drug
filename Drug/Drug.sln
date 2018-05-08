@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drug", "Drug\Drug.csproj", "{D7E904E1-080E-49AC-80E5-1B263F54DAD2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drug", "Drug\Drug.csproj", "{D7E904E1-080E-49AC-80E5-1B263F54DAD2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrugData", "DrugData\DrugData.csproj", "{20FF4041-735A-4205-9C7C-6B376A0FD3FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DrugData", "DrugData\DrugData.csproj", "{20FF4041-735A-4205-9C7C-6B376A0FD3FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

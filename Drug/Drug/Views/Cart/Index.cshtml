@@ -1,0 +1,56 @@
+﻿﻿
+
+@model CartViewModel
+<div class="row checkoutForm">
+    <h2>Vaša košarica</h2>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Količina</th>
+                <th>Lijek</th>
+                <th class="text-right">Cijena</th>
+                <th class="text-right">Ukupno</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <h2>@Model.Cart.DrugCarts.Count()</h2>
+            @foreach (var line in Model.Cart.DrugCarts)
+            {
+                <tr>
+                    <td class="text-center">@line.Quantity</td>
+                    <td class="text-left">@line.Drug.DrugName</td>
+                    <td class="text-right">@line.Drug.Price.ToString("c")</td>
+                    <td class="text-right">
+                        @((line.Quantity * line.Drug.Price).ToString("c"))
+                    </td>
+                    <td class="text-center"><a class="glyphicon glyphicon-remove text-danger remove" asp-controller="Cart" asp-action="RemoveFromCart" asp-route-id="@line.Drug.DrugId"></a></td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3" class="text-right">Sveukupno:</td>
+                <td class="text-right">
+                    @Model.CartTotal.ToString("c")
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+    <div>
+        <div class="text-right">
+            <div class="btn-group ">
+                <a class="btn btn-success" asp-controller="Order" asp-action="Checkout">Dovrši kupnju</a>
+            </div>
+            <div class="btn-group pull-left ">
+                <a class="btn btn-success" asp-controller="Albums" asp-action="Index">Nastavi s kupnjom</a>
+                <a class="btn btn-success" asp-controller="Home" asp-action="Index">Početna</a>
+
+
+            </div>
+        </div>
+
+
+    </div>
+</div>

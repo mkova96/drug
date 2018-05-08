@@ -1,0 +1,50 @@
+﻿@model DrugData.Models.ViewModels.EditUserViewModel
+
+<form asp-action="Update" asp-route-id="@Model.User.Id" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    @if (@ViewData["Success"] != null)
+    {
+        <div class="alert alert-success">Admin spremljen</div>
+    }
+    <h2>Uredi</h2>
+    <div class="form-group">
+        <label asp-for="User.Name">Ime:</label>
+        <input type="text" class="form-control" asp-for="User.Name">
+    </div>
+    <div class="form-group">
+        <label asp-for="User.Surname">Prezime:</label>
+        <input type="text" class="form-control" asp-for="User.Surname">
+    </div>
+    <div class="form-group">
+        <label asp-for="User.Email">E-Mail adresa:</label>
+        <input type="text" class="form-control" asp-for="User.Email">
+    </div>
+    <div class="form-group">
+        <label asp-for="User.Address"></label>
+        <input asp-for="User.Address" class="form-control" />
+        <span asp-validation-for="User.Address" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="PostCode"></label>
+        <input asp-for="PostCode" class="form-control" />
+        <span asp-validation-for="PostCode" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="User.City.CityName"></label>
+        <input asp-for="User.City.CityName" class="form-control" />
+        <span asp-validation-for="User.City.CityName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="User.City.Country.CountryId"></label>
+        <select asp-for="User.City.Country.CountryId" asp-items="@ViewBag.Items" class="form-control"></select>
+    </div>
+
+
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary">Spremi</button>
+        <a asp-action="Index">
+            <button type="button" class="btn btn-secondary">Odustani</button>
+        </a>
+    </div>
+
+</form>

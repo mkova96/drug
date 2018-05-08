@@ -1,0 +1,22 @@
+﻿@model DrugData.Models.ViewModels.EditSpecializationViewModel
+
+<form asp-action="Update" asp-route-id="@Model.Specialization.SpecializationId" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    @if (@ViewData["Success"] != null)
+    {
+        <div class="alert alert-success">Specijalizacija spremljena</div>
+    }
+    <h2>Uredi</h2>
+    <div class="form-group">
+        <label asp-for="Specialization.SpecializationName">Naziv </label>
+        <input asp-for="Specialization.SpecializationName" class="form-control" />
+    </div>
+
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary">Spremi</button>
+        <a asp-action="Index">
+            <button type="button" class="btn btn-secondary">Odustani</button>
+        </a>
+    </div>
+
+</form>

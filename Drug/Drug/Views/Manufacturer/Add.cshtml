@@ -1,0 +1,24 @@
+﻿﻿
+@model DrugData.Models.ViewModels.ManufacturerViewModel
+
+<form asp-action="Create" method="POST">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <h2>
+        Novi proizvođač
+    </h2>
+    <div class="form-group">
+        <label asp-for="Name">Naziv </label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="About">O proizvođaču </label>
+        <textarea asp-for="About" class="form-control"></textarea>
+    </div>
+
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary">Spremi</button>
+        <a asp-action="Index">
+            <button type="button" class="btn btn-secondary">Odustani</button>
+        </a>
+    </div>
+</form>

@@ -1,0 +1,4 @@
+C:\Users\MARIO\source\repos\Drug\Drug\obj\Debug\netcoreapp2.0\Drug1.csprojResolveAssemblyReference.cache
+C:\Users\MARIO\source\repos\Drug\Drug\obj\Debug\netcoreapp2.0\Drug1.csproj.CoreCompileInputs.cache
+C:\Users\MARIO\source\repos\Drug\Drug\obj\Debug\netcoreapp2.0\Drug1.AssemblyInfoInputs.cache
+C:\Users\MARIO\source\repos\Drug\Drug\obj\Debug\netcoreapp2.0\Drug1.AssemblyInfo.cs

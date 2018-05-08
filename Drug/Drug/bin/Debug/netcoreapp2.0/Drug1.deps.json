@@ -21,7 +21,7 @@
   },
   "targets": {
     ".NETCoreApp,Version=v2.0": {
-      "Drug/1.0.0": {
+      "Drug1/1.0.0": {
         "dependencies": {
           "DrugData": "1.0.0",
           "Microsoft.AspNetCore.All": "2.0.3",
@@ -30,10 +30,10 @@
           "Microsoft.NETCore.App": "2.0.0"
         },
         "runtime": {
-          "Drug.dll": {}
+          "Drug1.dll": {}
         },
         "compile": {
-          "Drug.dll": {}
+          "Drug1.dll": {}
         }
       },
       "Libuv/1.10.0": {
@@ -4052,7 +4052,7 @@
     }
   },
   "libraries": {
-    "Drug/1.0.0": {
+    "Drug1/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

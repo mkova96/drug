@@ -4,10 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
-namespace LijekData.Models
+namespace DrugData.Models
 {
-    public class Drug
+    public class Medication
     {
+        [Key]
         public int DrugId { get; set; }
         public string DrugName { get; set; }
         public virtual Manufacturer Manufacturer { get; set; }

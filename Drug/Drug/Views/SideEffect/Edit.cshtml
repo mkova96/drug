@@ -1,0 +1,22 @@
+﻿@model DrugData.Models.ViewModels.EditSideEffectViewModel
+
+<form asp-action="Update" asp-route-id="@Model.SideEffect.SideEffectId" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    @if (@ViewData["Success"] != null)
+    {
+        <div class="alert alert-success">Nuspojava spremljena</div>
+    }
+    <h2>Uredi</h2>
+    <div class="form-group">
+        <label asp-for="SideEffect.SideEffectName">Naziv </label>
+        <input asp-for="SideEffect.SideEffectName" class="form-control" />
+    </div>
+
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary">Spremi</button>
+        <a asp-action="Index">
+            <button type="button" class="btn btn-secondary">Odustani</button>
+        </a>
+    </div>
+
+</form>

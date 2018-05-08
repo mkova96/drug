@@ -1,0 +1,27 @@
+﻿@model IEnumerable<Medication>
+
+<h5> </h5>
+<table class="table table-striped table-bordered table-sm">
+    <tr>
+        <th class="text-center">Lijekovi</th>
+        <th class="text-center"></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td class="text-center"><a asp-action="Show" asp-route-id="@item.DrugId">@item.DrugName</a></td>
+            <td class="text-center">
+                <a asp-controller="Cart" asp-action="AddToCart" asp-route-drugId="@item.DrugId"><img class="pull-right" src="~/images/cart.png" alt="" width="35" height="35" /></a>
+                <a asp-action="Edit" asp-route-id="@item.DrugId" class="btn btn-warning btn-sm">Uredi</a>
+                <a asp-action="AddComment" asp-route-id="@item.DrugId" class="btn btn-warning btn-sm">Komentiraj</a>
+                <form asp-action="Delete" asp-route-id="@item.DrugId" method="POST" style="display: inline-block">
+                    <button type="submit" class="btn btn-danger btn-sm">Obriši</button>
+                </form>
+            </td>
+        </tr>
+    }
+</table>
+
+<div class="text-center">
+    <a asp-action="Add" class="btn btn-primary">Novi lijek</a>
+</div>

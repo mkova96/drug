@@ -1,0 +1,17 @@
+﻿@model Doctor
+
+<div class="text-center">
+    <h1>
+        @Model.Title @Model.FullName.ToString()
+    </h1>
+</div>
+<h2>Član od: @Model.UserDate</h2>
+<h2>Adresa: @Model.Address @Model.City.CityName @Model.City.Country.CountryName</h2>
+<h2>Kratka biografija: @Model.Biography</h2>
+<h2>Obrazovanje: @Model.Education</h2>
+<h2>Specijalizacija: @Model.Specialization.SpecializationName</h2>
+
+
+<div class="text-center">
+    <a asp-action="Index" class="btn btn-primary">OK</a>
+</div>

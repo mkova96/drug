@@ -19,7 +19,7 @@ namespace DrugData.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("LijekData.Models.Cart", b =>
+            modelBuilder.Entity("DrugData.Models.Cart", b =>
                 {
                     b.Property<Guid>("CartId")
                         .ValueGeneratedOnAdd();
@@ -29,7 +29,7 @@ namespace DrugData.Migrations
                     b.ToTable("Cart");
                 });
 
-            modelBuilder.Entity("LijekData.Models.City", b =>
+            modelBuilder.Entity("DrugData.Models.City", b =>
                 {
                     b.Property<int>("CityId")
                         .ValueGeneratedOnAdd()
@@ -50,7 +50,7 @@ namespace DrugData.Migrations
                     b.ToTable("City");
                 });
 
-            modelBuilder.Entity("LijekData.Models.Comment", b =>
+            modelBuilder.Entity("DrugData.Models.Comment", b =>
                 {
                     b.Property<int>("CommentId")
                         .ValueGeneratedOnAdd()
@@ -71,7 +71,7 @@ namespace DrugData.Migrations
                     b.ToTable("Comment");
                 });
 
-            modelBuilder.Entity("LijekData.Models.Country", b =>
+            modelBuilder.Entity("DrugData.Models.Country", b =>
                 {
                     b.Property<int>("CountryId")
                         .ValueGeneratedOnAdd()
@@ -86,7 +86,7 @@ namespace DrugData.Migrations
                     b.ToTable("Country");
                 });
 
-            modelBuilder.Entity("LijekData.Models.Disease", b =>
+            modelBuilder.Entity("DrugData.Models.Disease", b =>
                 {
                     b.Property<int>("DiseaseId")
                         .ValueGeneratedOnAdd()
@@ -105,7 +105,83 @@ namespace DrugData.Migrations
                     b.ToTable("Disease");
                 });
 
-            modelBuilder.Entity("LijekData.Models.Drug", b =>
+            modelBuilder.Entity("DrugData.Models.DrugCart", b =>
+                {
+                    b.Property<int>("DrugCartId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<Guid?>("CartId");
+
+                    b.Property<int?>("DrugId");
+
+                    b.Property<int>("Quantity");
+
+                    b.HasKey("DrugCartId");
+
+                    b.HasIndex("CartId");
+
+                    b.HasIndex("DrugId");
+
+                    b.ToTable("DrugCart");
+                });
+
+            modelBuilder.Entity("DrugData.Models.DrugDisease", b =>
+                {
+                    b.Property<int>("DrugDiseaseId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("DiseaseId");
+
+                    b.Property<int?>("DrugId");
+
+                    b.HasKey("DrugDiseaseId");
+
+                    b.HasIndex("DiseaseId");
+
+                    b.HasIndex("DrugId");
+
+                    b.ToTable("DrugDisease");
+                });
+
+            modelBuilder.Entity("DrugData.Models.DrugSideEffect", b =>
+                {
+                    b.Property<int>("DrugSideEffectId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("DrugId");
+
+                    b.Property<int?>("SideEffectId");
+
+                    b.HasKey("DrugSideEffectId");
+
+                    b.HasIndex("DrugId");
+
+                    b.HasIndex("SideEffectId");
+
+                    b.ToTable("DrugSideEffect");
+                });
+
+            modelBuilder.Entity("DrugData.Models.Manufacturer", b =>
+                {
+                    b.Property<int>("ManufacturerId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("About");
+
+                    b.Property<string>("ManufacturerName")
+                        .IsRequired()
+                        .HasMaxLength(100);
+
+                    b.HasKey("ManufacturerId");
+
+                    b.ToTable("Manufacturer");
+                });
+
+            modelBuilder.Entity("DrugData.Models.Medication", b =>
                 {
                     b.Property<int>("DrugId")
                         .ValueGeneratedOnAdd()
@@ -132,83 +208,7 @@ namespace DrugData.Migrations
                     b.ToTable("Drug");
                 });
 
-            modelBuilder.Entity("LijekData.Models.DrugCart", b =>
-                {
-                    b.Property<int>("DrugCartId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<Guid?>("CartId");
-
-                    b.Property<int?>("DrugId");
-
-                    b.Property<int>("Quantity");
-
-                    b.HasKey("DrugCartId");
-
-                    b.HasIndex("CartId");
-
-                    b.HasIndex("DrugId");
-
-                    b.ToTable("DrugCart");
-                });
-
-            modelBuilder.Entity("LijekData.Models.DrugDisease", b =>
-                {
-                    b.Property<int>("DrugDiseaseId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("DiseaseId");
-
-                    b.Property<int?>("DrugId");
-
-                    b.HasKey("DrugDiseaseId");
-
-                    b.HasIndex("DiseaseId");
-
-                    b.HasIndex("DrugId");
-
-                    b.ToTable("DrugDisease");
-                });
-
-            modelBuilder.Entity("LijekData.Models.DrugSideEffect", b =>
-                {
-                    b.Property<int>("DrugSideEffectId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("DrugId");
-
-                    b.Property<int?>("SideEffectId");
-
-                    b.HasKey("DrugSideEffectId");
-
-                    b.HasIndex("DrugId");
-
-                    b.HasIndex("SideEffectId");
-
-                    b.ToTable("DrugSideEffect");
-                });
-
-            modelBuilder.Entity("LijekData.Models.Manufacturer", b =>
-                {
-                    b.Property<int>("ManufacturerId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("About");
-
-                    b.Property<string>("ManufacturerName")
-                        .IsRequired()
-                        .HasMaxLength(100);
-
-                    b.HasKey("ManufacturerId");
-
-                    b.ToTable("Manufacturer");
-                });
-
-            modelBuilder.Entity("LijekData.Models.Message", b =>
+            modelBuilder.Entity("DrugData.Models.Message", b =>
                 {
                     b.Property<int>("MessageId")
                         .ValueGeneratedOnAdd()
@@ -231,7 +231,7 @@ namespace DrugData.Migrations
                     b.ToTable("Message");
                 });
 
-            modelBuilder.Entity("LijekData.Models.SideEffect", b =>
+            modelBuilder.Entity("DrugData.Models.SideEffect", b =>
                 {
                     b.Property<int>("SideEffectId")
                         .ValueGeneratedOnAdd()
@@ -244,7 +244,7 @@ namespace DrugData.Migrations
                     b.ToTable("SideEffect");
                 });
 
-            modelBuilder.Entity("LijekData.Models.Specialization", b =>
+            modelBuilder.Entity("DrugData.Models.Specialization", b =>
                 {
                     b.Property<int>("SpecializationId")
                         .ValueGeneratedOnAdd()
@@ -257,7 +257,7 @@ namespace DrugData.Migrations
                     b.ToTable("Specialization");
                 });
 
-            modelBuilder.Entity("LijekData.Models.User", b =>
+            modelBuilder.Entity("DrugData.Models.User", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
@@ -440,9 +440,9 @@ namespace DrugData.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("LijekData.Models.Doctor", b =>
+            modelBuilder.Entity("DrugData.Models.Doctor", b =>
                 {
-                    b.HasBaseType("LijekData.Models.User");
+                    b.HasBaseType("DrugData.Models.User");
 
                     b.Property<string>("Biography");
 
@@ -459,79 +459,79 @@ namespace DrugData.Migrations
                     b.HasDiscriminator().HasValue("Doctor");
                 });
 
-            modelBuilder.Entity("LijekData.Models.City", b =>
+            modelBuilder.Entity("DrugData.Models.City", b =>
                 {
-                    b.HasOne("LijekData.Models.Country", "Country")
+                    b.HasOne("DrugData.Models.Country", "Country")
                         .WithMany("Cities")
                         .HasForeignKey("CountryId");
                 });
 
-            modelBuilder.Entity("LijekData.Models.Comment", b =>
+            modelBuilder.Entity("DrugData.Models.Comment", b =>
                 {
-                    b.HasOne("LijekData.Models.Drug", "Drug")
+                    b.HasOne("DrugData.Models.Medication", "Drug")
                         .WithMany("Comments")
                         .HasForeignKey("DrugId");
 
-                    b.HasOne("LijekData.Models.User", "User")
+                    b.HasOne("DrugData.Models.User", "User")
                         .WithMany("Comments")
                         .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("LijekData.Models.Drug", b =>
+            modelBuilder.Entity("DrugData.Models.DrugCart", b =>
                 {
-                    b.HasOne("LijekData.Models.Manufacturer", "Manufacturer")
+                    b.HasOne("DrugData.Models.Cart", "Cart")
+                        .WithMany("DrugCarts")
+                        .HasForeignKey("CartId");
+
+                    b.HasOne("DrugData.Models.Medication", "Drug")
+                        .WithMany()
+                        .HasForeignKey("DrugId");
+                });
+
+            modelBuilder.Entity("DrugData.Models.DrugDisease", b =>
+                {
+                    b.HasOne("DrugData.Models.Disease", "Disease")
+                        .WithMany("DrugDiseases")
+                        .HasForeignKey("DiseaseId");
+
+                    b.HasOne("DrugData.Models.Medication", "Drug")
+                        .WithMany("DrugDiseases")
+                        .HasForeignKey("DrugId");
+                });
+
+            modelBuilder.Entity("DrugData.Models.DrugSideEffect", b =>
+                {
+                    b.HasOne("DrugData.Models.Medication", "Drug")
+                        .WithMany("DrugSideEffects")
+                        .HasForeignKey("DrugId");
+
+                    b.HasOne("DrugData.Models.SideEffect", "SideEffect")
+                        .WithMany("DrugSideEffect")
+                        .HasForeignKey("SideEffectId");
+                });
+
+            modelBuilder.Entity("DrugData.Models.Medication", b =>
+                {
+                    b.HasOne("DrugData.Models.Manufacturer", "Manufacturer")
                         .WithMany("Drugs")
                         .HasForeignKey("ManufacturerId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("LijekData.Models.DrugCart", b =>
+            modelBuilder.Entity("DrugData.Models.Message", b =>
                 {
-                    b.HasOne("LijekData.Models.Cart", "Cart")
-                        .WithMany("DrugCarts")
-                        .HasForeignKey("CartId");
-
-                    b.HasOne("LijekData.Models.Drug", "Drug")
-                        .WithMany()
-                        .HasForeignKey("DrugId");
-                });
-
-            modelBuilder.Entity("LijekData.Models.DrugDisease", b =>
-                {
-                    b.HasOne("LijekData.Models.Disease", "Disease")
-                        .WithMany("DrugDiseases")
-                        .HasForeignKey("DiseaseId");
-
-                    b.HasOne("LijekData.Models.Drug", "Drug")
-                        .WithMany("DrugDiseases")
-                        .HasForeignKey("DrugId");
-                });
-
-            modelBuilder.Entity("LijekData.Models.DrugSideEffect", b =>
-                {
-                    b.HasOne("LijekData.Models.Drug", "Drug")
-                        .WithMany("DrugSideEffects")
-                        .HasForeignKey("DrugId");
-
-                    b.HasOne("LijekData.Models.SideEffect", "SideEffect")
-                        .WithMany("DrugSideEffect")
-                        .HasForeignKey("SideEffectId");
-                });
-
-            modelBuilder.Entity("LijekData.Models.Message", b =>
-                {
-                    b.HasOne("LijekData.Models.User", "Receiver")
+                    b.HasOne("DrugData.Models.User", "Receiver")
                         .WithMany()
                         .HasForeignKey("ReceiverId");
 
-                    b.HasOne("LijekData.Models.User", "Sender")
+                    b.HasOne("DrugData.Models.User", "Sender")
                         .WithMany()
                         .HasForeignKey("SenderId");
                 });
 
-            modelBuilder.Entity("LijekData.Models.User", b =>
+            modelBuilder.Entity("DrugData.Models.User", b =>
                 {
-                    b.HasOne("LijekData.Models.City", "City")
+                    b.HasOne("DrugData.Models.City", "City")
                         .WithMany()
                         .HasForeignKey("CityId");
                 });
@@ -546,7 +546,7 @@ namespace DrugData.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("LijekData.Models.User")
+                    b.HasOne("DrugData.Models.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -554,7 +554,7 @@ namespace DrugData.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("LijekData.Models.User")
+                    b.HasOne("DrugData.Models.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -567,7 +567,7 @@ namespace DrugData.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("LijekData.Models.User")
+                    b.HasOne("DrugData.Models.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -575,15 +575,15 @@ namespace DrugData.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("LijekData.Models.User")
+                    b.HasOne("DrugData.Models.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("LijekData.Models.Doctor", b =>
+            modelBuilder.Entity("DrugData.Models.Doctor", b =>
                 {
-                    b.HasOne("LijekData.Models.Specialization", "Specialization")
+                    b.HasOne("DrugData.Models.Specialization", "Specialization")
                         .WithMany("Doctors")
                         .HasForeignKey("SpecializationId");
                 });

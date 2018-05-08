@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace LijekData.Models
+namespace DrugData.Models
 {
     public class SideEffect
     {

@@ -1,0 +1,90 @@
+﻿@model DrugData.Models.ViewModels.DrugViewModel
+
+<form asp-action="Create" method="POST">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+
+    <h2>
+        Novi lijek
+    </h2>
+    <div class="form-group">
+        <label asp-for="Name">Naziv</label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Produced">Datum proizvodnje</label>
+        <input asp-for="Produced" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Expires">Rok trajanja</label>
+        <input asp-for="Expires" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Price">Cijena</label>
+        <input asp-for="Price" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Usage">Uporaba</label>
+        <input asp-for="Usage" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Stock">Kolicina</label>
+        <input asp-for="Stock" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="CategoryIds">Tipovi bolesti</label>
+        <select multiple asp-for="CategoryIds" asp-items="@(new SelectList((IEnumerable<Disease>) @ViewData["Categories"], "DiseaseId", "DiseaseName"))" class="form-control"></select>
+    </div>
+    <div class="form-group">
+        <label asp-for="SideEffectIds">Moguće nuspojave</label>
+        <select multiple asp-for="SideEffectIds" asp-items="@(new SelectList((IEnumerable<SideEffect>) @ViewData["SideEffects"], "SideEffectId", "SideEffectName"))" class="form-control"></select>
+    </div>
+    <!--<div class="form-group">
+        <label asp-for="DrugIds">Zamjenski proizvodi</label>
+        <select multiple asp-for="DrugIds" asp-items="(new SelectList((IEnumerable<Drug>) ViewData["Drugs"], "Id", "Name"))" class="form-control"></select>
+    </div>-->
+
+    <div class="col">
+        <h3>Proizvođač</h3>
+        <div class="form-group">
+            <div class="row">
+                <div class="col">
+                    <div class="form-check form-check-inline">
+                        @Html.RadioButtonFor(model => model.ManufacturerType, "existing", new { Class = "form-check-input", Id = "ExistingRadio", Name = "ManufacturerType" })
+                        <label class="form-check-label" for="ExistingRadio">Odaberi postojećeg proizvođača</label>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-check form-check-inline">
+                        @Html.RadioButtonFor(model => model.ManufacturerType, "new", new { Class = "form-check-input", Id = "NewRadio", Name = "ManufacturerType" })
+                        <label class="form-check-label" for="NewRadio">Dodaj novog proizvođača</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" id="drugSelectManufacturer">
+            <label asp-for="ManufacturerId">Tvrtka</label>
+            <select asp-for="ManufacturerId" asp-items="@(new SelectList((IEnumerable<Manufacturer>) @ViewData["Manufacturers"], "ManufacturerId", "ManufacturerName"))" class="form-control"></select>
+        </div>
+        <div class="form-group" id="drugCreateManufacturer" style="display: none">
+            <div class="form-group">
+                <label asp-for="Manufacturer.ManufacturerName">Ime </label>
+                <input type="text" class="form-control" asp-for="Manufacturer.ManufacturerName">
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Manufacturer.About">O proizvođaču </label>
+                <textarea asp-for="Manufacturer.About" class="form-control"></textarea>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary">Spremi</button>
+        <a asp-action="Index">
+            <button type="button" class="btn btn-secondary">Odustani</button>
+        </a>
+    </div>
+</form>

@@ -1,0 +1,20 @@
+﻿﻿
+@model DrugData.Models.ViewModels.SpecializationViewModel
+
+<form asp-action="Create" method="POST">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <h2>
+        Nova specijalizacija
+    </h2>
+    <div class="form-group">
+        <label asp-for="Name">Naziv </label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary">Spremi</button>
+        <a asp-action="Index">
+            <button type="button" class="btn btn-secondary">Odustani</button>
+        </a>
+    </div>
+</form>

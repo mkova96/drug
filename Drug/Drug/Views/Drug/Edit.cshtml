@@ -1,0 +1,51 @@
+﻿@model DrugData.Models.ViewModels.EditDrugViewModel
+
+<form asp-action="Update" asp-route-id="@Model.Drug.DrugId" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    @if (@ViewData["Success"] != null)
+    {
+        <div class="alert alert-success">Lijek spremljen</div>
+    }
+    <h2>Uredi</h2>
+
+    <div class="form-group">
+        <label asp-for="Drug.DrugName">Naziv</label>
+        <input asp-for="Drug.DrugName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Drug.DateProduced">Datum proizvodnje</label>
+        <input asp-for="Drug.DateProduced" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Drug.DateExpires">Rok trajanja</label>
+        <input asp-for="Drug.DateExpires" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Drug.Price">Cijena</label>
+        <input asp-for="Drug.Price" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="ManufacturerId">Proizvođač</label>
+        <select asp-for="ManufacturerId" asp-items="@(new SelectList((IEnumerable<Manufacturer>) @ViewData["Manufacturers"],"ManufacturerId", "ManufacturerName"))" class="form-control"></select>
+    </div>
+    <div class="form-group">
+        <label asp-for="Drug.Quantity">Kolicina</label>
+        <input asp-for="Drug.Quantity" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="CategoryIds">Bolesti</label>
+        <select multiple asp-for="CategoryIds" asp-items="@(new SelectList((IEnumerable<Disease>) @ViewData["Categories"], "DiseaseId", "DiseaseName"))" class="form-control"></select>
+    </div>
+    <div class="form-group">
+        <label asp-for="SideEffectIds">Moguće nuspojave</label>
+        <select multiple asp-for="SideEffectIds" asp-items="@(new SelectList((IEnumerable<SideEffect>) @ViewData["SideEffects"], "DiseaseId", "SideEffectName"))" class="form-control"></select>
+    </div>
+
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary">Spremi</button>
+        <a asp-action="Index">
+            <button type="button" class="btn btn-secondary">Odustani</button>
+        </a>
+    </div>
+
+</form>

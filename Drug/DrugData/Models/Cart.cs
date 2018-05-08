@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 
-namespace LijekData.Models
+namespace DrugData.Models
 {
     public class Cart
     {
@@ -28,6 +28,8 @@ namespace LijekData.Models
 
         public static Cart GetCart(IServiceProvider services)
         {
+            System.Diagnostics.Debug.WriteLine("POZVANO");
+
             ISession session = services.GetRequiredService<IHttpContextAccessor>()?.HttpContext.Session;
 
             var context = services.GetService<ApplicationDbContext>();
@@ -38,10 +40,11 @@ namespace LijekData.Models
             return new Cart(context) { CartId = Guid.Parse(cartID) };
         }
 
-        public void AddToCart(Drug album, int quantity)
+        public void AddToCart(Medication album, int quantity)
         {
-            var cartAlbum = _applicationDbContext.DrugCart.SingleOrDefault(s => s.Drug.DrugId ==album.DrugId && s.Cart.CartId == CartId);
+            var cartAlbum = _applicationDbContext.DrugCart.SingleOrDefault(s => s.Drug.DrugId ==album.DrugId && s.Cart.CartId == CartId);// razlika
             var cart = _applicationDbContext.Cart.FirstOrDefault(t => t.CartId == CartId);
+            System.Diagnostics.Debug.WriteLine("kart"+CartId.ToString());
             if (cartAlbum == null)
             {
                 cartAlbum = new DrugCart
@@ -51,16 +54,22 @@ namespace LijekData.Models
                     Quantity = 1
                 };
                 _applicationDbContext.DrugCart.Add(cartAlbum);
+                System.Diagnostics.Debug.WriteLine("CARTALBUM"+cartAlbum.DrugCartId.ToString());
+
             }
             else
             {
                 cartAlbum.Quantity++;
             }
             _applicationDbContext.SaveChanges();
+            foreach (DrugCart dc in _applicationDbContext.DrugCart.ToList())
+            {
+                System.Diagnostics.Debug.WriteLine("DCS" + dc.DrugCartId.ToString());
+            }
 
 
         }
-        public int RemoveFromCart(Drug album)
+        public int RemoveFromCart(Medication album)
         {
             var cartAlbum = _applicationDbContext.DrugCart.SingleOrDefault(s => s.Drug.DrugId == album.DrugId && s.Cart.CartId == CartId);
 
@@ -84,7 +93,13 @@ namespace LijekData.Models
         }
         public ICollection<DrugCart> GetCartDrugs()
         {
-            return DrugCarts ?? (DrugCarts = _applicationDbContext.DrugCart.Where(c => c.Cart.CartId == CartId).Include(s => s.Drug).ToList());
+            System.Diagnostics.Debug.WriteLine("GETDRUGS");
+            if (DrugCarts == null)
+            {
+                var DrugCarts = _applicationDbContext.DrugCart.Where(c => c.Cart.CartId == CartId).Include(s => s.Drug).ToList();
+                System.Diagnostics.Debug.WriteLine("SIZEE" + DrugCarts.Count);
+            }
+                return DrugCarts ?? (DrugCarts = _applicationDbContext.DrugCart.Where(c => c.Cart.CartId == CartId).Include(s => s.Drug).ToList());
         }
         public void ClearCart()
         {

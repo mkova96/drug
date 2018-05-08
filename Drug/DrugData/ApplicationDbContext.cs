@@ -1,4 +1,4 @@
-﻿using LijekData.Models;
+﻿using DrugData.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,7 +11,7 @@ namespace DrugData
             : base(options)
         { }
         
-        public DbSet<Drug> Drug { get; set; }
+        public DbSet<Medication> Drug { get; set; }
         public DbSet<Disease> Disease { get; set; }
         public DbSet<DrugDisease> DrugDisease { get; set; }
         public DbSet<Manufacturer> Manufacturer { get; set; }
@@ -24,7 +24,6 @@ namespace DrugData
         public DbSet<Specialization> Specialization { get; set; }
         public DbSet<User> User { get; set; }
         public DbSet<DrugSideEffect> DrugSideEffect { get; set; }
-
         public DbSet<Cart> Cart { get; set; }
         public DbSet<DrugCart> DrugCart { get; set; }
 

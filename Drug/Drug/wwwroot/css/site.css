@@ -1,4 +1,4 @@
-body {
+﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
 }
@@ -33,3 +33,28 @@ body {
         display: none;
     }
 }
+
+.custom-search {
+    width: 69%;
+    display: flex;
+}
+
+.custom-search-input {
+    flex: 1;
+}
+    /*
+Unutar custom-search-inputa je input.
+*/
+    .custom-search-input input.form-control {
+        width: 100%;
+        padding: 10px;
+    }
+
+.custom-search-button {
+    flex-shrink: 0;
+    margin-left: 10px;
+}
+
+    .custom-search-button button {
+        padding: 10px;
+    }

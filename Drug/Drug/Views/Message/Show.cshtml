@@ -1,0 +1,63 @@
+﻿@{
+    ViewData["Title"] = "Poruke";
+}
+@model MessageShowViewModel
+
+@if (Model.Receiver.IsDoctor == true)
+{
+    <h2>
+        Poruke s dr. @Model.Receiver.FullName
+    </h2>
+
+}
+else if (Model.Receiver.IsAdmin==true)
+{
+    <h2>
+        Poruke s adminom
+    </h2>
+
+}
+else
+{
+<h2>
+    Poruke s @Model.Receiver.FullName
+</h2>
+
+}
+
+@if (@ViewData["Success"] != null)
+{
+    <div class="alert alert-success">Poruka poslana</div>
+}
+<ul class="list-group">
+    @foreach (var m in Model.Messages)
+    {
+        @if (m.Sender.IsDoctor == true)
+        {
+            <ul class="list-group">
+                <li class="list-group-item"><strong>dr. @m.Sender.FullName</strong>: @m.Body</li>
+            </ul>
+        }
+        else if (m.Sender.IsAdmin == true)
+        {
+            <ul class="list-group">
+                <li class="list-group-item"><strong>Admin</strong>: @m.Body</li>
+            </ul>
+        }
+
+        else
+        {
+            <ul class="list-group">
+                <li class="list-group-item"><strong>@m.Sender.FullName</strong>: @m.Body</li>
+            </ul>
+        }
+
+
+    }
+</ul>
+<form asp-action="CreateFromShow" asp-route-id="@Model.Receiver.Id" asp-route-MessageId="@Model.CurrentMessageId" method="post">
+    <div class="Message_Text">
+        <textarea class="form-control send-new-message" asp-for="About" placeholder="Unesi novu poruku"></textarea>
+        <button type="submit" class="btn btn-primary">Odgovori</button>
+    </div>
+</form>

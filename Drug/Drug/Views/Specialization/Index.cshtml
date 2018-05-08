@@ -1,0 +1,25 @@
+﻿@model IEnumerable<Specialization>
+
+<h5> </h5>
+<table class="table table-striped table-bordered table-sm">
+    <tr>
+        <th class="text-center">Specijalizacije</th>
+        <th class="text-center"></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td class="text-center">@item.SpecializationName</td>
+        <td class="text-center">
+            <a asp-action="Edit" asp-route-id="@item.SpecializationId" class="btn btn-warning btn-sm">Uredi</a>
+            <form asp-action="Delete" asp-route-id="@item.SpecializationId" method="POST" style="display: inline-block">
+                <button type="submit" class="btn btn-danger btn-sm">Obriši</button>
+            </form>
+        </td>
+    </tr>
+    }
+</table>
+
+<div class="text-center">
+    <a asp-action="Add" class="btn btn-primary">Nova specijalizacija</a>
+</div>
