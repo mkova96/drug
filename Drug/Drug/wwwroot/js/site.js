@@ -14,7 +14,8 @@
             showSpecializationView();
         })
     }
-});
+ });
+
 
 function showManufacturerView() {
     var value = $('input[name="ManufacturerType"]:checked').first().val();
@@ -37,3 +38,4 @@ function showSpecializationView() {
         $('#docSelectSpecialization').show();
     }
 }
+

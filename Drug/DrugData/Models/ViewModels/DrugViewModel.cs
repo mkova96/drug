@@ -26,10 +26,7 @@ namespace DrugData.Models.ViewModels
 
         [Required]
         [Range(0, 10000)]
-        [DataType(DataType.Currency)]
         public decimal Price { get; set; }
-
-        //public virtual int ManufacturerId { get; set; }
 
         [Required]
         [MinLength(1)]
@@ -42,11 +39,18 @@ namespace DrugData.Models.ViewModels
         [DataType(DataType.MultilineText)]
         public String Usage { get; set; }
 
-        public string Size { get; set; }
+        public string PackageSize { get; set; }
+        public string x { get; set; }
+        public string y { get; set; }
 
+
+        public string DrugSize { get; set; }
         public string ManufacturerType { get; set; }
 
         public int ManufacturerId { get; set; }
+        public int PackageId { get; set; }
+        public int CurrencyId { get; set; }
+
 
         public Manufacturer Manufacturer { get; set; }
 
@@ -55,9 +59,6 @@ namespace DrugData.Models.ViewModels
             Manufacturer = new Manufacturer();
             ManufacturerType = "existing";
         }
-
-
-
 
     }
 }

@@ -33,6 +33,7 @@ namespace Drug.Controllers
             ViewData["Success"] = TempData["Success"];
             IEnumerable<Medication> drugs = _databaseContext.Drug.Include(p=>p.Manufacturer)
                 .Include(p=>p.DrugSideEffects).ThenInclude(i=>i.SideEffect)
+                .Include(r=>r.Currancy).Include(i=>i.Package)
                 .Include(e => e.DrugDiseases).ThenInclude(eu => eu.Disease)
                 .ToList();
             return View(drugs);
@@ -41,6 +42,7 @@ namespace Drug.Controllers
         {
             Medication drug = _databaseContext.Drug.Include(t=>t.Comments).ThenInclude(p=>p.User)
                 .Include(p => p.DrugSideEffects).ThenInclude(i => i.SideEffect)
+                .Include(r => r.Currancy).Include(i => i.Package)
                 .Include(p => p.Manufacturer).Include(e => e.DrugDiseases)
                 .ThenInclude(eu => eu.Disease).FirstOrDefault(m => m.DrugId == id);
             return View(drug);
@@ -53,6 +55,8 @@ namespace Drug.Controllers
             ViewData["SideEffects"] = _databaseContext.SideEffect.ToList();
             ViewData["Manufacturers"] = _databaseContext.Manufacturer.ToList();
             ViewData["Drugs"] = _databaseContext.Drug.ToList();
+            ViewData["Packages"] = _databaseContext.Package.ToList();
+            ViewData["Currencies"] = _databaseContext.Currency.ToList();
 
             return View(new DrugViewModel());
         }
@@ -66,6 +70,8 @@ namespace Drug.Controllers
             ViewData["Manufacturers"] = _databaseContext.Manufacturer.ToList();
             ViewData["SideEffects"] = _databaseContext.SideEffect.ToList();
             ViewData["Drugs"] = _databaseContext.Drug.ToList();
+            ViewData["Packages"] = _databaseContext.Package.ToList();
+            ViewData["Currencies"] = _databaseContext.Currency.ToList();
 
 
 
@@ -105,7 +111,8 @@ namespace Drug.Controllers
 
 
 
-                //var manufacturer = _databaseContext.Manufacturers.FirstOrDefault(m => m.Id == model.ManufacturerId);
+                var val = _databaseContext.Currency.FirstOrDefault(m => m.CurrencyId == model.CurrencyId);
+                var pac = _databaseContext.Package.FirstOrDefault(m => m.PackageId == model.PackageId);
                 var drugCategories = new List<DrugDisease>();
                 var ses = new List<DrugSideEffect>();
                 var drugs = new List<Medication>();
@@ -120,6 +127,10 @@ namespace Drug.Controllers
                     Price = model.Price,
                     Quantity = model.Stock,
                     Manufacturer = man,
+                    Package=pac,
+                    Currancy=val,
+                    PackageSize=model.PackageSize.ToString()+model.x,
+                    DrugSize=model.DrugSize.ToString()+model.y,
                     //Substitutions=drugs,
                     Usage=model.Usage
                     
@@ -163,6 +174,8 @@ namespace Drug.Controllers
                 ViewData["Categories"] = _databaseContext.Disease.ToList();
                 ViewData["Manufacturers"] = _databaseContext.Manufacturer.ToList();
                 ViewData["Drugs"] = _databaseContext.Drug.ToList();
+                ViewData["Packages"] = _databaseContext.Package.ToList();
+                ViewData["Currencies"] = _databaseContext.Currency.ToList();
 
 
                 return View("Add", model);
@@ -175,6 +188,7 @@ namespace Drug.Controllers
         {
             var Drug = _databaseContext.Drug.Include(u=>u.Manufacturer)
                 .Include(p => p.DrugSideEffects).ThenInclude(i => i.SideEffect)
+                .Include(r => r.Currancy).Include(i => i.Package)
                 .Include(g => g.DrugDiseases)
                 .ThenInclude(eu => eu.Disease)
                 .First(g => g.DrugId == id);
@@ -186,9 +200,12 @@ namespace Drug.Controllers
             ViewData["Manufacturers"] = _databaseContext.Manufacturer.ToList();
             ViewData["SideEffects"] = _databaseContext.SideEffect.ToList();
             ViewData["Drugs"] = _databaseContext.Drug.ToList();
+            ViewData["Packages"] = _databaseContext.Package.ToList();
+            ViewData["Currencies"] = _databaseContext.Currency.ToList();
 
 
-            return View(new EditDrugViewModel { Drug = Drug, SideEffectIds = sesIds, CategoryIds = categoryIds,ManufacturerId=Drug.Manufacturer.ManufacturerId });
+            return View(new EditDrugViewModel { Drug = Drug, SideEffectIds = sesIds, CategoryIds = categoryIds,
+                ManufacturerId =Drug.Manufacturer.ManufacturerId,PackageId=Drug.Package.PackageId,CurrencyId=Drug.Currancy.CurrencyId });
         }
 
         [HttpPost]
@@ -199,16 +216,22 @@ namespace Drug.Controllers
                 ViewData["Categories"] = _databaseContext.Disease.ToList();
                 ViewData["Manufacturers"] = _databaseContext.Manufacturer.ToList();
                 ViewData["SideEffects"] = _databaseContext.SideEffect.ToList();
+                ViewData["Packages"] = _databaseContext.Package.ToList();
+                ViewData["Currencies"] = _databaseContext.Currency.ToList();
 
                 return View(nameof(Edit), model);
             }
             var Drug = _databaseContext.Drug
                 .Include(p => p.DrugSideEffects).ThenInclude(i => i.SideEffect)
+                .Include(r => r.Currancy).Include(i => i.Package)
                 .Include(g => g.DrugDiseases)
                 .ThenInclude(eu => eu.Disease)
                 .First(g => g.DrugId == id);
 
             Drug.Manufacturer= _databaseContext.Manufacturer.ToList().First(c => c.ManufacturerId == model.ManufacturerId);
+            Drug.Currancy = _databaseContext.Currency.ToList().First(c => c.CurrencyId == model.CurrencyId);
+            Drug.Package = _databaseContext.Package.ToList().First(c => c.PackageId == model.PackageId);
+
             Drug.DrugName = model.Drug.DrugName;
             Drug.DateProduced = model.Drug.DateProduced;
             Drug.DateExpires = model.Drug.DateExpires;
@@ -248,6 +271,7 @@ namespace Drug.Controllers
         public ViewResult AddComment(int id)
         {
             var Drug = _databaseContext.Drug.Include(u => u.Manufacturer).Include(t => t.Comments)
+                .Include(r => r.Currancy).Include(i => i.Package)
                 .Include(g => g.DrugDiseases)
                 .ThenInclude(eu => eu.Disease)
                 .First(g => g.DrugId == id);
@@ -261,6 +285,7 @@ namespace Drug.Controllers
             var sender = await _userManager.GetUserAsync(User);
 
             var Drug = _databaseContext.Drug.Include(t => t.Comments).ThenInclude(eu=>eu.User)
+                   .Include(r => r.Currancy).Include(i => i.Package)
                    .Include(g => g.DrugDiseases)
                    .ThenInclude(eu => eu.Disease)
                    .First(g => g.DrugId == id);

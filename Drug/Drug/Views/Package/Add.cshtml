@@ -1,0 +1,20 @@
+﻿﻿
+@model DrugData.Models.ViewModels.PackageViewModel
+
+<form asp-action="Create" method="POST">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <h2>
+        Novo pakiranje
+    </h2>
+    <div class="form-group">
+        <label asp-for="PackageType">Tip pakiranja </label>
+        <input asp-for="PackageType" class="form-control" />
+    </div>
+
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary">Spremi</button>
+        <a asp-action="Index">
+            <button type="button" class="btn btn-secondary">Odustani</button>
+        </a>
+    </div>
+</form>

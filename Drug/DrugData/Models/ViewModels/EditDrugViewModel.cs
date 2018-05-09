@@ -12,6 +12,9 @@ namespace DrugData.Models.ViewModels
         public Medication Drug { get; set; }
 
         public int ManufacturerId { get; set; }
+        public int PackageId { get; set; }
+        public int CurrencyId { get; set; }
+
 
     }
 }

@@ -1,0 +1,21 @@
+﻿@model DrugData.Models.ViewModels.EditPackageViewModel
+
+<form asp-action="Update" asp-route-id="@Model.Package.PackageId" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    @if (@ViewData["Success"] != null)
+    {
+        <div class="alert alert-success">Pakiranje spremljeno</div>
+    }
+    <h2>Uredi</h2>
+    <div class="form-group">
+        <label asp-for="Package.PackageType">Naziv </label>
+        <input asp-for="Package.PackageType" class="form-control" />
+    </div>
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary">Spremi</button>
+        <a asp-action="Index">
+            <button type="button" class="btn btn-secondary">Odustani</button>
+        </a>
+    </div>
+
+</form>

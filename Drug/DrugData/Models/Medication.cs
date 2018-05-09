@@ -12,8 +12,11 @@ namespace DrugData.Models
         public int DrugId { get; set; }
         public string DrugName { get; set; }
         public virtual Manufacturer Manufacturer { get; set; }
-        public int ManufacturerId { get; set; }
+        public int ManufacturerId { get; set; }//nepotrebno
 
+        public Package Package { get; set; }
+        public string PackageSize { get; set; }
+        public string DrugSize { get; set; }
         public DateTime DateProduced { get; set; }
         public DateTime DateExpires {get; set; }
 
@@ -26,6 +29,8 @@ namespace DrugData.Models
         [Range(0, 10000)]
         [Required]
         public decimal Price { get; set; }
+
+        public Currency Currancy { get; set; }
         public virtual ICollection<DrugDisease> DrugDiseases { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<DrugSideEffect> DrugSideEffects { get; set; }

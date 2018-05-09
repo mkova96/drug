@@ -28,6 +28,11 @@ namespace DrugData
         public DbSet<DrugCart> DrugCart { get; set; }
         public DbSet<Order> Order { get; set; }
         public DbSet<OrderDetail> OrderDetail { get; set; }
+        public DbSet<Package> Package { get; set; }
+        public DbSet<Currency> Currency { get; set; }
+
+
+
 
 
     }
