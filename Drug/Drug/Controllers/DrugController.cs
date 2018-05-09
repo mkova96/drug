@@ -33,7 +33,7 @@ namespace Drug.Controllers
             ViewData["Success"] = TempData["Success"];
             IEnumerable<Medication> drugs = _databaseContext.Drug.Include(p=>p.Manufacturer)
                 .Include(p=>p.DrugSideEffects).ThenInclude(i=>i.SideEffect)
-                .Include(r=>r.Currancy).Include(i=>i.Package)
+                .Include(r=>r.Currancy).Include(i=>i.Package).Include(p=>p.Substitutions)
                 .Include(e => e.DrugDiseases).ThenInclude(eu => eu.Disease)
                 .ToList();
             return View(drugs);
@@ -42,7 +42,7 @@ namespace Drug.Controllers
         {
             Medication drug = _databaseContext.Drug.Include(t=>t.Comments).ThenInclude(p=>p.User)
                 .Include(p => p.DrugSideEffects).ThenInclude(i => i.SideEffect)
-                .Include(r => r.Currancy).Include(i => i.Package)
+                .Include(r => r.Currancy).Include(i => i.Package).Include(p => p.Substitutions)
                 .Include(p => p.Manufacturer).Include(e => e.DrugDiseases)
                 .ThenInclude(eu => eu.Disease).FirstOrDefault(m => m.DrugId == id);
             return View(drug);
@@ -115,11 +115,9 @@ namespace Drug.Controllers
                 var pac = _databaseContext.Package.FirstOrDefault(m => m.PackageId == model.PackageId);
                 var drugCategories = new List<DrugDisease>();
                 var ses = new List<DrugSideEffect>();
-                var drugs = new List<Medication>();
 
-                //drugs = model.DrugIds.Select(id => _databaseContext.Drugs.Find(id)).ToList();
-                
-                    var drug = new Medication{
+                var drug = new Medication
+                {
 
                     DrugName = model.Name,
                     DateProduced = model.Produced,
@@ -127,16 +125,25 @@ namespace Drug.Controllers
                     Price = model.Price,
                     Quantity = model.Stock,
                     Manufacturer = man,
-                    Package=pac,
-                    Currancy=val,
-                    PackageSize=model.PackageSize.ToString()+model.x,
-                    DrugSize=model.DrugSize.ToString()+model.y,
-                    //Substitutions=drugs,
-                    Usage=model.Usage
-                    
-                };
+                    Package = pac,
+                    Currancy = val,
+                    PackageSize = model.PackageSize.ToString() + model.x,
+                    DrugSize = model.DrugSize.ToString() + model.y,
+                    Usage = model.Usage
 
-                    drugCategories = model.CategoryIds.Select(id => _databaseContext.Disease.Find(id))
+                };
+                System.Diagnostics.Debug.WriteLine("ZZZZZ"+model.z);
+
+
+                if (model.z == true)
+                {
+                    var drugs = new List<Medication>();
+                    drugs = model.DrugIds.Select(id => _databaseContext.Drug.Find(id)).ToList();
+                    drug.Substitutions = drugs;
+
+                }
+
+                drugCategories = model.CategoryIds.Select(id => _databaseContext.Disease.Find(id))
                .Select(u => new DrugDisease { Disease = u, Drug = drug }).ToList();
 
                     ses = model.SideEffectIds.Select(id => _databaseContext.SideEffect.Find(id))
@@ -188,7 +195,7 @@ namespace Drug.Controllers
         {
             var Drug = _databaseContext.Drug.Include(u=>u.Manufacturer)
                 .Include(p => p.DrugSideEffects).ThenInclude(i => i.SideEffect)
-                .Include(r => r.Currancy).Include(i => i.Package)
+                .Include(r => r.Currancy).Include(i => i.Package).Include(p => p.Substitutions)
                 .Include(g => g.DrugDiseases)
                 .ThenInclude(eu => eu.Disease)
                 .First(g => g.DrugId == id);
@@ -271,7 +278,7 @@ namespace Drug.Controllers
         public ViewResult AddComment(int id)
         {
             var Drug = _databaseContext.Drug.Include(u => u.Manufacturer).Include(t => t.Comments)
-                .Include(r => r.Currancy).Include(i => i.Package)
+                .Include(r => r.Currancy).Include(i => i.Package).Include(p => p.Substitutions)
                 .Include(g => g.DrugDiseases)
                 .ThenInclude(eu => eu.Disease)
                 .First(g => g.DrugId == id);
@@ -285,7 +292,7 @@ namespace Drug.Controllers
             var sender = await _userManager.GetUserAsync(User);
 
             var Drug = _databaseContext.Drug.Include(t => t.Comments).ThenInclude(eu=>eu.User)
-                   .Include(r => r.Currancy).Include(i => i.Package)
+                   .Include(r => r.Currancy).Include(i => i.Package).Include(p => p.Substitutions)
                    .Include(g => g.DrugDiseases)
                    .ThenInclude(eu => eu.Disease)
                    .First(g => g.DrugId == id);

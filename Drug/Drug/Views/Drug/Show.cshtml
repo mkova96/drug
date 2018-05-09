@@ -3,11 +3,11 @@
 <div class="text-center">
     <h1>
         @Model.DrugName.ToString() @if (Model.Package.PackageType == "Tablete")
-    {
-        @Model.DrugSize.ToString()
+        {
+            @Model.DrugSize.ToString()
 
 
-}
+        }
     </h1>
 </div>
 <!--<h2>Proizvođač: Model.Manufacturer.Name</h2>-->
@@ -45,15 +45,19 @@
         </h3>
     }
 </h2>
+@if (Model.Substitutions.Count > 0)
+{
+    <h2>
+        Zamjenski proizvodi: @foreach (Medication c in Model.Substitutions)
+        {
+            <h3>
+                <a asp-action="Show" asp-route-id="@c.DrugId">@c.DrugName</a>
+            </h3>
+        }
+    </h2>
 
-<!--<h2>
-    Zamjenski proizvodi: foreach (Drug c in Model.Substitutions)
-    {
-        <h3>
-            <a asp-action="Show" asp-route-id="c.Id">c.Name</a>
-        </h3>
-    }
-</h2>-->
+}
+
 
 
 <div class="text-center">

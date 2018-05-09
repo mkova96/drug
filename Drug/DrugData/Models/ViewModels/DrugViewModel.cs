@@ -43,6 +43,9 @@ namespace DrugData.Models.ViewModels
         public string x { get; set; }
         public string y { get; set; }
 
+        public bool z { get; set; }
+
+
 
         public string DrugSize { get; set; }
         public string ManufacturerType { get; set; }

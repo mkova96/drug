@@ -34,8 +34,8 @@ namespace DrugData.Models
         public virtual ICollection<DrugDisease> DrugDiseases { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<DrugSideEffect> DrugSideEffects { get; set; }
-        //public virtual ICollection<Drug> Substitutions { get; set; }
-        //public virtual ICollection<DrugCart> DrugCarts { get; set; }
+        public virtual ICollection<Medication> Substitutions { get; set; }
+        public virtual ICollection<DrugCart> DrugCarts { get; set; }
 
     }
 }
