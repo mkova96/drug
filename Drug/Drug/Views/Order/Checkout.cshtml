@@ -1,7 +1,7 @@
 ﻿﻿
 @model Order
 <div class="row orderForm ">
-    <h3 class="text-center">.</h3>
+    <h3 class="text-left">                                     Unesite podatke za slanje</h3>
     <form asp-action="Checkout" method="post" class="form-horizontal" role="form">
         <div class="form-group">
             <label asp-for="FirstName" class="col-md-2 control-label"></label>
@@ -56,7 +56,7 @@
         </div>
         <div class="form-group">
             <div class="btn-group col-md-offset-2 col-md-8">
-                <input class="btn btn-success" type="submit" value="Complete order" />
+                <input class="btn btn-success" type="submit" value="Pošalji" />
                 @*<input class="btn btn-default" type="submit" value="Return " />*@
             </div>
         </div>

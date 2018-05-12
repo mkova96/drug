@@ -33,25 +33,12 @@
 
                     @await Component.InvokeAsync("CartSummary")
 
-                </ul> 
+                </ul>
+                @await Html.PartialAsync("_LoginPartial")
 
             </div>
 
             <div class="navbar-collapse collapse">
-
-                @if (Context.User.IsInRole("Admin"))
-                {
-
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Admin <span class="caret"></span></a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a asp-controller="Drug" asp-action="Index">Lijekovi</a></li>
-                            <li><a asp-controller="Doctor" asp-action="Index">Doktori</a></li>
-                            <li><a asp-controller="User" asp-action="Index">Korisnici</a></li>
-                            <li><a asp-controller="Admin" asp-action="Index">Admini</a></li>
-                        </ul>
-                    </li>
-                }
 
                 </ul>
 
@@ -64,7 +51,7 @@
                 <button class="btn btn-outline-light" type="submit">Pretraži</button>
             </div>
         </form>-->
-                    @await Html.PartialAsync("_LoginPartial") <!--PROVJERI JEL PRIKAZE-->
+                    <!--PROVJERI JEL PRIKAZE-->
                 </div>
             </div>
             <!--<div class="navbar-collapse collapse">
