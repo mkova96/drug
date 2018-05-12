@@ -1,6 +1,5 @@
 c:\Users\MARIO\source\repos\Drug\DrugData\bin\Debug\netcoreapp2.0\DrugData.deps.json
 c:\Users\MARIO\source\repos\Drug\DrugData\bin\Debug\netcoreapp2.0\DrugData.dll
-c:\Users\MARIO\source\repos\Drug\DrugData\obj\Debug\netcoreapp2.0\DrugData.csprojResolveAssemblyReference.cache
 c:\Users\MARIO\source\repos\Drug\DrugData\obj\Debug\netcoreapp2.0\DrugData.csproj.CoreCompileInputs.cache
 c:\Users\MARIO\source\repos\Drug\DrugData\obj\Debug\netcoreapp2.0\DrugData.AssemblyInfoInputs.cache
 c:\Users\MARIO\source\repos\Drug\DrugData\obj\Debug\netcoreapp2.0\DrugData.AssemblyInfo.cs
@@ -9,3 +8,4 @@ c:\Users\MARIO\source\repos\Drug\DrugData\bin\Debug\netcoreapp2.0\DrugData.runti
 c:\Users\MARIO\source\repos\Drug\DrugData\bin\Debug\netcoreapp2.0\DrugData.pdb
 c:\Users\MARIO\source\repos\Drug\DrugData\obj\Debug\netcoreapp2.0\DrugData.dll
 c:\Users\MARIO\source\repos\Drug\DrugData\obj\Debug\netcoreapp2.0\DrugData.pdb
+C:\Users\MARIO\source\repos\Drug\DrugData\obj\Debug\netcoreapp2.0\DrugData.csprojAssemblyReference.cache

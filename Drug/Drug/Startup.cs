@@ -33,7 +33,6 @@ namespace Drug
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped(sp => Cart.GetCart(sp));
-            //services.AddTransient<IOrderRepository, OrderRepository>();
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DruggConnection")));
@@ -79,7 +78,7 @@ namespace Drug
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=UnregHome}/{action=Index}/{id?}"); //DODAT
+                    template: "{controller=Home}/{action=Index}/{id?}"); //DODAT
             });
         }
     }

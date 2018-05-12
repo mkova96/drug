@@ -15,7 +15,6 @@
             </tr>
         </thead>
         <tbody>
-            <h2>@Model.Cart.DrugCarts.Count()</h2>
             @foreach (var line in Model.Cart.DrugCarts)
             {
                 <tr>
@@ -44,10 +43,7 @@
                 <a class="btn btn-success" asp-controller="Order" asp-action="Checkout">Dovrši kupnju</a>
             </div>
             <div class="btn-group pull-left ">
-                <a class="btn btn-success" asp-controller="Drug" asp-action="Index">Nastavi s kupnjom</a>
-                <a class="btn btn-success" asp-controller="Home" asp-action="Index">Početna</a>
-
-
+                <a class="btn btn-success" asp-controller="Drugs" asp-action="Index">Nastavi s kupnjom</a>
             </div>
         </div>
 

@@ -1,4 +1,3 @@
-c:\users\mario\source\repos\Drug\Drug\obj\Debug\netcoreapp2.0\Drug.csprojResolveAssemblyReference.cache
 c:\users\mario\source\repos\Drug\Drug\obj\Debug\netcoreapp2.0\Drug.csproj.CoreCompileInputs.cache
 c:\users\mario\source\repos\Drug\Drug\obj\Debug\netcoreapp2.0\Drug.AssemblyInfoInputs.cache
 c:\users\mario\source\repos\Drug\Drug\obj\Debug\netcoreapp2.0\Drug.AssemblyInfo.cs
@@ -11,3 +10,5 @@ C:\Users\MARIO\source\repos\Drug\Drug\bin\Debug\netcoreapp2.0\Drug1.dll
 C:\Users\MARIO\source\repos\Drug\Drug\bin\Debug\netcoreapp2.0\Drug1.pdb
 C:\Users\MARIO\source\repos\Drug\Drug\obj\Debug\netcoreapp2.0\Drug1.dll
 C:\Users\MARIO\source\repos\Drug\Drug\obj\Debug\netcoreapp2.0\Drug1.pdb
+C:\Users\MARIO\source\repos\Drug\Drug\obj\Debug\netcoreapp2.0\Drug.csprojAssemblyReference.cache
+C:\Users\MARIO\source\repos\Drug\Drug\obj\Debug\netcoreapp2.0\Drug.csproj.CopyComplete

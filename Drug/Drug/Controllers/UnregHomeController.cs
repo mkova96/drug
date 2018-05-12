@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Lijek.Controllers
+namespace Drug.Controllers
 {
     public class UnregHomeController:Controller
     {
@@ -22,7 +22,7 @@ namespace Lijek.Controllers
         {
             ViewData["Empty"] = "true";
             //ViewData["Users"] = _databaseContext.Users.ToList();
-            //ViewData["Companies"] = _databaseContext.Companies.Include(c => c.City).ToList();
+            ViewData["Manufacturers"] = _databaseContext.Manufacturer.ToList();
             return View();
         }
 
