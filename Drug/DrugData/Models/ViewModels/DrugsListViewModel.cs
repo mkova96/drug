@@ -7,6 +7,6 @@ namespace DrugData.Models.ViewModels
     public class DrugsListViewModel
     {
         public IEnumerable<Medication> Drugs { get; set; }
-        //public string CurrentCategory { get; set; }
+        public string CurrentCategory { get; set; }
     }
 }

@@ -79,6 +79,12 @@ namespace Drug
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}"); //DODAT
+
+                routes.MapRoute(
+                 name: "categoryfilter",
+                 template: "Drugs/{action}/{category?}",
+                 defaults: new { Controller = "Drugs", action = "Index" });
+
             });
         }
     }
