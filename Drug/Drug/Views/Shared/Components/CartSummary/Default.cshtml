@@ -1,17 +1,17 @@
 ﻿@model CartViewModel
-
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Identity.EntityFrameworkCore
 
-
-@if (Model.Cart.DrugCarts.Count > 0 )
+@if (Model.Cart.DrugCarts.Count > 0)
 {
-    <li>
-        <a asp-controller="Cart">
-            <span class="glyphicon glyphicon-shopping-cart"></span>
-            <span id="cart-status">
-                @Model.Cart.DrugCarts.Count
-            </span>
-        </a>
-    </li>
-}
+    <ul class="nav navbar-nav navbar-right">
+        <li>
+            <a asp-controller="Cart">
+                <span class="glyphicon glyphicon-shopping-cart"></span>
+                <span id="cart-status">
+                    @Model.Cart.DrugCarts.Count
+                </span>
+            </a>
+        </li>
+        </ul>
+        }

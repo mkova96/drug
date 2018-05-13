@@ -26,16 +26,15 @@ namespace Drug.Controllers
             _actionDescriptorCollectionProvider = actionDescriptorCollectionProvider;
             _userManager = userManager;
         }
-
-        /* public ViewResult Index()
-         {
-             ViewData["Success"] = TempData["Success"];
-             IEnumerable<Medication> drugs = _databaseContext.Drug.OrderBy(a=>a.DrugName).ToList();
-             return View("~/Views/Drugs/Index.cshtml", new DrugsListViewModel
-             {
-                 Drugs = drugs
-             });
-         }*/
+        public ViewResult Show(int id)
+        {
+            Medication drug = _databaseContext.Drug.Include(t => t.Comments).ThenInclude(p => p.User)
+                .Include(p => p.DrugSideEffects).ThenInclude(i => i.SideEffect)
+                .Include(r => r.Currancy).Include(i => i.Package).Include(p => p.Substitutions)
+                .Include(p => p.Manufacturer).Include(e => e.DrugDiseases)
+                .ThenInclude(eu => eu.Disease).FirstOrDefault(m => m.DrugId == id);
+            return View(drug);
+        }
 
         public ViewResult Index(string category)
         {
@@ -71,24 +70,5 @@ namespace Drug.Controllers
             });
         }
 
-        /*public ViewResult IndexPriceLow()
-        {
-            ViewData["Success"] = TempData["Success"];
-            IEnumerable<Medication> drugs = _databaseContext.Drug.OrderBy(a => a.Price).ToList();
-            return View("~/Views/Drugs/Index.cshtml", new DrugsListViewModel
-            {
-                Drugs = drugs
-            });
-        }*/
-
-        /*public ViewResult IndexPriceMax()
-        {
-            ViewData["Success"] = TempData["Success"];
-            IEnumerable<Medication> drugs = _databaseContext.Drug.OrderByDescending(a => a.Price).ToList();
-            return View("~/Views/Drugs/Index.cshtml", new DrugsListViewModel
-            {
-                Drugs = drugs
-            });
-        }*/
     }
 }

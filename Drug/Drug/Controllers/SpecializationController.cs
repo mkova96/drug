@@ -48,12 +48,16 @@ namespace Lijek.Controllers
 
                 if (x != null)
                 {
-                    return RedirectToAction(nameof(Index));
+                    TempData[Constants.Message] = $"Specijalizacija tog imena već postoji.\n";
+                    TempData[Constants.ErrorOccurred] = true;
+                    return RedirectToAction(nameof(Add));
                 }
                 _databaseContext.Specialization.Add(ses);
 
                 TempData["Success"] = true;
                 _databaseContext.SaveChanges();
+                TempData[Constants.Message] = $"Specijalizacija je dodana";
+                TempData[Constants.ErrorOccurred] = false;
             }
 
             return RedirectToAction(nameof(Index));
@@ -67,6 +71,8 @@ namespace Lijek.Controllers
 
             _databaseContext.Specialization.Remove(ses);
             _databaseContext.SaveChanges();
+            TempData[Constants.Message] = $"Specijalizacija je obrisana";
+            TempData[Constants.ErrorOccurred] = false;
             return RedirectToAction(nameof(Index));
         }
         [HttpGet]
@@ -95,9 +101,19 @@ namespace Lijek.Controllers
                 .FirstOrDefault(m => m.SpecializationId == id);
 
                 ses.SpecializationName = model.Specialization.SpecializationName;
+                var x = _databaseContext.Specialization.FirstOrDefault(m => m.SpecializationName == ses.SpecializationName);
+
+                if (x !=null)
+                {
+                     TempData[Constants.Message] = $"Specijalizacija tog imena već postoji.\n";
+                    TempData[Constants.ErrorOccurred] = true;
+                    return RedirectToAction("Edit", new { id =id});
+                }
 
                 TempData["Success"] = true;
                 _databaseContext.SaveChanges();
+                TempData[Constants.Message] = $"Specijalizacija je promijenjena";
+                TempData[Constants.ErrorOccurred] = false;
             }
             return RedirectToAction(nameof(Index));
         }

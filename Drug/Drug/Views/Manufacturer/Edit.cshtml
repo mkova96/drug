@@ -1,6 +1,6 @@
 ﻿@model DrugData.Models.ViewModels.EditManufacturerViewModel
 
-<form asp-action="Update" asp-route-id="@Model.Manufacturer.Id" method="post">
+<form asp-action="Update" asp-route-id="@Model.Manufacturer.ManufacturerId" method="post">
     <div asp-validation-summary="All" class="text-danger"></div>
     @if (@ViewData["Success"] != null)
     {

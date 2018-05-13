@@ -31,10 +31,19 @@
                 <ul class="nav navbar-nav">
                     @await Component.InvokeAsync("CategoryMenu")
 
-                    @await Component.InvokeAsync("CartSummary")
+
 
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
+                @await Component.InvokeAsync("CartSummary")
+                <form class="navbar-form navbar-right" asp-controller="Search" asp-action="SearchAction" method="get">
+                    <div class="custom-search-input">
+                        <input class="form-control" name="SearchString" type="text" placeholder="Pretraži" aria-label="Search">
+                    </div>
+                    <div class="custom-search-button">
+                        <button class="btn btn-outline-light" type="submit">Pretraži</button>
+                    </div>
+                </form>
 
             </div>
 
@@ -64,6 +73,19 @@
         </div>
     </nav>
     <div class="container body-content">
+        <div>
+            <div id="tempmessage" class="alert"></div>
+            @if (TempData[Constants.Message] != null)
+            {
+                bool error = false;
+                var obj = TempData[Constants.ErrorOccurred];
+                if (obj != null)
+                {
+                    error = (bool)obj;
+                }
+                <div class="alert @(error ? "alert-danger" : "alert-success")">@TempData[Constants.Message]</div>
+            }
+        </div>
         @RenderBody()
         <hr />
         <footer>

@@ -41,10 +41,20 @@ namespace Lijek.Controllers
             if (ModelState.IsValid)
             {
                 var man = new Manufacturer { ManufacturerName = model.Name,About=model.About };
+                var x = _databaseContext.Manufacturer.FirstOrDefault(g => g.ManufacturerName == man.ManufacturerName);
+
+                if (x != null)
+                {
+                    TempData[Constants.Message] = $"Proizvođač tog imena već postoji.\n";
+                    TempData[Constants.ErrorOccurred] = true;
+                    return RedirectToAction(nameof(Add));
+                }
                 _databaseContext.Manufacturer.Add(man);
 
                 TempData["Success"] = true;
                 _databaseContext.SaveChanges();
+                TempData[Constants.Message] = $"Proizvođač je dodan";
+                TempData[Constants.ErrorOccurred] = false;
             }
 
             return RedirectToAction(nameof(Index));
@@ -58,6 +68,8 @@ namespace Lijek.Controllers
 
             _databaseContext.Manufacturer.Remove(man);
             _databaseContext.SaveChanges();
+            TempData[Constants.Message] = $"Proizvođač je obrisan";
+            TempData[Constants.ErrorOccurred] = false;
             return RedirectToAction(nameof(Index));
         }
         [HttpGet]
@@ -81,15 +93,23 @@ namespace Lijek.Controllers
 
             if (ModelState.IsValid)
             {
-                var man = _databaseContext.Manufacturer
-
-                .FirstOrDefault(m => m.ManufacturerId == id);
+                var man = _databaseContext.Manufacturer.FirstOrDefault(m => m.ManufacturerId == id);
 
                 man.ManufacturerName = model.Manufacturer.ManufacturerName;
                 man.About = model.Manufacturer.About;
 
+                var x = _databaseContext.Manufacturer.Where(g => (g.ManufacturerName == man.ManufacturerName && g.ManufacturerId!=id)).ToList();
+                if (x.Count>0)
+                {
+                    TempData[Constants.Message] = $"Proizvođač tog imena već postoji.\n";
+                    TempData[Constants.ErrorOccurred] = true;
+                    return RedirectToAction("Edit", new { id = id });
+                }
+
                 TempData["Success"] = true;
                 _databaseContext.SaveChanges();
+                TempData[Constants.Message] = $"Proizvođač je promijenjen";
+                TempData[Constants.ErrorOccurred] = false;
             }
             return RedirectToAction(nameof(Index));
         }

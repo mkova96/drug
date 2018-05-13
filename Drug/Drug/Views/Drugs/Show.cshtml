@@ -1,0 +1,25 @@
+﻿@model Medication
+<div class="container marginTop">
+    <div class="row">
+        <div class="card">
+            <div class="text-center view overlay hm-white-slight">
+                <img src="~/images/capsule.png" style="min-height:150px;height:150px;" />
+                <a href="#">
+                    <div class="mask waves-effect waves-light"></div>
+                </a>
+            </div>
+            <div class="card-block">
+                <!--Title-->
+                <h4 class="card-title">@Model.DrugName</h4>
+                <!--Text-->
+                <p class="card-text">@Model.Manufacturer.ManufacturerName.</p>
+                <p class="btn btn-group pull-right">
+                    <a asp-controller="Drink" asp-action="List" class="btn btn-default">Show all drinks</a>
+                    <a class="btn btn-success" id="cartButton" asp-controller="ShoppingCart" asp-action="AddToShoppingCart" asp-route-drinkId="@Model.DrugId">
+                        Add @Model.DrugName to cart
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -45,12 +45,16 @@ namespace Drug.Controllers
 
                 if (x != null)
                 {
-                    return RedirectToAction(nameof(Index));
+                    TempData[Constants.Message] = $"Pakiranje tog imena već postoji.\n";
+                    TempData[Constants.ErrorOccurred] = true;
+                    return RedirectToAction(nameof(Add));
                 }
                 _databaseContext.Package.Add(ses);
 
                 TempData["Success"] = true;
                 _databaseContext.SaveChanges();
+                TempData[Constants.Message] = $"Pakiranje je dodano";
+                TempData[Constants.ErrorOccurred] = false;
             }
 
             return RedirectToAction(nameof(Index));
@@ -64,6 +68,8 @@ namespace Drug.Controllers
 
             _databaseContext.Package.Remove(ses);
             _databaseContext.SaveChanges();
+            TempData[Constants.Message] = $"Pakiranje je obrisano";
+            TempData[Constants.ErrorOccurred] = false;
             return RedirectToAction(nameof(Index));
         }
         [HttpGet]
@@ -93,8 +99,19 @@ namespace Drug.Controllers
 
                 ses.PackageType = model.Package.PackageType;
 
+                var x = _databaseContext.Package.FirstOrDefault(m => m.PackageType == ses.PackageType);
+
+                if (x != null)
+                {
+                    TempData[Constants.Message] = $"Pakiranje tog imena već postoji.\n";
+                    TempData[Constants.ErrorOccurred] = true;
+                    return RedirectToAction("Edit", new { id = id });
+                }
+
                 TempData["Success"] = true;
                 _databaseContext.SaveChanges();
+                TempData[Constants.Message] = $"Pakiranje je promijenjeno";
+                TempData[Constants.ErrorOccurred] = false;
             }
             return RedirectToAction(nameof(Index));
         }

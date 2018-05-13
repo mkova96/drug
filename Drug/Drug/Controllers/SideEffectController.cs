@@ -44,10 +44,20 @@ namespace Lijek.Controllers
             if (ModelState.IsValid)
             {
                 var ses = new SideEffect { SideEffectName = model.Name};
+                var x = _databaseContext.SideEffect.FirstOrDefault(g => g.SideEffectName == ses.SideEffectName);
+
+                if (x != null)
+                {
+                    TempData[Constants.Message] = $"Nuspojava tog imena već postoji.\n";
+                    TempData[Constants.ErrorOccurred] = true;
+                    return RedirectToAction(nameof(Add));
+                }
                 _databaseContext.SideEffect.Add(ses);
 
                 TempData["Success"] = true;
                 _databaseContext.SaveChanges();
+                TempData[Constants.Message] = $"Nuspojava je dodana";
+                TempData[Constants.ErrorOccurred] = false;
             }
 
             return RedirectToAction(nameof(Index));
@@ -61,6 +71,8 @@ namespace Lijek.Controllers
 
             _databaseContext.SideEffect.Remove(ses);
             _databaseContext.SaveChanges();
+            TempData[Constants.Message] = $"Nuspojava je obrisana";
+            TempData[Constants.ErrorOccurred] = false;
             return RedirectToAction(nameof(Index));
         }
         [HttpGet]
@@ -90,9 +102,21 @@ namespace Lijek.Controllers
 
                 ses.SideEffectName = model.SideEffect.SideEffectName;
 
+                var x = _databaseContext.SideEffect.FirstOrDefault(m => m.SideEffectName == ses.SideEffectName);
+
+                if (x != null)
+                {
+                    TempData[Constants.Message] = $"Nuspojava tog imena već postoji.\n";
+                    TempData[Constants.ErrorOccurred] = true;
+                    return RedirectToAction("Edit", new { id = id });
+                }
+
                 TempData["Success"] = true;
                 _databaseContext.SaveChanges();
-            }
+                TempData[Constants.Message] = $"Nuspojava je promijenjena";
+                TempData[Constants.ErrorOccurred] = false;
+            
+        }
             return RedirectToAction(nameof(Index));
         }
     }

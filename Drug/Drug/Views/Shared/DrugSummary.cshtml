@@ -7,7 +7,7 @@
                    asp-route-drugId="@Model.DrugId"><img class="pull-right" src="~/images/cart.png" alt="" width="35" height="35" /></a></h3>
 
             <h3>
-                <a asp-controller="Drugs" asp-action="Show" asp-route-drinkId="@Model.DrugId">@Model.DrugName</a>
+                <a asp-controller="Drugs" asp-action="Show" asp-route-id="@Model.DrugId">@Model.DrugName</a>
                 @Model.Price.ToString() <!--Model.Currancy.CurrencyName.ToString()-->
             </h3>
             <!--<p>Model.ShortDescription</p>-->
