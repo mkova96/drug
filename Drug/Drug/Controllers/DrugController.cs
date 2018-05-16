@@ -314,6 +314,11 @@ namespace Drug.Controllers
                 };
                 TempData["Success"] = true;
 
+                _databaseContext.Comment.Add(comment);
+
+                System.Diagnostics.Debug.WriteLine("AAA" + comment.CommentId.ToString());
+                System.Diagnostics.Debug.WriteLine("USER" + sender.FullName.ToString());
+
                 sender.Comments.Add(comment);
                 Drug.Comments.Add(comment);
                 _databaseContext.SaveChanges();

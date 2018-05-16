@@ -47,7 +47,8 @@ namespace Lijek.Controllers
         public IActionResult Register(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            ViewBag.Items = new SelectList(_databaseContext.Country, "CountryId", "CountryName");
+            ViewData["Cities"] = _databaseContext.City.ToList();
+            ViewData["Countries"] = _databaseContext.Country.ToList();
 
             return View(new RegisterViewModel());
         }
@@ -58,6 +59,9 @@ namespace Lijek.Controllers
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
+            ViewData["Cities"] = _databaseContext.City.ToList();
+            ViewData["Countries"] = _databaseContext.Country.ToList();
+
             ViewBag.Items = new SelectList(_databaseContext.Country, "CountryId", "CountryName");
 
             if (!await _roleManager.RoleExistsAsync("Admin"))
@@ -86,9 +90,15 @@ namespace Lijek.Controllers
                 await _roleManager.CreateAsync(role);
             }
 
+            var city = _databaseContext.City.FirstOrDefault(m => m.CityId == model.CityId);
+            var country = _databaseContext.Country.FirstOrDefault(m => m.CountryId == model.CountryID);
+
+            city.Country = country;
 
 
-            City city = _databaseContext.City.FirstOrDefault(c => c.PostCode == Int32.Parse(model.PostCode));
+
+
+            /*City city = _databaseContext.City.FirstOrDefault(c => c.PostCode == Int32.Parse(model.PostCode));
             if (city == null)
             {
                 City city1 = new City
@@ -107,7 +117,7 @@ namespace Lijek.Controllers
                 _databaseContext.Entry(country).State = EntityState.Modified;
                 _databaseContext.SaveChanges();
                 city = city1;
-            }
+            }*/
 
 
 
@@ -128,7 +138,7 @@ namespace Lijek.Controllers
           
                 };
 
-                var x = _databaseContext.User.FirstOrDefault(g => g.Email == g.Email);
+                var x = _databaseContext.User.FirstOrDefault(g => g.Email == model.Email);
 
                 if (x != null)
                 {
@@ -150,7 +160,7 @@ namespace Lijek.Controllers
 
                     TempData[Constants.Message] = $"Uspješno ste se registrirali";
                     TempData[Constants.ErrorOccurred] = false;
-                    return RedirectToLocal(returnUrl);
+                    return RedirectToAction("Index", "Drugs");
                 }
                 AddErrors(result);
             }
@@ -210,7 +220,7 @@ namespace Lijek.Controllers
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return RedirectToLocal(returnUrl);
+                    return RedirectToAction("Index", "Drugs"); ;
                 }
                 if (result.IsLockedOut)
                 {
@@ -241,7 +251,7 @@ namespace Lijek.Controllers
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
-            return RedirectToAction(nameof(HomeController.Index), "Home");
+            return RedirectToAction("Index", "UnregHome");
         }
 
     }

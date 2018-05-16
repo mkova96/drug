@@ -33,10 +33,11 @@ namespace Lijek.Controllers
             _roleManager = roleManager;
         }
 
-        public ViewResult Index()
+        public async Task<ViewResult> Index()
         {
             ViewData["Success"] = TempData["Success"];
-            IEnumerable<User> docs = _databaseContext.Users.Where(p=>p.IsAdmin==true).ToList();
+            var user = await _userManager.GetUserAsync(User);
+            IEnumerable<User> docs = _databaseContext.Users.Where(p=>p.IsAdmin==true).Where(t => t.Id != user.Id.ToString()).Where(t => t.Id != user.Id.ToString()).ToList();
             return View(docs);
         }
         public ViewResult Show(string id)

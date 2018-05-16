@@ -39,19 +39,11 @@ namespace DrugData.Models.ViewModels
         public string Address { get; set; }
 
         [Required]
-        [StringLength(100)]
-        [Display(Name = "Poštanski broj")]
-        public string PostCode { get; set; }
-
-        [Required]
-        [StringLength(100)]
-        [Display(Name = "Naziv mjesta")]
-        public string CityName { get; set; }
-
-
-        [Required]
         [Display(Name = "Država")]
         public int CountryID { get; set; }
+        [Required]
+        [Display(Name = "Grad")]
+        public int CityId { get; set; }
 
 
     }

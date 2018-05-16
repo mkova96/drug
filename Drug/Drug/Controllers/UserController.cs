@@ -2,6 +2,7 @@
 using DrugData.Models;
 using DrugData.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
@@ -16,25 +17,28 @@ namespace Lijek.Controllers
     {
 
         private readonly ApplicationDbContext _databaseContext;
+        private readonly UserManager<User> _userManager;
         private readonly IActionDescriptorCollectionProvider _actionDescriptorCollectionProvider;
 
-        public UserController(ApplicationDbContext context, IActionDescriptorCollectionProvider actionDescriptorCollectionProvider)
+        public UserController(ApplicationDbContext context, UserManager<User> userManager, IActionDescriptorCollectionProvider actionDescriptorCollectionProvider)
         {
             _databaseContext = context;
+            _userManager = userManager;
             _actionDescriptorCollectionProvider = actionDescriptorCollectionProvider;
         }
 
-        public ViewResult Index()
+        public async Task<ViewResult> Index()
         {
             ViewData["Success"] = TempData["Success"];
-            IEnumerable<User> users = _databaseContext.Users.ToList().Where(p=>p.IsDoctor==false).Where(r=>r.IsAdmin==false);
+            var user = await _userManager.GetUserAsync(User);
+            IEnumerable<User> users = _databaseContext.Users.ToList().Where(p=>p.IsDoctor==false).Where(r=>r.IsAdmin==false).Where(t=>t.Id!=user.Id.ToString());
             return View(users);
         }
 
         //[AllowAnonymous]
         public ViewResult Show(string id)
         {
-            var user = _databaseContext.Users.FirstOrDefault(g => g.Id == id);
+            var user = _databaseContext.Users.Include(t=>t.City).ThenInclude(t=>t.Country).FirstOrDefault(g => g.Id == id);
             return View(user);
         }
 
