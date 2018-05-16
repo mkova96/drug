@@ -6,7 +6,7 @@
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-group">
         <label asp-for="ReceiverId">Primatelj</label>
-        <select asp-for="ReceiverId" asp-items="@(new SelectList((IEnumerable<User>) @ViewData["Users"], "Id", "FullName"))" class="form-control"></select>
+        <select asp-for="ReceiverId" asp-items="@(new SelectList((IEnumerable<User>) @ViewData["Users"], "Id", "DrFullName"))" class="form-control"></select>
     </div>
     <div class="form-group">
         <textarea class="form-control" asp-for="About" placeholder="Unesite poruku"></textarea>

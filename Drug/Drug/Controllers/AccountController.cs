@@ -128,6 +128,15 @@ namespace Lijek.Controllers
           
                 };
 
+                var x = _databaseContext.User.FirstOrDefault(g => g.Email == g.Email);
+
+                if (x != null)
+                {
+                    TempData[Constants.Message] = $"Korisnik s tim mailom već postoji.\n";
+                    TempData[Constants.ErrorOccurred] = true;
+                    return RedirectToAction(nameof(Register), new { retUrl = returnUrl });
+                }
+
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -138,6 +147,9 @@ namespace Lijek.Controllers
 
                     //await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
+
+                    TempData[Constants.Message] = $"Uspješno ste se registrirali";
+                    TempData[Constants.ErrorOccurred] = false;
                     return RedirectToLocal(returnUrl);
                 }
                 AddErrors(result);

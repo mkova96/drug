@@ -102,9 +102,8 @@ namespace Lijek.Controllers
 
                 ses.SideEffectName = model.SideEffect.SideEffectName;
 
-                var x = _databaseContext.SideEffect.FirstOrDefault(m => m.SideEffectName == ses.SideEffectName);
-
-                if (x != null)
+                var x = _databaseContext.SideEffect.Where(g => (g.SideEffectName == ses.SideEffectName && g.SideEffectId != id)).ToList();
+                if (x.Count > 0)
                 {
                     TempData[Constants.Message] = $"Nuspojava tog imena već postoji.\n";
                     TempData[Constants.ErrorOccurred] = true;

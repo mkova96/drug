@@ -26,6 +26,15 @@ namespace Lijek.Controllers
         [Authorize]
         public IActionResult Checkout()
         {
+            var items = _cart.GetCartDrugs();
+            _cart.DrugCarts = items;
+            if (_cart.DrugCarts.Count == 0)
+            {
+                TempData[Constants.Message] = $"Vaša košarica je prazna.";
+                TempData[Constants.ErrorOccurred] = true;
+                return RedirectToAction("Index", "Cart");
+
+            }
             return View();
         }
 
@@ -44,16 +53,12 @@ namespace Lijek.Controllers
             {
                 _orderRepository.CreateOrder(order, _userManager.GetUserId(User));
                 _cart.ClearCart();
-                return RedirectToAction("CheckoutComplete");
+                TempData[Constants.Message] = $"Hvala vam na kupnji.";
+                TempData[Constants.ErrorOccurred] = false;
+                return RedirectToAction("Index", "Drugs");
             }
 
             return View(order);
-        }
-
-        public IActionResult CheckoutComplete()
-        {
-            ViewBag.CheckoutCompleteMessage = "Hvala Vam na kupovini :) ";
-            return View();
         }
 
     }

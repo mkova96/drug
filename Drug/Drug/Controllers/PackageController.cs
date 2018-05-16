@@ -99,9 +99,8 @@ namespace Drug.Controllers
 
                 ses.PackageType = model.Package.PackageType;
 
-                var x = _databaseContext.Package.FirstOrDefault(m => m.PackageType == ses.PackageType);
-
-                if (x != null)
+                var x = _databaseContext.Package.Where(g => (g.PackageType == ses.PackageType && g.PackageId != id)).ToList();
+                if (x.Count > 0)
                 {
                     TempData[Constants.Message] = $"Pakiranje tog imena već postoji.\n";
                     TempData[Constants.ErrorOccurred] = true;

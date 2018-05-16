@@ -137,9 +137,15 @@ namespace Lijek.Controllers
                     Education = model.Education,
                     IsDoctor=true,
                     IsAdmin=false
-                   
-
                 };
+                var x = _databaseContext.User.FirstOrDefault(g => g.Email == doc.Email);
+
+                if (x != null)
+                {
+                    TempData[Constants.Message] = $"Korisnik s tim mailom već postoji.\n";
+                    TempData[Constants.ErrorOccurred] = true;
+                    return RedirectToAction(nameof(Add), new { retUrl = returnUrl });
+                }
 
                 if (!await _roleManager.RoleExistsAsync("Doctor"))
                 {
@@ -151,6 +157,8 @@ namespace Lijek.Controllers
                 if (result.Succeeded)
                 {
                     await _userManager.AddToRoleAsync(doc, "Doctor");
+                    TempData[Constants.Message] = $"Doktor je dodan";
+                    TempData[Constants.ErrorOccurred] = false;
 
                     //await _signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction(nameof(DoctorController.Index));

@@ -101,13 +101,12 @@ namespace Lijek.Controllers
                 .FirstOrDefault(m => m.SpecializationId == id);
 
                 ses.SpecializationName = model.Specialization.SpecializationName;
-                var x = _databaseContext.Specialization.FirstOrDefault(m => m.SpecializationName == ses.SpecializationName);
-
-                if (x !=null)
+                var x = _databaseContext.Specialization.Where(g => (g.SpecializationName == ses.SpecializationName && g.SpecializationId != id)).ToList();
+                if (x.Count > 0)
                 {
-                     TempData[Constants.Message] = $"Specijalizacija tog imena već postoji.\n";
+                    TempData[Constants.Message] = $"Specijalizacija tog imena već postoji.\n";
                     TempData[Constants.ErrorOccurred] = true;
-                    return RedirectToAction("Edit", new { id =id});
+                    return RedirectToAction("Edit", new { id = id });
                 }
 
                 TempData["Success"] = true;

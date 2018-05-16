@@ -18,7 +18,7 @@
     }
     @foreach (var m in Model)
     {
-        <a asp-action="Show" asp-route-id="@m.Id" class="Messages__Message card">
+        <a asp-action="Show" asp-route-id="@m.MessageId" class="Messages__Message card">
             <div class="card-body">
                 @if (@m.GetOtherUser(UserManager.GetUserId(User)).IsAdmin == true)
                 {

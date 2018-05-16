@@ -45,12 +45,16 @@ namespace Drug.Controllers
 
                 if (x != null)
                 {
-                    return RedirectToAction(nameof(Index));
+                    TempData[Constants.Message] = $"Valuta tog imena već postoji.\n";
+                    TempData[Constants.ErrorOccurred] = true;
+                    return RedirectToAction(nameof(Add));
                 }
                 _databaseContext.Currency.Add(ses);
 
                 TempData["Success"] = true;
                 _databaseContext.SaveChanges();
+                TempData[Constants.Message] = $"Valuta je dodana";
+                TempData[Constants.ErrorOccurred] = false;
             }
 
             return RedirectToAction(nameof(Index));
@@ -64,6 +68,8 @@ namespace Drug.Controllers
 
             _databaseContext.Currency.Remove(ses);
             _databaseContext.SaveChanges();
+            TempData[Constants.Message] = $"Valuta je obrisana";
+            TempData[Constants.ErrorOccurred] = false;
             return RedirectToAction(nameof(Index));
         }
         [HttpGet]
@@ -93,8 +99,18 @@ namespace Drug.Controllers
 
                 ses.CurrencyName = model.Currency.CurrencyName;
 
+                var x = _databaseContext.Currency.Where(g => (g.CurrencyName == ses.CurrencyName && g.CurrencyId != id)).ToList();
+                if (x.Count > 0)
+                {
+                    TempData[Constants.Message] = $"Valuta tog imena već postoji.\n";
+                    TempData[Constants.ErrorOccurred] = true;
+                    return RedirectToAction("Edit", new { id = id });
+                }
+
                 TempData["Success"] = true;
                 _databaseContext.SaveChanges();
+                TempData[Constants.Message] = $"Valuta je promijenjena";
+                TempData[Constants.ErrorOccurred] = false;
             }
             return RedirectToAction(nameof(Index));
         }

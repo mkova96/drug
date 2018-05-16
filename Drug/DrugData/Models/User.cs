@@ -23,6 +23,9 @@ namespace DrugData.Models
         [NotMapped]
         public virtual string FullName => $"{Name} {Surname}";
 
+        [NotMapped]
+        public virtual string DrFullName => $"Dr. {Name} {Surname}";
+
 
         public virtual ICollection<Comment> Comments { get; set; }
 

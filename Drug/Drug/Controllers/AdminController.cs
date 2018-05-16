@@ -98,9 +98,16 @@ namespace Lijek.Controllers
                     City = city,
                     IsDoctor = false,
                     IsAdmin = true
-
-
                 };
+
+                var x = _databaseContext.User.FirstOrDefault(g => g.Email == doc.Email);
+             
+                if (x != null)
+                {
+                    TempData[Constants.Message] = $"Korisnik s tim mailom već postoji.\n";
+                    TempData[Constants.ErrorOccurred] = true;
+                    return RedirectToAction(nameof(Add),new { retUrl=returnUrl });
+                }
 
                 if (!await _roleManager.RoleExistsAsync("Admin"))
                 {
@@ -113,6 +120,8 @@ namespace Lijek.Controllers
                 {
                     var currentUser = _userManager.FindByNameAsync(doc.UserName);
                     await _userManager.AddToRoleAsync(doc, "Admin");
+                    TempData[Constants.Message] = $"Admin je dodan";
+                    TempData[Constants.ErrorOccurred] = false;
 
                     //await _signInManager.SignInAsync(user, isPersistent: false);
                     //return RedirectToLocal(returnUrl);
@@ -177,9 +186,19 @@ namespace Lijek.Controllers
                     user.Address = model.User.Address;
                     user.City = city;
 
-                    TempData["Success"] = true;
-                    _databaseContext.SaveChanges();
+                var x = _databaseContext.User.Where(g => (g.Email == user.Email && g.Id != id)).ToList();
+                if (x.Count > 0)
+                {
+                    TempData[Constants.Message] = $"Korisnik s tim mailom već postoji.\n";
+                    TempData[Constants.ErrorOccurred] = true;
+                    return RedirectToAction("Edit", new { id = id });
                 }
+
+                TempData["Success"] = true;
+                    _databaseContext.SaveChanges();
+                TempData[Constants.Message] = $"Admin je promijenjen";
+                TempData[Constants.ErrorOccurred] = false;
+            }
 
                       
             return RedirectToAction(nameof(Index));

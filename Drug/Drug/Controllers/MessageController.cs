@@ -30,12 +30,12 @@ namespace Lijek.Controllers
             var id = user.Id;
             IEnumerable<Message> messages = _databaseContext.Message
                 .Include(message => message.Receiver)
-                .Include(message => message.Sender).FromSql("SELECT * FROM \"Messages\"" +
-                                                            " WHERE \"Messages\".\"Date\" = (SELECT MAX(\"m\".\"Date\") FROM \"Messages\" AS \"m\"" +
-                                                            " WHERE (\"m\".\"SenderId\" = \"Messages\".\"SenderId\" AND \"m\".\"ReceiverId\" = \"Messages\".\"ReceiverId\"" +
-                                                            " AND (\"Messages\".\"SenderId\" = {0} OR \"Messages\".\"ReceiverId\" = {1}))" +
-                                                            " OR (\"m\".\"SenderId\" = \"Messages\".\"ReceiverId\" AND \"m\".\"ReceiverId\" = \"Messages\".\"SenderId\"" +
-                                                            " AND (\"Messages\".\"SenderId\" = {0} OR \"Messages\".\"ReceiverId\" = {1})))",
+                .Include(message => message.Sender).FromSql("SELECT * FROM \"Message\"" +
+                                                            " WHERE \"Message\".\"MessageDate\" = (SELECT MAX(\"m\".\"MessageDate\") FROM \"Message\" AS \"m\"" +
+                                                            " WHERE (\"m\".\"SenderId\" = \"Message\".\"SenderId\" AND \"m\".\"ReceiverId\" = \"Message\".\"ReceiverId\"" +
+                                                            " AND (\"Message\".\"SenderId\" = {0} OR \"Message\".\"ReceiverId\" = {1}))" +
+                                                            " OR (\"m\".\"SenderId\" = \"Message\".\"ReceiverId\" AND \"m\".\"ReceiverId\" = \"Message\".\"SenderId\"" +
+                                                            " AND (\"Message\".\"SenderId\" = {0} OR \"Message\".\"ReceiverId\" = {1})))",
                     id, id)
                 .ToList();
             return View(messages);

@@ -132,8 +132,7 @@ namespace Drug.Controllers
                     Usage = model.Usage
 
                 };
-                System.Diagnostics.Debug.WriteLine("ZZZZZ"+model.z);
-
+                
 
                 if (model.z == true)
                 {
@@ -168,12 +167,21 @@ namespace Drug.Controllers
                             _databaseContext.DrugSideEffect.Add(dc);
                         }
                     }
-                    _databaseContext.Drug.Add(drug);
+
+                var x = _databaseContext.Drug.FirstOrDefault(g => (g.DrugName == drug.DrugName && g.Manufacturer==drug.Manufacturer && g.Package==drug.Package));
+
+                if (x != null)
+                {
+                    TempData[Constants.Message] = $"Takav lijek već postoji.\n";
+                    TempData[Constants.ErrorOccurred] = true;
+                    return RedirectToAction(nameof(Add));
+                }
+                _databaseContext.Drug.Add(drug);
 
                     TempData["Success"] = true;
                     _databaseContext.SaveChanges();
-
-                
+                    TempData[Constants.Message] = $"Lijek je dodan";
+                    TempData[Constants.ErrorOccurred] = false;
             }
             else
             {

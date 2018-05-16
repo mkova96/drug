@@ -100,6 +100,14 @@ namespace Lijek.Controllers
                     throw new ApplicationException($"Neočekivana greška se javila prilikom postavljanja e-mail adrese korisnika s ID-em '{user.Id}'.");
                 }
             }
+            var x = _databaseContext.User.FirstOrDefault(g => g.Email == email);
+
+            if (x != null)
+            {
+                TempData[Constants.Message] = $"Korisnik s tim mailom već postoji.\n";
+                TempData[Constants.ErrorOccurred] = true;
+                return RedirectToAction(nameof(Index), new { vm = model });
+            }
 
             var firstName = user.Name;
             if (model.Name != firstName)

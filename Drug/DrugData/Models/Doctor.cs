@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace DrugData.Models
@@ -15,5 +16,6 @@ namespace DrugData.Models
         public string Title { get; set; }
 
         public Specialization Specialization { get; set; }
+
     }
 }

@@ -41,10 +41,21 @@ namespace Lijek.Controllers
             if (ModelState.IsValid)
             {
                 var cat = new Disease { DiseaseName = model.Name, ICD = model.MKB };
+
+                var x = _databaseContext.Disease.FirstOrDefault(g => g.DiseaseName == cat.DiseaseName);
+
+                if (x != null)
+                {
+                    TempData[Constants.Message] = $"Bolest tog imena već postoji.\n";
+                    TempData[Constants.ErrorOccurred] = true;
+                    return RedirectToAction(nameof(Add));
+                }
                 _databaseContext.Disease.Add(cat);
 
                 TempData["Success"] = true;
                 _databaseContext.SaveChanges();
+                TempData[Constants.Message] = $"Bolest je dodana";
+                TempData[Constants.ErrorOccurred] = false;
             }
 
             return RedirectToAction(nameof(Index));
@@ -58,6 +69,8 @@ namespace Lijek.Controllers
 
             _databaseContext.Disease.Remove(cat);
             _databaseContext.SaveChanges();
+            TempData[Constants.Message] = $"Bolest je obrisana";
+            TempData[Constants.ErrorOccurred] = false;
             return RedirectToAction(nameof(Index));
         }
         [HttpGet]
@@ -88,8 +101,18 @@ namespace Lijek.Controllers
                 cat.DiseaseName = model.Category.DiseaseName;
                 cat.ICD = model.Category.ICD;
 
+                var x = _databaseContext.Disease.Where(g => (g.DiseaseName == cat.DiseaseName && g.DiseaseId != id)).ToList();
+                if (x.Count > 0)
+                {
+                    TempData[Constants.Message] = $"Bolest tog imena već postoji.\n";
+                    TempData[Constants.ErrorOccurred] = true;
+                    return RedirectToAction("Edit", new { id = id });
+                }
+
                 TempData["Success"] = true;
                 _databaseContext.SaveChanges();
+                TempData[Constants.Message] = $"Bolest je promijenjena";
+                TempData[Constants.ErrorOccurred] = false;
             }
             return RedirectToAction(nameof(Index));
         }
