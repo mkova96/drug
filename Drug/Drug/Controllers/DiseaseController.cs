@@ -67,10 +67,18 @@ namespace Lijek.Controllers
             var cat = _databaseContext.Disease
             .FirstOrDefault(p => p.DiseaseId == id);
 
-            _databaseContext.Disease.Remove(cat);
-            _databaseContext.SaveChanges();
-            TempData[Constants.Message] = $"Bolest je obrisana";
-            TempData[Constants.ErrorOccurred] = false;
+            try
+            {
+                _databaseContext.Disease.Remove(cat);
+                _databaseContext.SaveChanges();
+                TempData[Constants.Message] = $"Bolest je obrisana";
+                TempData[Constants.ErrorOccurred] = false;
+            }
+            catch (Exception exc)
+            {
+                TempData[Constants.Message] = $"Bolest nije moguće obrisati jer postoje lijekovi koju ju sadrže.";
+                TempData[Constants.ErrorOccurred] = true;
+            }
             return RedirectToAction(nameof(Index));
         }
         [HttpGet]

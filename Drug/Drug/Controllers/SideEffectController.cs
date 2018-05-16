@@ -68,11 +68,18 @@ namespace Lijek.Controllers
         {
             var ses = _databaseContext.SideEffect
             .FirstOrDefault(p => p.SideEffectId == id);
-
-            _databaseContext.SideEffect.Remove(ses);
-            _databaseContext.SaveChanges();
-            TempData[Constants.Message] = $"Nuspojava je obrisana";
-            TempData[Constants.ErrorOccurred] = false;
+            try
+            {
+                _databaseContext.SideEffect.Remove(ses);
+                _databaseContext.SaveChanges();
+                TempData[Constants.Message] = $"Nuspojava je obrisana";
+                TempData[Constants.ErrorOccurred] = false;
+            }
+            catch(Exception exc)
+            {
+                TempData[Constants.Message] = $"Nuspojavu nije moguće obrisati jer postoje lijekovi koju ju sadrže.";
+                TempData[Constants.ErrorOccurred] = true;
+            }
             return RedirectToAction(nameof(Index));
         }
         [HttpGet]

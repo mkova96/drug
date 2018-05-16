@@ -66,10 +66,18 @@ namespace Drug.Controllers
             var ses = _databaseContext.Currency
             .FirstOrDefault(p => p.CurrencyId == id);
 
-            _databaseContext.Currency.Remove(ses);
-            _databaseContext.SaveChanges();
-            TempData[Constants.Message] = $"Valuta je obrisana";
-            TempData[Constants.ErrorOccurred] = false;
+            try
+            {
+                _databaseContext.Currency.Remove(ses);
+                _databaseContext.SaveChanges();
+                TempData[Constants.Message] = $"Valuta je obrisana";
+                TempData[Constants.ErrorOccurred] = false;
+            }
+            catch (Exception exc)
+            {
+                TempData[Constants.Message] = $"Valutu nije moguće obrisati jer postoje lijekovi koju ju sadrže.";
+                TempData[Constants.ErrorOccurred] = true;
+            }
             return RedirectToAction(nameof(Index));
         }
         [HttpGet]

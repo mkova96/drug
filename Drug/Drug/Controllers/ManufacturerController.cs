@@ -66,10 +66,18 @@ namespace Lijek.Controllers
             var man = _databaseContext.Manufacturer
             .FirstOrDefault(p => p.ManufacturerId == id);
 
-            _databaseContext.Manufacturer.Remove(man);
-            _databaseContext.SaveChanges();
-            TempData[Constants.Message] = $"Proizvođač je obrisan";
-            TempData[Constants.ErrorOccurred] = false;
+            try
+            {
+                _databaseContext.Manufacturer.Remove(man);
+                _databaseContext.SaveChanges();
+                TempData[Constants.Message] = $"Proizvođač je obrisan";
+                TempData[Constants.ErrorOccurred] = false;
+            }
+            catch (Exception exc)
+            {
+                TempData[Constants.Message] = $"Proizvođača nije moguće obrisati jer postoje lijekovi koji ga sadrže.";
+                TempData[Constants.ErrorOccurred] = true;
+            }
             return RedirectToAction(nameof(Index));
         }
         [HttpGet]

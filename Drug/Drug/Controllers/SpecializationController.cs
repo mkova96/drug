@@ -69,10 +69,18 @@ namespace Lijek.Controllers
             var ses = _databaseContext.Specialization
             .FirstOrDefault(p => p.SpecializationId == id);
 
-            _databaseContext.Specialization.Remove(ses);
-            _databaseContext.SaveChanges();
-            TempData[Constants.Message] = $"Specijalizacija je obrisana";
-            TempData[Constants.ErrorOccurred] = false;
+            try
+            {
+                _databaseContext.Specialization.Remove(ses);
+                _databaseContext.SaveChanges();
+                TempData[Constants.Message] = $"Specijalizacija je obrisana";
+                TempData[Constants.ErrorOccurred] = false;
+            }
+            catch (Exception exc)
+            {
+                TempData[Constants.Message] = $"Specijalizaciju nije moguće obrisati jer postoje doktori koju ju sadrže.";
+                TempData[Constants.ErrorOccurred] = true;
+            }
             return RedirectToAction(nameof(Index));
         }
         [HttpGet]
