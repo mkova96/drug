@@ -1,0 +1,63 @@
+﻿@model ManufacturersListViewModel
+
+
+@foreach (var asset in @Model.Manufacturers)
+{
+
+    <div class="row">
+        <div class="column1">
+            <img src="~/images/pliva.png" class="imageCell" />
+        </div>
+        <div class="column">
+            <div><h4><b><center>@asset.ManufacturerName</center></b></h4>
+            </div>
+            <div>@asset.About
+            </div>
+        </div>
+        <div class="column1">
+            <div>
+                <h4><b><center>Proizvodi</center></b></h4>
+            </div>
+            <div>
+                @foreach(var x in asset.Drugs)
+                {
+                <center>
+                    <a asp-controller="Drugs" asp-action="Show" asp-route-id="@x.DrugId">@x.DrugName</a>
+                </center>
+
+                }
+            </div>
+        </div>
+
+    </div>
+   
+}
+
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    /* Create two equal columns that floats next to each other */
+    .column {
+        float: left;
+        width: 35%;
+        padding: 10px;
+        height: 240px; /* Should be removed. Only for demonstration */
+    }
+
+    .column1 {
+        float: left;
+        width: 20%;
+        padding: 10px;
+        height: 240px; /* Should be removed. Only for demonstration */
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+</style>
