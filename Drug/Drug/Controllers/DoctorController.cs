@@ -41,6 +41,13 @@ namespace Lijek.Controllers
             IEnumerable<Doctor> docs = _databaseContext.Doctor.Include(t=>t.City).ThenInclude(p=>p.Country).ToList();
             return View(docs);
         }
+
+        public ViewResult List()
+        {
+            ViewData["Success"] = TempData["Success"];
+            IEnumerable<Doctor> docs = _databaseContext.Doctor.Include(t =>t.Specialization).ToList();
+            return View(docs);
+        }
         public ViewResult Show(string id)
         {
             var user = _databaseContext.Doctor.Include(i=>i.Specialization).Include(t => t.City).ThenInclude(p => p.Country).FirstOrDefault(g => g.Id == id);

@@ -31,7 +31,7 @@
                 <ul class="nav navbar-nav">
                     @await Component.InvokeAsync("CategoryMenu")
                     @await Component.InvokeAsync("ManufacturerMenu")
-
+                    @await  Html.PartialAsync("_Docs")
 
 
 
@@ -66,11 +66,7 @@
                 </div>
             </div>
             <!--<div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav">
-            <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-            <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-            <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-        </ul>
+     
     </div>-->
         </div>
     </nav>

@@ -1,0 +1,73 @@
+﻿@model IEnumerable<Doctor>
+
+@foreach (var asset in @Model)
+{
+
+<div class="row">
+    <div class="column1">
+        <div>
+            <center><img src="~/images/doc.jpg" class="imageCell" height="150px" /></center>
+        </div>
+    </div>
+    <div class="column2">
+        <div>
+            <h4><b><center>@asset.Title @asset.FullName</center></b></h4>
+        </div>
+        <div>
+            <center>Specijalizacija: @asset.Specialization.SpecializationName</center>
+        </div>
+        <div>
+            <center>Obrazovanje: @asset.Education</center>
+        </div>
+        <h1></h1>
+        <div>
+            <center><a class="btn btn-success" asp-controller="Message" asp-action="SendTo" asp-route-id="@asset.Id">Pošalji upit</a></center>
+        </div>
+    </div>
+    <div class="column">
+        <div>
+            <h5><b><center>Kratka biografija</center></b></h5>
+        </div>
+        <div>
+            @asset.Biography
+        </div>
+    </div>
+
+</div>
+
+}
+
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    /* Create two equal columns that floats next to each other */
+    .column {
+        float: left;
+        width: 45%;
+        padding: 10px;
+        height: 200px; /* Should be removed. Only for demonstration */
+    }
+
+    .column1 {
+        float: left;
+        width: 20%;
+        padding: 10px;
+        height: 200px; /* Should be removed. Only for demonstration */
+    }
+    .column2 {
+        float: left;
+        width:25%;
+        padding: 10px;
+        height: 200px; /* Should be removed. Only for demonstration */
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+</style>
