@@ -8,35 +8,29 @@
     }
     <h2>Uredi</h2>
     <div class="form-group">
-        <label asp-for="User.Name">Ime:</label>
+        <label asp-for="User.Name">Ime</label>
         <input type="text" class="form-control" asp-for="User.Name">
     </div>
     <div class="form-group">
-        <label asp-for="User.Surname">Prezime:</label>
+        <label asp-for="User.Surname">Prezime</label>
         <input type="text" class="form-control" asp-for="User.Surname">
     </div>
     <div class="form-group">
-        <label asp-for="User.Email">E-Mail adresa:</label>
+        <label asp-for="User.Email">E-Mail adresa</label>
         <input type="text" class="form-control" asp-for="User.Email">
     </div>
     <div class="form-group">
-        <label asp-for="User.Address"></label>
+        <label asp-for="User.Address">Adresa</label>
         <input asp-for="User.Address" class="form-control" />
         <span asp-validation-for="User.Address" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="PostCode"></label>
-        <input asp-for="PostCode" class="form-control" />
-        <span asp-validation-for="PostCode" class="text-danger"></span>
+        <label asp-for="CityId">Grad</label>
+        <select asp-for="CityId" asp-items="@(new SelectList((IEnumerable<City>) @ViewData["Cities"],"CityId", "CityPbr"))" class="form-control"></select>
     </div>
+
     <div class="form-group">
-        <label asp-for="User.City.CityName"></label>
-        <input asp-for="User.City.CityName" class="form-control" />
-        <span asp-validation-for="User.City.CityName" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="User.City.Country.CountryId"></label>
-        <select asp-for="User.City.Country.CountryId" asp-items="@ViewBag.Items" class="form-control"></select>
+        <b>Hrvatska</b>
     </div>
 
 

@@ -46,23 +46,20 @@ namespace Lijek.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+            ViewData["Cities"] = _databaseContext.City.OrderBy(p => p.CityPbr).ToList();
+
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
                 throw new ApplicationException($"Nema korisnika sa zadanim ID-em '{_userManager.GetUserId(User)}'.");
             }
-            ViewBag.Items = new SelectList(_context.Country, "Id", "Name");
-            City city = _context.City.FirstOrDefault(c => c.CityId ==1);//PAZI CITY.ID 
-            Country country = _context.Country.FirstOrDefault(c => c.CountryId ==1);//ista stvar
             var model = new IndexViewModel
             {
                 Username = user.UserName,
                 Name = user.Name,
                 Surname = user.Surname,
                 Address = user.Address,
-                PostCode = city.PostCode,
-                City = city.CityName,
-                CountryID = country.CountryId,
+                CityId = user.City.CityId,
                 Email = user.Email,
                 StatusMessage = StatusMessage
             };
@@ -74,7 +71,8 @@ namespace Lijek.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(IndexViewModel model)
         {
-            ViewBag.Items = new SelectList(_context.Country, "CountryId", "CountryName");
+            ViewData["Cities"] = _databaseContext.City.OrderBy(p => p.CityPbr).ToList();
+
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -89,6 +87,15 @@ namespace Lijek.Controllers
             var email = user.Email;
             if (model.Email != email)
             {
+                var x = _databaseContext.User.FirstOrDefault(g => g.Email == model.Email);
+
+                if (x != null)
+                {
+                    TempData[Constants.Message] = $"Korisnik s tim mailom već postoji.\n";
+                    TempData[Constants.ErrorOccurred] = true;
+                    return RedirectToAction(nameof(Index));
+                }
+
                 var setEmailResult = await _userManager.SetEmailAsync(user, model.Email);
                 if (!setEmailResult.Succeeded)
                 {
@@ -100,14 +107,7 @@ namespace Lijek.Controllers
                     throw new ApplicationException($"Neočekivana greška se javila prilikom postavljanja e-mail adrese korisnika s ID-em '{user.Id}'.");
                 }
             }
-            var x = _databaseContext.User.FirstOrDefault(g => g.Email == email);
-
-            if (x != null)
-            {
-                TempData[Constants.Message] = $"Korisnik s tim mailom već postoji.\n";
-                TempData[Constants.ErrorOccurred] = true;
-                return RedirectToAction(nameof(Index), new { vm = model });
-            }
+            
 
             var firstName = user.Name;
             if (model.Name != firstName)
@@ -135,29 +135,15 @@ namespace Lijek.Controllers
                 _context.Entry(appuser).State = EntityState.Modified;
                 _context.SaveChanges();
             }
-            City cityhelp = _context.City.FirstOrDefault(c => c.CityId == 1);//pazi
-            if (model.PostCode != cityhelp.PostCode)
+
+            City cityhelp = _context.City.FirstOrDefault(c => c.CityId == user.City.CityId);//pazi
+            if (model.CityId!= cityhelp.CityId)
             {
-                City city = _context.City.FirstOrDefault(c => c.PostCode == model.PostCode);
-                if (city == null)
-                {
-                    City city1 = new City
-                    {
-                        PostCode = model.PostCode,
-                        CityName = model.City,
-                        Country = _context.Country.FirstOrDefault(c => c.CountryId == model.CountryID)
-                    };
+                City city = _context.City.FirstOrDefault(c => c.CityId == model.CityId);
+                var country = _databaseContext.Country.FirstOrDefault(m => m.CountryId == 1);
 
-                    _context.City.Add(city1);
+                city.Country = country;
 
-
-                    Country country = _context.Country.FirstOrDefault(c => c.CountryId == model.CountryID);
-                    country.Cities.Add(city1);
-
-                    _context.Entry(country).State = EntityState.Modified;
-                    _context.SaveChanges();
-                    city = city1;
-                }
                 User appuser = _context.Users.FirstOrDefault(u => u.Id == user.Id);
                 appuser.City = city;
                 _context.Entry(appuser).State = EntityState.Modified;
@@ -165,8 +151,9 @@ namespace Lijek.Controllers
 
             }
 
-                StatusMessage = "Vaš profil je izmijenjen!";
-                return RedirectToAction(nameof(Index));
+            TempData[Constants.Message] = $"Vaš profil je promijenjen";
+            TempData[Constants.ErrorOccurred] = false;
+            return RedirectToAction(nameof(Index));
             
 
         }

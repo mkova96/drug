@@ -47,8 +47,7 @@ namespace Lijek.Controllers
         public IActionResult Register(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            ViewData["Cities"] = _databaseContext.City.ToList();
-            ViewData["Countries"] = _databaseContext.Country.ToList();
+            ViewData["Cities"] = _databaseContext.City.OrderBy(p=>p.CityPbr).ToList();
 
             return View(new RegisterViewModel());
         }
@@ -59,10 +58,7 @@ namespace Lijek.Controllers
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            ViewData["Cities"] = _databaseContext.City.ToList();
-            ViewData["Countries"] = _databaseContext.Country.ToList();
-
-            ViewBag.Items = new SelectList(_databaseContext.Country, "CountryId", "CountryName");
+            ViewData["Cities"] = _databaseContext.City.OrderBy(p => p.CityPbr).ToList();
 
             if (!await _roleManager.RoleExistsAsync("Admin"))
             {
@@ -75,7 +71,7 @@ namespace Lijek.Controllers
                     Address = "Hipokratova 99",
                     UserName = "ADMIN",
                     Email = "admin@lijekovi.com",
-                    City = _databaseContext.City.FirstOrDefault(c => c.CityName == "Zagreb"),
+                    City = _databaseContext.City.FirstOrDefault(c => c.CityId==1),
                     IsAdmin=true,
                     IsDoctor=false
 
@@ -91,36 +87,9 @@ namespace Lijek.Controllers
             }
 
             var city = _databaseContext.City.FirstOrDefault(m => m.CityId == model.CityId);
-            var country = _databaseContext.Country.FirstOrDefault(m => m.CountryId == model.CountryID);
+            var country = _databaseContext.Country.FirstOrDefault(m => m.CountryId == 1);
 
             city.Country = country;
-
-
-
-
-            /*City city = _databaseContext.City.FirstOrDefault(c => c.PostCode == Int32.Parse(model.PostCode));
-            if (city == null)
-            {
-                City city1 = new City
-                {
-                    PostCode = Int32.Parse(model.PostCode),
-                    CityName = model.CityName,
-                    Country = _databaseContext.Country.FirstOrDefault(c => c.CountryId == model.CountryID)
-                };
-
-                _databaseContext.City.Add(city1);
-
-
-                Country country = _databaseContext.Country.FirstOrDefault(c => c.CountryId == model.CountryID);
-                country.Cities.Add(city1);
-
-                _databaseContext.Entry(country).State = EntityState.Modified;
-                _databaseContext.SaveChanges();
-                city = city1;
-            }*/
-
-
-
 
             if (ModelState.IsValid)
             {

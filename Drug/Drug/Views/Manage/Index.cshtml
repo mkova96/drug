@@ -35,18 +35,12 @@
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PostCode"></label>
-                <input asp-for="PostCode" class="form-control" />
-                <span asp-validation-for="PostCode" class="text-danger"></span>
+                <label asp-for="CityId">Grad</label>
+                <select asp-for="CityId" asp-items="@(new SelectList((IEnumerable<City>) @ViewData["Cities"],"CityId", "CityPbr" ))" class="form-control"></select>
             </div>
+
             <div class="form-group">
-                <label asp-for="City"></label>
-                <input asp-for="City" class="form-control" />
-                <span asp-validation-for="City" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CountryID"></label>
-                <select asp-for="CountryID" asp-items="@ViewBag.Items" class="form-control"></select>
+                <b>Hrvatska</b>
             </div>
             <button type="submit" class="btn btn-default">Spremi</button>
         </form>

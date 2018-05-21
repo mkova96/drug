@@ -35,12 +35,11 @@
             </div>
             <div class="form-group">
                 <label asp-for="CityId">Grad</label>
-                <select asp-for="CityId" asp-items="@(new SelectList((IEnumerable<City>) @ViewData["Cities"],"CityId", "CityName"))" class="form-control"></select>
+                <select asp-for="CityId" asp-items="@(new SelectList((IEnumerable<City>) @ViewData["Cities"],"CityId", "CityPbr"))" class="form-control"></select>
             </div>
 
             <div class="form-group">
-                <label asp-for="CountryID">Država</label>
-                <select asp-for="CountryID" asp-items="@(new SelectList((IEnumerable<Country>) @ViewData["Countries"],"CountryId", "CountryName"))" class="form-control"></select>
+                <b>Hrvatska</b> 
             </div>
 
         </div>

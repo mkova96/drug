@@ -37,20 +37,10 @@ namespace DrugData.Models.ViewModels
         [Display(Name = "Adresa")]
         public string Address { get; set; }
 
-        [Required]
-        [StringLength(100)]
-        [Display(Name = "Poštanski broj")]
-        public string PostCode { get; set; }
 
         [Required]
-        [StringLength(100)]
-        [Display(Name = "Naziv mjesta")]
-        public string CityName { get; set; }
-
-
-        [Required]
-        [Display(Name = "Država")]
-        public int CountryID { get; set; }
+        [Display(Name = "Grad")]
+        public int CityId { get; set; }
 
         public string SpecializationType { get; set; }
 

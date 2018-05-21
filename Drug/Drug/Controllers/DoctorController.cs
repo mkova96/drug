@@ -59,8 +59,7 @@ namespace Lijek.Controllers
         {
             ViewData["ReturnUrl"] = returnUrl;
             ViewData["Specializations"] = _databaseContext.Specialization.ToList();
-            ViewBag.Items = new SelectList(_databaseContext.Country, "CountryId", "CountryName");
-
+            ViewData["Cities"] = _databaseContext.City.OrderBy(p => p.CityPbr).ToList();
 
             return View(new DoctorViewModel());
         }
@@ -70,29 +69,13 @@ namespace Lijek.Controllers
         public async Task<IActionResult> Create(DoctorViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            ViewBag.Items = new SelectList(_databaseContext.Country, "CountryId", "CountryName");
+            ViewData["Cities"] = _databaseContext.City.OrderBy(p => p.CityPbr).ToList();
             ViewData["Specializations"] = _databaseContext.Specialization.ToList();
 
-            City city = _databaseContext.City.FirstOrDefault(c => c.PostCode == Int32.Parse(model.PostCode));
-            if (city == null)
-            {
-                City city1 = new City
-                {
-                    PostCode = Int32.Parse(model.PostCode),
-                    CityName = model.CityName,
-                    Country = _databaseContext.Country.FirstOrDefault(c => c.CountryId == model.CountryID)
-                };
+            var city = _databaseContext.City.FirstOrDefault(m => m.CityId == model.CityId);
+            var country = _databaseContext.Country.FirstOrDefault(m => m.CountryId == 1);
 
-                _databaseContext.City.Add(city1);
-
-
-                Country country = _databaseContext.Country.FirstOrDefault(c => c.CountryId == model.CountryID);
-                country.Cities.Add(city1);
-
-                _databaseContext.Entry(country).State = EntityState.Modified;
-                _databaseContext.SaveChanges();
-                city = city1;
-            }
+            city.Country = country;
 
             if (ModelState.IsValid)
             {
@@ -174,10 +157,100 @@ namespace Lijek.Controllers
             }
             else
             {
-                ViewBag.Items = new SelectList(_databaseContext.Country, "CountryId", "CountryName");
+                ViewData["Cities"] = _databaseContext.City.OrderBy(p => p.CityPbr).ToList();
                 ViewData["Specializations"] = _databaseContext.Specialization.ToList();
                 return View("Add", model);
             }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public ViewResult Edit(string id)
+        {
+            var user = _databaseContext.Doctor.FirstOrDefault(g => g.Id == id);
+            ViewData["Cities"] = _databaseContext.City.OrderBy(p => p.CityPbr).ToList();
+            ViewData["Specializations"] = _databaseContext.Specialization.ToList();
+            ViewData["Success"] = TempData["Success"];
+            var model = new EditDoctorViewModel
+            {
+                Doctor = user
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Update(string id, EditDoctorViewModel model)
+        {
+            ViewData["Cities"] = _databaseContext.City.OrderBy(p => p.CityPbr).ToList();
+            ViewData["Specializations"] = _databaseContext.Specialization.ToList();
+
+            var city = _databaseContext.City.FirstOrDefault(m => m.CityId == model.CityId);
+            var country = _databaseContext.Country.FirstOrDefault(m => m.CountryId == 1);
+
+            city.Country = country;
+
+            if (ModelState.IsValid)
+            {
+                Specialization man;
+
+                if (model.SpecializationType == "new")
+                {
+                    // Additional validation before creating the Company
+                    var requiredFields = new[]
+                    {
+                        new Tuple<string, object>("Name", model.Specialization.SpecializationName)
+
+                    };
+
+                    foreach (var field in requiredFields)
+                    {
+                        if (field.Item2 == null || field.Item2.Equals(""))
+                        {
+                            ModelState.AddModelError(string.Empty, $"{field.Item1} field is required.");
+                        }
+                    }
+                    if (!ModelState.IsValid)
+                    {
+                        return View(model);
+                    }
+
+                    man = model.Specialization;
+                    _databaseContext.Specialization.Add(man);
+                }
+                else
+                {
+                    man = _databaseContext.Specialization.Find(model.SpecializationId);
+                }
+
+                var user = _databaseContext.Doctor.FirstOrDefault(g => g.Id == id);
+                user.Email = model.Doctor.Email;
+                user.Name = model.Doctor.Name;
+                user.Surname = model.Doctor.Surname;
+                user.Address = model.Doctor.Address;
+                user.City = city;
+                user.UserName = model.Doctor.Email;
+                user.NormalizedUserName = model.Doctor.Email.ToUpper();
+                user.NormalizedEmail = model.Doctor.Email.ToUpper();
+                user.Title = model.Doctor.Title;
+                user.Biography = model.Doctor.Biography;
+                user.UserDate = DateTime.Now;
+                user.Specialization = man;
+
+                var x = _databaseContext.User.Where(g => (g.Email == user.Email && g.Id != id)).ToList();
+                if (x.Count > 0)
+                {
+                    TempData[Constants.Message] = $"Korisnik s tim mailom već postoji.\n";
+                    TempData[Constants.ErrorOccurred] = true;
+                    return RedirectToAction("Edit", new { id = id });
+                }
+
+                TempData["Success"] = true;
+                _databaseContext.SaveChanges();
+                TempData[Constants.Message] = $"Doktor je promijenjen";
+                TempData[Constants.ErrorOccurred] = false;
+            }
+
 
             return RedirectToAction(nameof(Index));
         }

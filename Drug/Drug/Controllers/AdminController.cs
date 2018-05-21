@@ -37,7 +37,7 @@ namespace Lijek.Controllers
         {
             ViewData["Success"] = TempData["Success"];
             var user = await _userManager.GetUserAsync(User);
-            IEnumerable<User> docs = _databaseContext.Users.Where(p=>p.IsAdmin==true).Where(t => t.Id != user.Id.ToString()).Where(t => t.Id != user.Id.ToString()).ToList();
+            IEnumerable<User> docs = _databaseContext.Users.Where(p=>p.IsAdmin==true).Where(t => t.Id != user.Id.ToString()).Where(p => p.UserName != "ADMIN").Where(t => t.Id != user.Id.ToString()).ToList();
             return View(docs);
         }
         public ViewResult Show(string id)
@@ -50,9 +50,7 @@ namespace Lijek.Controllers
         public ViewResult Add(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-
-            ViewBag.Items = new SelectList(_databaseContext.Country, "CountryId", "CountryName");
-
+            ViewData["Cities"] = _databaseContext.City.OrderBy(p => p.CityPbr).ToList();
 
             return View(new UserViewModel());
         }
@@ -62,29 +60,12 @@ namespace Lijek.Controllers
         public async Task<IActionResult> Create(UserViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
+            ViewData["Cities"] = _databaseContext.City.OrderBy(p => p.CityPbr).ToList();
 
-            ViewBag.Items = new SelectList(_databaseContext.Country, "CountryId", "CountryName");
+            var city = _databaseContext.City.FirstOrDefault(m => m.CityId == model.CityId);
+            var country = _databaseContext.Country.FirstOrDefault(m => m.CountryId == 1);
 
-            City city = _databaseContext.City.FirstOrDefault(c => c.PostCode == Int32.Parse(model.PostCode));
-            if (city == null)
-            {
-                City city1 = new City
-                {
-                    PostCode = Int32.Parse(model.PostCode),
-                    CityName = model.CityName,
-                    Country = _databaseContext.Country.FirstOrDefault(c => c.CountryId == model.CountryID)
-                };
-
-                _databaseContext.City.Add(city1);
-
-
-                Country country = _databaseContext.Country.FirstOrDefault(c => c.CountryId == model.CountryID);
-                country.Cities.Add(city1);
-
-                _databaseContext.Entry(country).State = EntityState.Modified;
-                _databaseContext.SaveChanges();
-                city = city1;
-            }
+            city.Country = country;
 
             if (ModelState.IsValid)
             {
@@ -132,7 +113,7 @@ namespace Lijek.Controllers
             }
             else
             {
-                ViewBag.Items = new SelectList(_databaseContext.Country, "CountryId", "CountryName");
+                ViewData["Cities"] = _databaseContext.City.OrderBy(p => p.CityPbr).ToList();
                 return View("Add", model);
             }
 
@@ -143,7 +124,7 @@ namespace Lijek.Controllers
         public ViewResult Edit(string id)
         {
             var user = _databaseContext.Users.FirstOrDefault(g => g.Id == id);
-            ViewBag.Items = new SelectList(_databaseContext.Country, "CountryId", "CountryName");
+            ViewData["Cities"] = _databaseContext.City.OrderBy(p => p.CityPbr).ToList();
 
             ViewData["Success"] = TempData["Success"];
             var model = new EditUserViewModel
@@ -156,29 +137,12 @@ namespace Lijek.Controllers
         [HttpPost]
         public IActionResult Update(string id, EditUserViewModel model)
         {
+            var city = _databaseContext.City.FirstOrDefault(m => m.CityId == model.CityId);
+            var country = _databaseContext.Country.FirstOrDefault(m => m.CountryId == 1);
 
-            City city = _databaseContext.City.FirstOrDefault(c => c.PostCode == model.PostCode);
-            if (city == null)
-            {
-                City city1 = new City
-                {
-                    PostCode = model.PostCode,
-                    CityName = model.User.City.CityName,
-                    Country = _databaseContext.Country.FirstOrDefault(c => c.CountryId == model.CountryId)
-                };
+            city.Country = country;
 
-                _databaseContext.City.Add(city1);
-
-
-                Country country = _databaseContext.Country.FirstOrDefault(c => c.CountryId == model.CountryId);
-                country.Cities.Add(city1);
-
-                _databaseContext.Entry(country).State = EntityState.Modified;
-                _databaseContext.SaveChanges();
-                city = city1;
-            }
-
-                if (ModelState.IsValid)
+            if (ModelState.IsValid)
                 {
                     var user = _databaseContext.Users.FirstOrDefault(g => g.Id == id);
                     user.Email = model.User.Email;
@@ -186,6 +150,9 @@ namespace Lijek.Controllers
                     user.Surname = model.User.Surname;
                     user.Address = model.User.Address;
                     user.City = city;
+                user.UserName = model.User.Email;
+                user.NormalizedUserName = model.User.Email.ToUpper();
+                user.NormalizedEmail =  model.User.Email.ToUpper();
 
                 var x = _databaseContext.User.Where(g => (g.Email == user.Email && g.Id != id)).ToList();
                 if (x.Count > 0)
