@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace DrugData.Models
@@ -12,5 +13,6 @@ namespace DrugData.Models
         [Required]
         [StringLength(3)]
         public string CurrencyName { get; set; }
+
     }
 }

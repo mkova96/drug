@@ -23,11 +23,46 @@ namespace Lijek.Controllers
             _actionDescriptorCollectionProvider = actionDescriptorCollectionProvider;
         }
 
-        public ViewResult Index()
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            ViewData["Success"] = TempData["Success"];
-            IEnumerable<Manufacturer> manufacturers = _databaseContext.Manufacturer.Include(t=>t.Drugs).ToList();
-            return View(manufacturers);
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["IdSortParm"] = sortOrder == "Id" ? "Id_desc" : "Id";
+            ViewData["CurrentFilter"] = searchString;
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            var students = from s in _databaseContext.Manufacturer.Include(p=>p.Drugs)
+                           select s;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                students = students.Where(s => s.ManufacturerName.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    students = students.OrderByDescending(s => s.ManufacturerName);
+                    break;
+                case "Id":
+                    students = students.OrderBy(s => s.ManufacturerId);
+                    break;
+                case "Id_desc":
+                    students = students.OrderByDescending(s => s.ManufacturerId);
+                    break;
+                default:
+                    students = students.OrderBy(s => s.ManufacturerName);
+                    break;
+            }
+
+            int pageSize = 8;
+            return View(await PaginatedList<Manufacturer>.CreateAsync(students.AsNoTracking(), page ?? 1, pageSize));
         }
 
         [HttpGet]
@@ -62,7 +97,7 @@ namespace Lijek.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete(int id)
+        public IActionResult Delete(int id, int? page)
         {
             var man = _databaseContext.Manufacturer
             .FirstOrDefault(p => p.ManufacturerId == id);
@@ -79,7 +114,14 @@ namespace Lijek.Controllers
                 TempData[Constants.Message] = $"Proizvođača nije moguće obrisati jer postoje lijekovi koji ga sadrže.";
                 TempData[Constants.ErrorOccurred] = true;
             }
-            return RedirectToAction(nameof(Index));
+            var x = _databaseContext.Manufacturer.ToList().Count;
+
+            if ((page - 1) * 8 == x && page != 1)
+            {
+                --page;
+            }
+
+            return RedirectToAction(nameof(Index), new { page = page });
         }
         [HttpGet]
         public ViewResult Edit(int id)

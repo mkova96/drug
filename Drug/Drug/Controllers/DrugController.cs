@@ -28,15 +28,50 @@ namespace Drug.Controllers
             _userManager = userManager;
         }
 
-        public ViewResult Index()
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            ViewData["Success"] = TempData["Success"];
-            IEnumerable<Medication> drugs = _databaseContext.Drug.Include(p=>p.Manufacturer)
-                .Include(p=>p.DrugSideEffects).ThenInclude(i=>i.SideEffect)
-                .Include(r=>r.Currancy).Include(i=>i.Package).Include(p=>p.Substitutions)
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["IdSortParm"] = sortOrder == "Id" ? "Id_desc" : "Id";
+            ViewData["CurrentFilter"] = searchString;
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            var students = from s in _databaseContext.Drug.Include(p => p.Manufacturer)
+                .Include(p => p.DrugSideEffects).ThenInclude(i => i.SideEffect)
+                .Include(r => r.Currancy).Include(i => i.Package).Include(p => p.Substitutions)
                 .Include(e => e.DrugDiseases).ThenInclude(eu => eu.Disease)
-                .ToList();
-            return View(drugs);
+                
+            select s;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                students = students.Where(s => s.DrugName.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    students = students.OrderByDescending(s => s.DrugName);
+                    break;
+                case "Id":
+                    students = students.OrderBy(s => s.DrugId);
+                    break;
+                case "Id_desc":
+                    students = students.OrderByDescending(s => s.DrugId);
+                    break;
+                default:
+                    students = students.OrderBy(s => s.DrugName);
+                    break;
+            }
+
+            int pageSize = 8;
+            return View(await PaginatedList<Medication>.CreateAsync(students.AsNoTracking(), page ?? 1, pageSize));
         }
         public ViewResult Show(int id)
         {
@@ -275,11 +310,18 @@ namespace Drug.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete(int id)
+        public IActionResult Delete(int id, int? page)
         {
             _databaseContext.Drug.Remove(new Medication { DrugId = id });
             _databaseContext.SaveChanges();
-            return RedirectToAction(nameof(Index));
+            var x = _databaseContext.Drug.ToList().Count;
+
+            if ((page - 1) * 8 == x && page != 1)
+            {
+                --page;
+            }
+
+            return RedirectToAction(nameof(Index), new { page = page });
         }
 
         [HttpGet]

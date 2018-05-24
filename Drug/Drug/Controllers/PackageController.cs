@@ -3,6 +3,7 @@ using DrugData.Models;
 using DrugData.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,11 +23,46 @@ namespace Drug.Controllers
             _actionDescriptorCollectionProvider = actionDescriptorCollectionProvider;
         }
 
-        public ViewResult Index()
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            ViewData["Success"] = TempData["Success"];
-            IEnumerable<Package> ses = _databaseContext.Package.ToList();
-            return View(ses);
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["IdSortParm"] = sortOrder == "Id" ? "Id_desc" : "Id";
+            ViewData["CurrentFilter"] = searchString;
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            var students = from s in _databaseContext.Package
+                           select s;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                students = students.Where(s => s.PackageType.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    students = students.OrderByDescending(s => s.PackageType);
+                    break;
+                case "Id":
+                    students = students.OrderBy(s => s.PackageId);
+                    break;
+                case "Id_desc":
+                    students = students.OrderByDescending(s => s.PackageId);
+                    break;
+                default:
+                    students = students.OrderBy(s => s.PackageType);
+                    break;
+            }
+
+            int pageSize = 8;
+            return View(await PaginatedList<Package>.CreateAsync(students.AsNoTracking(), page ?? 1, pageSize));
         }
 
         [HttpGet]
@@ -61,7 +97,7 @@ namespace Drug.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete(int id)
+        public IActionResult Delete(int id, int? page)
         {
             var ses = _databaseContext.Package
             .FirstOrDefault(p => p.PackageId == id);
@@ -78,7 +114,14 @@ namespace Drug.Controllers
                 TempData[Constants.Message] = $"Pakiranje nije moguće obrisati jer postoje lijekovi koji ga sadrže.";
                 TempData[Constants.ErrorOccurred] = true;
             }
-            return RedirectToAction(nameof(Index));
+            var x = _databaseContext.Package.ToList().Count;
+
+            if ((page - 1) * 8 == x && page != 1)
+            {
+                --page;
+            }
+
+            return RedirectToAction(nameof(Index), new { page = page });
         }
         [HttpGet]
         public ViewResult Edit(int id)
