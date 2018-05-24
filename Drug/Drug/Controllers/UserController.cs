@@ -31,72 +31,8 @@ namespace Lijek.Controllers
         {
             ViewData["Success"] = TempData["Success"];
             var user = await _userManager.GetUserAsync(User);
-            IEnumerable<User> users = _databaseContext.Users.ToList().Where(p=>p.IsDoctor==false).Where(r=>r.IsAdmin==false).Where(t=>t.Id!=user.Id.ToString());
+            IEnumerable<User> users = _databaseContext.Users.Include(t=>t.City).ThenInclude(t=>t.Country).ToList().Where(p=>p.IsDoctor==false).Where(r=>r.IsAdmin==false).Where(t=>t.Id!=user.Id.ToString());
             return View(users);
-        }
-
-        //[AllowAnonymous]
-        public ViewResult Show(string id)
-        {
-            var user = _databaseContext.Users.Include(t=>t.City).ThenInclude(t=>t.Country).FirstOrDefault(g => g.Id == id);
-            return View(user);
-        }
-
-        [HttpGet]
-        public ViewResult Add()
-        {
-            return View(new UserViewModel());
-        }
-
-        [HttpPost]
-        public IActionResult Create(UserViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                _databaseContext.Users.Add(new User
-                {
-                    Name = model.Name,
-                    Surname = model.Surname,
-                    Email = model.EMail
-                    
-                });
-
-                TempData["Success"] = true;
-                _databaseContext.SaveChanges();
-            }
-            else
-            {
-                return View("Add", model);
-            }
-
-            return RedirectToAction(nameof(Index));
-        }
-
-        [HttpGet]
-        public ViewResult Edit(string id)
-        {
-            var user = _databaseContext.Users.FirstOrDefault(g => g.Id == id);
-            ViewData["Success"] = TempData["Success"];
-            var model = new EditUserViewModel
-            {
-                User = user
-            };
-            return View(model);
-        }
-
-        [HttpPost]
-        public IActionResult Update(string id, EditUserViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = _databaseContext.Users.FirstOrDefault(g => g.Id == id);
-                user.Email = model.User.Email;
-                user.Name = model.User.Name;
-                user.Surname = model.User.Surname;
-                TempData["Success"] = true;
-                _databaseContext.SaveChanges();
-            }
-            return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]

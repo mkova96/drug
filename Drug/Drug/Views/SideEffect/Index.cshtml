@@ -8,7 +8,7 @@
     </tr>
     @foreach (var item in Model)
     {
-    <tr>
+    <tr id="xman">
         <td class="text-center">@item.SideEffectName</td>
         <td class="text-center">
             <a asp-action="Edit" asp-route-id="@item.SideEffectId" class="btn btn-warning btn-sm">Uredi</a>
@@ -23,3 +23,28 @@
 <div class="text-center">
     <a asp-action="Add" class="btn btn-primary">Nova nuspojava</a>
 </div>
+
+<style>
+    #xman {
+        background-color: white;
+        color: black;
+        cursor: pointer;
+        padding: 30px;
+        width: 100%;
+        border: none;
+        text-align: left;
+        outline: none;
+        font-size: 15px;
+    }
+
+        .active, #xman:hover {
+            background-color: #c5c5c5;
+        }
+
+    #cman {
+        padding: 0 14px;
+        display: none;
+        overflow: hidden;
+        background-color: #ff0000;
+    }
+</style>

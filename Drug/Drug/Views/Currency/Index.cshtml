@@ -3,12 +3,12 @@
 <h5> </h5>
 <table class="table table-striped table-bordered table-sm">
     <tr>
-        <th class="text-center">Valute</th>
+        <th class="text-center">Valuta</th>
         <th class="text-center"></th>
     </tr>
     @foreach (var item in Model)
     {
-    <tr>
+    <tr id="xman">
         <td class="text-center">@item.CurrencyName</td>
         <td class="text-center">
             <a asp-action="Edit" asp-route-id="@item.CurrencyId" class="btn btn-warning btn-sm">Uredi</a>
@@ -23,3 +23,27 @@
 <div class="text-center">
     <a asp-action="Add" class="btn btn-primary">Nova valuta</a>
 </div>
+<style>
+    #xman {
+        background-color: white;
+        color: black;
+        cursor: pointer;
+        padding: 30px;
+        width: 100%;
+        border: none;
+        text-align: left;
+        outline: none;
+        font-size: 15px;
+    }
+
+        .active, #xman:hover {
+            background-color: #c5c5c5;
+        }
+
+    #cman {
+        padding: 0 14px;
+        display: none;
+        overflow: hidden;
+        background-color: #ff0000;
+    }
+</style>

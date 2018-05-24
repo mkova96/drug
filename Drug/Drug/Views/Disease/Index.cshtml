@@ -3,23 +3,48 @@
 <h5> </h5>
 <table class="table table-striped table-bordered table-sm">
     <tr>
-        <th class="text-center">Tip bolesti</th>
+        <th class="text-center">Bolest</th>
         <th class="text-center"></th>
     </tr>
     @foreach (var item in Model)
     {
-    <tr>
-        <td class="text-center"><a asp-action="Show" asp-route-id="@item.DiseaseId">@item.DiseaseName</a></td>
-        <td class="text-center">
-            <a asp-action="Edit" asp-route-id="@item.DiseaseId" class="btn btn-warning btn-sm">Uredi</a>
-            <form asp-action="Delete" asp-route-id="@item.DiseaseId" method="POST" style="display: inline-block">
-                <button type="submit" class="btn btn-danger btn-sm">Obriši</button>
-            </form>
-        </td>
-    </tr>
+        <tr id="xman">
+            <td class="text-center">@item.DiseaseName-@item.ICD</td>
+            <td class="text-center">
+                <a asp-action="Edit" asp-route-id="@item.DiseaseId" class="btn btn-warning btn-sm">Uredi</a>
+                <form asp-action="Delete" asp-route-id="@item.DiseaseId" method="POST" style="display: inline-block">
+                    <button type="submit" class="btn btn-danger btn-sm">Obriši</button>
+                </form>
+            </td>
+        </tr>
     }
 </table>
 
 <div class="text-center">
-    <a asp-action="Add" class="btn btn-primary">Novi tip bolesti</a>
+    <a asp-action="Add" class="btn btn-primary">Nova bolest</a>
 </div>
+
+<style>
+    #xman {
+        background-color: white;
+        color: black;
+        cursor: pointer;
+        padding: 30px;
+        width: 100%;
+        border: none;
+        text-align: left;
+        outline: none;
+        font-size: 15px;
+    }
+
+        .active, #xman:hover {
+            background-color: #c5c5c5;
+        }
+
+    #cman {
+        padding: 0 14px;
+        display: none;
+        overflow: hidden;
+        background-color: #ff0000;
+    }
+</style>

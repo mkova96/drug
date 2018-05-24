@@ -3,6 +3,7 @@ using DrugData.Models;
 using DrugData.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace Lijek.Controllers
         public ViewResult Index()
         {
             ViewData["Success"] = TempData["Success"];
-            IEnumerable<Manufacturer> manufacturers = _databaseContext.Manufacturer.ToList();
+            IEnumerable<Manufacturer> manufacturers = _databaseContext.Manufacturer.Include(t=>t.Drugs).ToList();
             return View(manufacturers);
         }
 

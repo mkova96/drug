@@ -6,20 +6,122 @@
         <th class="text-center">Proizvođač</th>
         <th class="text-center"></th>
     </tr>
+
     @foreach (var item in Model)
     {
-    <tr>
-        <td class="text-center"><a asp-action="Show" asp-route-id="@item.ManufacturerId">@item.ManufacturerName</a></td>
-        <td class="text-center">
-            <a asp-action="Edit" asp-route-id="@item.ManufacturerId" class="btn btn-warning btn-sm">Uredi</a>
-            <form asp-action="Delete" asp-route-id="@item.ManufacturerId" method="POST" style="display: inline-block">
-                <button type="submit" class="btn btn-danger btn-sm">Obriši</button>
-            </form>
-        </td>
-    </tr>
+        <tr data-toggle="collapse" id="xman" data-target="@("#" + item.ManufacturerId.ToString())" style="cursor:pointer;">
+            <td class="text-center">@item.ManufacturerName</td>
+            <td class="text-center">
+                <a asp-action="Edit" asp-route-id="@item.ManufacturerId" class="btn btn-warning btn-sm">Uredi</a>
+                <form asp-action="Delete" asp-route-id="@item.ManufacturerId" method="POST" style="display: inline-block">
+                    <button type="submit" class="btn btn-danger btn-sm">Obriši</button>
+                </form>
+            </td>
+        <tr></tr>
+        <tr class="bg-light" >
+            <td colspan="8" style="padding:0;margin:0;">
+                <div id="@item.ManufacturerId" class="subRow collapse">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="column1">
+                                <img src="~/images/pliva.png" class="imageCell" />
+                            </div>
+                            <div class="column">
+                                <div>
+                                    <h4><b><center>@item.ManufacturerName</center></b></h4>
+                                </div>
+                                <div>
+                                    @item.About
+                            </div>
+                        </div>
+                        <div class="column1">
+                            <div>
+                                <h4><b><center>Proizvodi</center></b></h4>
+                            </div>
+                            <div>
+                                @if (item.Drugs.Count == 0)
+                                {
+                                <center>Trenutno nema proizvoda</center>
+
+                                } else {
+                                    @foreach (var x in item.Drugs)
+                                    {
+                                    <center>
+                                        <a asp-controller="Drugs" asp-action="Show" asp-route-id="@x.DrugId">@x.DrugName</a>
+                                    </center>
+
+                                    }
+                                }
+                            </div>
+                        </div>
+
+                    </div>
+
+                    </div>
+                </div>
+            </td>
+        </tr>
+
+        </tr>
+
     }
+
+
 </table>
 
 <div class="text-center">
     <a asp-action="Add" class="btn btn-primary">Novi proizvođač</a>
 </div>
+
+<style>
+    #xman {
+        background-color: white;
+        color: black;
+        cursor: pointer;
+        padding: 30px;
+        width: 100%;
+        border: none;
+        text-align: left;
+        outline: none;
+        font-size: 15px;
+    }
+
+        .active, #xman:hover {
+            background-color: #c5c5c5;
+        }
+
+    #cman {
+        padding: 0 14px;
+        display: none;
+        overflow: hidden;
+        background-color: #ff0000;
+    }
+</style>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    /* Create two equal columns that floats next to each other */
+    .column {
+        float: left;
+        width: 35%;
+        padding: 10px;
+        height: 240px; /* Should be removed. Only for demonstration */
+    }
+
+    .column1 {
+        float: left;
+        width: 20%;
+        padding: 10px;
+        height: 240px; /* Should be removed. Only for demonstration */
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+</style>
