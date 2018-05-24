@@ -33,17 +33,49 @@ namespace Lijek.Controllers
             _roleManager = roleManager;
         }
 
-        public async Task<ViewResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            ViewData["Success"] = TempData["Success"];
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["IdSortParm"] = sortOrder == "Id" ? "Id_desc" : "Id";
+            ViewData["CurrentFilter"] = searchString;
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
             var user = await _userManager.GetUserAsync(User);
-            IEnumerable<User> docs = _databaseContext.Users.Include(t=>t.City).ThenInclude(t=>t.Country).Where(p=>p.IsAdmin==true).Where(t => t.Id != user.Id.ToString()).Where(p => p.UserName != "ADMIN").Where(t => t.Id != user.Id.ToString()).ToList();
-            return View(docs);
-        }
-        public ViewResult Show(string id)
-        {
-            var user = _databaseContext.Users.Include(t => t.City).ThenInclude(p => p.Country).FirstOrDefault(g => g.Id == id);
-            return View(user);
+            var students = from s in _databaseContext.Users.Include(t => t.City).ThenInclude(t => t.Country)
+                           .Where(p => p.IsAdmin == true).Where(t => t.Id != user.Id.ToString())
+                           .Where(p => p.UserName != "ADMIN").Where(t => t.Id != user.Id.ToString())
+
+            select s;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                students = students.Where(s => s.Name.Contains(searchString) || s.Surname.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    students = students.OrderByDescending(s => s.Surname);
+                    break;
+                case "Id":
+                    students = students.OrderBy(s => s.UserDate);
+                    break;
+                case "Id_desc":
+                    students = students.OrderByDescending(s => s.UserDate);
+                    break;
+                default:
+                    students = students.OrderBy(s => s.Surname);
+                    break;
+            }
+
+            int pageSize = 8;
+            return View(await PaginatedList<User>.CreateAsync(students.AsNoTracking(), page ?? 1, pageSize));
         }
 
         [HttpGet]
@@ -180,7 +212,7 @@ namespace Lijek.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete(string id)
+        public async Task<IActionResult> Delete(string id, int? page)
         {
             var user = _databaseContext.Users.Find(id);
 
@@ -207,7 +239,20 @@ namespace Lijek.Controllers
 
             _databaseContext.Database.ExecuteSqlCommand("DELETE FROM \"AspNetUsers\" WHERE \"AspNetUsers\".\"Id\" = {0}", id);
             _databaseContext.SaveChanges();
-            return RedirectToAction(nameof(Index));
+
+            var userx = await _userManager.GetUserAsync(User);
+
+
+            var x = _databaseContext.Users.Where(p => p.IsAdmin == true).Where(t => t.Id != userx.Id.ToString()).ToList().Count;
+
+
+            if ((page - 1) * 8 == x-1 && page != 1)
+            {
+                --page;
+            }
+
+
+            return RedirectToAction(nameof(Index), new { page = page });
         }
     }
 }

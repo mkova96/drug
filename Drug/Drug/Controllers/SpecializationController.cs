@@ -26,12 +26,6 @@ namespace Lijek.Controllers
             _actionDescriptorCollectionProvider = actionDescriptorCollectionProvider;
         }
 
-        /*public ViewResult Index()
-        {
-            ViewData["Success"] = TempData["Success"];
-            IEnumerable<Specialization> ses = _databaseContext.Specialization.ToList();
-            return View(ses);
-        }*/
 
         public async Task<IActionResult> Index(string sortOrder,string currentFilter,string searchString,int? page)
         {

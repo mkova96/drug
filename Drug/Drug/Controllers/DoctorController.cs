@@ -35,11 +35,46 @@ namespace Lijek.Controllers
             _roleManager = roleManager;
         }
 
-        public ViewResult Index()
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            ViewData["Success"] = TempData["Success"];
-            IEnumerable<Doctor> docs = _databaseContext.Doctor.Include(t=>t.City).ThenInclude(p=>p.Country).ToList();
-            return View(docs);
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["IdSortParm"] = sortOrder == "Id" ? "Id_desc" : "Id";
+            ViewData["CurrentFilter"] = searchString;
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            var students = from s in _databaseContext.Doctor.Include(t => t.City).ThenInclude(t => t.Country)
+
+                           select s;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                students = students.Where(s => s.Name.Contains(searchString) || s.Surname.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    students = students.OrderByDescending(s => s.Surname);
+                    break;
+                case "Id":
+                    students = students.OrderBy(s => s.UserDate);
+                    break;
+                case "Id_desc":
+                    students = students.OrderByDescending(s => s.UserDate);
+                    break;
+                default:
+                    students = students.OrderBy(s => s.Surname);
+                    break;
+            }
+
+            int pageSize = 8;
+            return View(await PaginatedList<Doctor>.CreateAsync(students.AsNoTracking(), page ?? 1, pageSize));
         }
 
         public ViewResult List()
@@ -48,11 +83,7 @@ namespace Lijek.Controllers
             IEnumerable<Doctor> docs = _databaseContext.Doctor.Include(t =>t.Specialization).ToList();
             return View(docs);
         }
-        public ViewResult Show(string id)
-        {
-            var user = _databaseContext.Doctor.Include(i=>i.Specialization).Include(t => t.City).ThenInclude(p => p.Country).FirstOrDefault(g => g.Id == id);
-            return View(user);
-        }
+
 
         [HttpGet]
         public ViewResult Add(string returnUrl = null)
@@ -264,7 +295,7 @@ namespace Lijek.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete(string id)
+        public async Task<IActionResult> Delete(string id, int? page)
         {
             var user = _databaseContext.User.Find(id);
 
@@ -291,7 +322,17 @@ namespace Lijek.Controllers
 
             _databaseContext.Database.ExecuteSqlCommand("DELETE FROM \"AspNetUsers\" WHERE \"AspNetUsers\".\"Id\" = {0}", id);
             _databaseContext.SaveChanges();
-            return RedirectToAction(nameof(Index));
+
+            var x = _databaseContext.Doctor.ToList().Count;
+
+
+            if ((page - 1) * 8 == x - 1 && page != 1)
+            {
+                --page;
+            }
+
+
+            return RedirectToAction(nameof(Index), new { page = page });
         }
     }
 }
