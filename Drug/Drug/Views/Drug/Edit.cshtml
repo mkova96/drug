@@ -17,7 +17,16 @@
         <input asp-for="Drug.DateProduced" class="form-control" />
     </div>
     <div class="form-group">
-        <label asp-for="Drug.DateExpires">Rok trajanja</label>
+        @if (Model.Drug.DateExpires <= DateTime.Now)
+        {
+            <label asp-for="Drug.DateProduced"><font color="red">Datum isteka valjanosti</font></label>
+
+        }
+        else
+        {
+            <label asp-for="Drug.DateExpires">Datum isteka valjanosti</label>
+
+        }
         <input asp-for="Drug.DateExpires" class="form-control" />
     </div>
     <div class="form-group">
@@ -29,7 +38,15 @@
         <select asp-for="ManufacturerId" asp-items="@(new SelectList((IEnumerable<Manufacturer>) @ViewData["Manufacturers"],"ManufacturerId", "ManufacturerName"))" class="form-control"></select>
     </div>
     <div class="form-group">
-        <label asp-for="Drug.Quantity">Kolicina</label>
+
+        @if (Model.Drug.Quantity < 5)
+        {
+            <label asp-for="Drug.Quantity"><font color="red">Kolicina</font></label>
+        }
+        else
+        {
+            <label asp-for="Drug.Quantity">Kolicina</label>
+        }
         <input asp-for="Drug.Quantity" class="form-control" />
     </div>
     <div class="form-group">
@@ -38,7 +55,7 @@
     </div>
     <div class="form-group">
         <label asp-for="SideEffectIds">Moguće nuspojave</label>
-        <select multiple asp-for="SideEffectIds" asp-items="@(new SelectList((IEnumerable<SideEffect>) @ViewData["SideEffects"], "DiseaseId", "SideEffectName"))" class="form-control"></select>
+        <select multiple asp-for="SideEffectIds" asp-items="@(new SelectList((IEnumerable<SideEffect>) @ViewData["SideEffects"], "SideEffectId", "SideEffectName"))" class="form-control"></select>
     </div>
 
     <div class="text-center">

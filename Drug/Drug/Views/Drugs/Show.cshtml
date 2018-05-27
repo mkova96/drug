@@ -5,12 +5,17 @@
             <center><img src="~/images/capsule.png" class="imageCell" height="200px" /></center>
         </div>
         <div>
-            <p class="btn btn-group pull-right">
-                <a class="btn btn-success" id="cartButton" asp-controller="Cart" asp-action="AddToCart" asp-route-drugId="@Model.DrugId">
-                    Dodaj u košaricu
-                </a>
+            @if (User.IsInRole("User"))
+            {
+                <p class="btn btn-group pull-right">
+                    <a class="btn btn-success" id="cartButton" asp-controller="Cart" asp-action="AddToCart" asp-route-drugId="@Model.DrugId">
+                        Dodaj u košaricu
+                    </a>
 
-            </p>
+                </p>
+
+            }
+
         </div>
     </div>
     <div class="column2">
@@ -115,11 +120,23 @@ else
     }
     else
     {
-        <div>
-        <h2>
-            Komentari    <a asp-controller="Drug" asp-action="AddComment" asp-route-id="@Model.DrugId" class="btn btn-warning btn-sm">Komentiraj</a>
-        </h2>
-    </div>
+        if (User.IsInRole("User"))
+        {
+            <div>
+                <h2>
+                    Komentari    <a asp-controller="Drug" asp-action="AddComment" asp-route-id="@Model.DrugId" class="btn btn-warning btn-sm">Komentiraj</a>
+                </h2>
+            </div>
+        }
+        else
+        {
+            <div>
+                <h2>
+                    Komentari 
+                </h2>
+            </div>
+        }
+
     }
 
     @foreach (var x in Model.Comments)
@@ -155,33 +172,41 @@ else
                     </form>
 
                 }
+                else if (User.IsInRole("Admin"))
+                {
+                    <form asp-controller="Drug" asp-action="DeleteComment" asp-route-id1="@x.CommentId" asp-route-id2="@Model.DrugId"
+                          method="POST" style="display: inline-block">
+                        <button type="submit" class="btn btn-danger btn-sm">Obriši</button>
+                    </form>
+
+                }
             </div>
         </div>
-    
+
     }
-    
+
 }
 else
 {
-        <div>
-            @if (Context.User.Identity.IsAuthenticated == false)
-            {
-                <div>
-                    <h3>
-                        Trenutno nema komentara    <a asp-controller="Account" asp-action="Login" class="btn btn-warning btn-sm">Komentiraj</a>
-                    </h3>
-                </div>
+    <div>
+        @if (Context.User.Identity.IsAuthenticated == false)
+        {
+            <div>
+                <h3>
+                    Trenutno nema komentara    <a asp-controller="Account" asp-action="Login" class="btn btn-warning btn-sm">Komentiraj</a>
+                </h3>
+            </div>
 
-            }
-            else
-            {
-                <div>
-                    <h3>
-                        Trenutno nema komentara    <a asp-controller="Drug" asp-action="AddComment" asp-route-id="@Model.DrugId" class="btn btn-warning btn-sm">Komentiraj</a>
-                    </h3>
-                </div>
-            }
-        </div>
+        }
+        else
+        {
+            <div>
+                <h3>
+                    Trenutno nema komentara    <a asp-controller="Drug" asp-action="AddComment" asp-route-id="@Model.DrugId" class="btn btn-warning btn-sm">Komentiraj</a>
+                </h3>
+            </div>
+        }
+    </div>
 }
 
 

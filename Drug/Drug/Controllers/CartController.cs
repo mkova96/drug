@@ -39,11 +39,10 @@ namespace Lijek.Controllers
         {
 
             var selected = _context.Drug.FirstOrDefault(p => p.DrugId == drugId);
-            System.Diagnostics.Debug.WriteLine("Dodan" + selected.DrugName.ToString());
 
             if (selected != null)
             {
-                System.Diagnostics.Debug.WriteLine("Dodan" + selected.DrugName.ToString());
+                
                 _cart.AddToCart(selected, 1);
             }
             return RedirectToAction("Index");

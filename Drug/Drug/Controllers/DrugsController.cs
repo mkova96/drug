@@ -29,7 +29,7 @@ namespace Drug.Controllers
         public ViewResult Show(int id)
         {
             Medication drug = _databaseContext.Drug.Include(t => t.Comments).ThenInclude(p => p.User)
-                .Include(p => p.DrugSideEffects).ThenInclude(i => i.SideEffect)
+                .Include(p => p.DrugSideEffects).ThenInclude(i => i.SideEffect).Where(p=>p.Quantity>0)
                 .Include(r => r.Currancy).Include(i => i.Package).Include(p => p.Substitutions)
                 .Include(p => p.Manufacturer).Include(e => e.DrugDiseases)
                 .ThenInclude(eu => eu.Disease).FirstOrDefault(m => m.DrugId == id);
@@ -46,7 +46,7 @@ namespace Drug.Controllers
             {
                 drinks = _databaseContext.Drug.OrderBy(p => p.DrugId).
                     Include(t => t.Comments).ThenInclude(p => p.User)
-                .Include(p => p.DrugSideEffects).ThenInclude(i => i.SideEffect)
+                .Include(p => p.DrugSideEffects).ThenInclude(i => i.SideEffect).Where(p => p.Quantity > 0)
                 .Include(r => r.Currancy).Include(i => i.Package).Include(p => p.Substitutions)
                 .Include(p => p.Manufacturer).Include(e => e.DrugDiseases)
                 .ThenInclude(eu => eu.Disease).ToList();
@@ -55,14 +55,14 @@ namespace Drug.Controllers
             else
             {
                 if (string.Equals("Po cijeni silazno", _category, StringComparison.OrdinalIgnoreCase))
-                    drinks = _databaseContext.Drug.OrderByDescending(p => p.Price).ToList();
+                    drinks = _databaseContext.Drug.OrderByDescending(p => p.Price).Where(p => p.Quantity > 0).ToList();
                 else if (string.Equals("Po cijeni uzlazno", _category, StringComparison.OrdinalIgnoreCase))
-                    drinks = _databaseContext.Drug.OrderBy(p => p.Price).ToList();
+                    drinks = _databaseContext.Drug.OrderBy(p => p.Price).Where(p => p.Quantity > 0).ToList();
                 else if (string.Equals("Po isteku valjanosti uzlazno", _category, StringComparison.OrdinalIgnoreCase))
-                    drinks = _databaseContext.Drug.OrderBy(p => p.DateExpires).ToList();
+                    drinks = _databaseContext.Drug.OrderBy(p => p.DateExpires).Where(p => p.Quantity > 0).ToList();
                 else
                 {
-                    drinks = _databaseContext.Drug.OrderByDescending(p => p.DateExpires).ToList();
+                    drinks = _databaseContext.Drug.OrderByDescending(p => p.DateExpires).Where(p => p.Quantity > 0).ToList();
                 }
 
                 currentCategory = _category;
