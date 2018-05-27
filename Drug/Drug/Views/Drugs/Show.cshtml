@@ -1,25 +1,239 @@
 ﻿@model Medication
-<div class="container marginTop">
-    <div class="row">
-        <div class="card">
-            <div class="text-center view overlay hm-white-slight">
-                <img src="~/images/capsule.png" style="min-height:150px;height:150px;" />
-                <a href="#">
-                    <div class="mask waves-effect waves-light"></div>
+<div class="row">
+    <div class="column1">
+        <div>
+            <center><img src="~/images/capsule.png" class="imageCell" height="200px" /></center>
+        </div>
+        <div>
+            <p class="btn btn-group pull-right">
+                <a class="btn btn-success" id="cartButton" asp-controller="Cart" asp-action="AddToCart" asp-route-drugId="@Model.DrugId">
+                    Dodaj u košaricu
                 </a>
-            </div>
-            <div class="card-block">
-                <!--Title-->
-                <h4 class="card-title">@Model.DrugName</h4>
-                <!--Text-->
-                <p class="card-text">@Model.Manufacturer.ManufacturerName.</p>
-                <p class="btn btn-group pull-right">
-                    <a asp-controller="Drink" asp-action="List" class="btn btn-default">Show all drinks</a>
-                    <a class="btn btn-success" id="cartButton" asp-controller="ShoppingCart" asp-action="AddToShoppingCart" asp-route-drinkId="@Model.DrugId">
-                        Add @Model.DrugName to cart
-                    </a>
-                </p>
-            </div>
+
+            </p>
+        </div>
+    </div>
+    <div class="column2">
+        <div>
+            <h1><b><center>@Model.DrugName</center></b></h1>
+        </div>
+        <h1></h1>
+        <div>
+            <h4>      Cijena:<b> @Model.Price @Model.Currancy.CurrencyName</h4></b>
+        </div>
+        <h4></h4>
+
+        <div>
+            <h4>      Datum proizvodnje:<b> @Model.DateProduced.Date.ToString("dd/MM/yyyy")</b></h4>
+        </div>
+        <h4></h4>
+
+        <div>
+            <h4>      Datum isteka valjanosti:<b> @Model.DateExpires.Date.ToString("dd/MM/yyyy")</b></h4>
+        </div>
+        <h4></h4>
+
+        <div>
+            <h4>      Proizvođač:<b> @Model.Manufacturer.ManufacturerName</b></h4>
+        </div>
+        <h4></h4>
+
+        <div>
+            <h4>      Pakiranje:<b> @Model.Package.PackageType</b></h4>
+        </div>
+        <h4></h4>
+
+        <div>
+            <h4>      Način uporabe:<b> @Model.Usage</b></h4>
+        </div>
+
+
+    </div>
+    <div class="column2">
+        <h1> </h1>
+        <div>
+            <h4>Primjenjivo za bolesti:</h4>
+        </div>
+        <div>
+            @foreach (var x in Model.DrugDiseases)
+            {
+
+                <h4> <b>    •@x.Disease.DiseaseName</b></h4>
+            }
+        </div>
+        <br /><h4></h4>
+
+        <div>
+            <h4>
+                Moguće nuspojave:
+            </h4>
+        </div>
+        <div>
+            @foreach (var x in Model.DrugSideEffects)
+            {
+                <h4> <b>    •@x.SideEffect.SideEffectName</b></h4>
+            }
         </div>
     </div>
 </div>
+
+@if (Model.Substitutions.Count > 0)
+{
+    <div class="row marginTop" id="xman">
+        <h2>Zamjenski proizvodi</h2>
+        @foreach (var x in Model.Substitutions)
+        {
+            <div class="col-sm-4 col-lg-4 col-md-4">
+                <div class="thumbnail">
+                    <img src="~/images/capsule.png" style="min-height:150px;height:150px;" />
+                    <div class="caption">
+                        <h3>
+                            <center><a asp-controller="Drugs" asp-action="Show" asp-route-id="@x.DrugId">@x.DrugName</a></center>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+}
+else
+{
+    <h3>Trenutno nema zamjenskih proizvoda</h3>
+}
+
+@if (Model.Comments.Count > 0)
+{
+    @if (Context.User.Identity.IsAuthenticated == false)
+    {
+        <div>
+            <h2>
+                Komentari    <a asp-controller="Account" asp-action="Login" class="btn btn-warning btn-sm">Komentiraj</a>
+            </h2>
+        </div>
+
+    }
+    else
+    {
+        <div>
+        <h2>
+            Komentari    <a asp-controller="Drug" asp-action="AddComment" asp-route-id="@Model.DrugId" class="btn btn-warning btn-sm">Komentiraj</a>
+        </h2>
+    </div>
+    }
+
+    @foreach (var x in Model.Comments)
+    {
+        <div class="row">
+            <div class="column1">
+                <div>
+                    <center><img src="~/images/user.png" class="imageCell" height="80px" /></center>
+                </div>
+                <div>
+                    <center><h5><b>@x.User.FullName</b></h5></center>
+                </div>
+                <div>
+                    <center><h5>Član od: <b>@x.User.UserDate.ToString("dd/MM/yyyy")</b></center>
+                </div>
+
+            </div>
+            <div class="column3">
+                <div>
+                    <h4>@x.Content</h4>
+                </div>
+            </div>
+            <div class="column4">
+                @if (Context.User.Identity.Name == x.User.Email)
+                {
+                    <div>
+                        <a asp-controller="Drug" asp-action="EditComment" asp-route-id1="@x.CommentId" asp-route-id2="@Model.DrugId" class="btn btn-warning btn-sm">Uredi</a>
+                    </div>
+                    <div><h8> </h8></div>
+                    <form asp-controller="Drug" asp-action="DeleteComment" asp-route-id1="@x.CommentId" asp-route-id2="@Model.DrugId"
+                          method="POST" style="display: inline-block">
+                        <button type="submit" class="btn btn-danger btn-sm">Obriši</button>
+                    </form>
+
+                }
+            </div>
+        </div>
+    
+    }
+    
+}
+else
+{
+        <div>
+            @if (Context.User.Identity.IsAuthenticated == false)
+            {
+                <div>
+                    <h3>
+                        Trenutno nema komentara    <a asp-controller="Account" asp-action="Login" class="btn btn-warning btn-sm">Komentiraj</a>
+                    </h3>
+                </div>
+
+            }
+            else
+            {
+                <div>
+                    <h3>
+                        Trenutno nema komentara    <a asp-controller="Drug" asp-action="AddComment" asp-route-id="@Model.DrugId" class="btn btn-warning btn-sm">Komentiraj</a>
+                    </h3>
+                </div>
+            }
+        </div>
+}
+
+
+
+
+
+
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    #xman {
+        width: 80%;
+        padding: 40px;
+    }
+
+    /* Create two equal columns that floats next to each other */
+    .column {
+        float: left;
+        width: 45%;
+        padding: 10px;
+    }
+
+    .column1 {
+        float: left;
+        width: 20%;
+        padding: 10px;
+    }
+
+    .column2 {
+        float: left;
+        width: 35%;
+        padding: 10px;
+    }
+
+    .column3 {
+        float: left;
+        width: 40%;
+        padding: 10px;
+    }
+
+    .column4 {
+        float: left;
+        width: 20%;
+        padding: 10px;
+    }
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+</style>

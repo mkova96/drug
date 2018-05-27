@@ -44,7 +44,12 @@ namespace Drug.Controllers
 
             if (string.IsNullOrEmpty(category))
             {
-                drinks = _databaseContext.Drug.OrderBy(p => p.DrugId).ToList();
+                drinks = _databaseContext.Drug.OrderBy(p => p.DrugId).
+                    Include(t => t.Comments).ThenInclude(p => p.User)
+                .Include(p => p.DrugSideEffects).ThenInclude(i => i.SideEffect)
+                .Include(r => r.Currancy).Include(i => i.Package).Include(p => p.Substitutions)
+                .Include(p => p.Manufacturer).Include(e => e.DrugDiseases)
+                .ThenInclude(eu => eu.Disease).ToList();
                 currentCategory = "Svi proizvodi";
             }
             else

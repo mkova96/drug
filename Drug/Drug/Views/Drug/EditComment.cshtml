@@ -1,6 +1,6 @@
 ﻿@model DrugData.Models.ViewModels.EditCommentViewModel
 
-<form asp-action="UpdateComment" asp-route-id="@Model.Comment.CommentId" method="post">
+<form asp-action="UpdateComment" asp-route-id1="@Model.Comment.CommentId" asp-route-id2="@Model.Drug.DrugId" method="post">
     <div asp-validation-summary="All" class="text-danger"></div>
     @if (@ViewData["Success"] != null)
     {

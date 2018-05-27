@@ -21,15 +21,24 @@
         </div>
         <h1></h1>
         <div>
-            <center><a class="btn btn-success" asp-controller="Message" asp-action="SendTo" asp-route-id="@asset.Id">Pošalji upit</a></center>
+            @if (Context.User.Identity.IsAuthenticated)
+            {
+                <center><a class="btn btn-success" asp-controller="Message" asp-action="SendTo" asp-route-id="@asset.Id">Pošalji upit</a></center>
+            }
+            else
+            {
+
+                <center><a class="btn btn-success" asp-controller="Account" asp-action="Login">Pošalji upit</a></center>
+
+            }
         </div>
     </div>
-    <div class="column">
+    <div class="column2">
         <div>
             <h5><b><center>Kratka biografija</center></b></h5>
         </div>
         <div>
-            @asset.Biography
+            <center>@asset.Biography</center>
         </div>
     </div>
 

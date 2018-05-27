@@ -366,32 +366,58 @@ namespace Drug.Controllers
                 _databaseContext.SaveChanges();
 
             }
-            return RedirectToAction("Show", "Drug", new { Id = Drug.DrugId });
+            return RedirectToAction("Show", "Drugs", new { Id = Drug.DrugId });
         }
 
         [HttpGet]
-        public ViewResult EditComment(int id)
+        public ViewResult EditComment(int id1,int id2)
         {
             var Comment = _databaseContext.Comment
-                 .First(g => g.CommentId == id);
+                 .First(g => g.CommentId == id1);
+            var drug = _databaseContext.Drug.FirstOrDefault(g => g.DrugId == id2);
 
-            return View(new EditCommentViewModel { Comment = Comment });
+            return View(new EditCommentViewModel { Comment = Comment,Drug=drug });
         }
 
         [HttpPost]
-        public IActionResult UpdateComment(int id, EditCommentViewModel model)
+        public IActionResult UpdateComment(int id1,int id2, EditCommentViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(nameof(EditCommentViewModel), model);
             }
             var Comment = _databaseContext.Comment
-                .First(g => g.CommentId == id);
+                .First(g => g.CommentId == id1);
+
+            var drug = _databaseContext.Drug.FirstOrDefault(t => t.DrugId == id2);
 
             Comment.Content = model.Comment.Content;
             _databaseContext.SaveChanges();
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Show", "Drugs", new { Id = drug.DrugId });
+        }
+
+        [HttpPost]
+        public IActionResult DeleteComment(int id1,int id2)
+        {
+            var ses = _databaseContext.Comment
+            .FirstOrDefault(p => p.CommentId == id1);
+            var drug = _databaseContext.Drug.FirstOrDefault(p => p.DrugId==id2);
+
+            try
+            {
+                _databaseContext.Comment.Remove(ses);
+                _databaseContext.SaveChanges();
+                TempData[Constants.Message] = $"Pakiranje je obrisano";
+                TempData[Constants.ErrorOccurred] = false;
+            }
+            catch (Exception exc)
+            {
+                TempData[Constants.Message] = $"Pakiranje nije moguće obrisati jer postoje lijekovi koji ga sadrže.";
+                TempData[Constants.ErrorOccurred] = true;
+            }
+
+            return RedirectToAction("Show", "Drugs", new { Id = drug.DrugId });
         }
     }
 
