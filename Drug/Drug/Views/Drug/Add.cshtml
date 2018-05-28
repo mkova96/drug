@@ -35,24 +35,7 @@
         <label asp-for="PackageId">Pakiranje</label>
         <select asp-for="PackageId" asp-items="@(new SelectList((IEnumerable<Package>) @ViewData["Packages"],"PackageId", "PackageType"))" class="form-control"></select>
     </div>
-    <div class="form-group">
-        <label asp-for="PackageSize">Veličina pakiranja</label>
-        <input asp-for="PackageSize" class="form-control" />
-        <select name="x">
-            <option value=" ml">ml</option>
-            <option value=" tableta">tableta</option>
-        </select>
 
-    </div>
-
-    <div class="form-group">
-        <label asp-for="DrugSize">Jačina</label>
-        <input asp-for="DrugSize" class="form-control" />
-        <select name="y">
-            <option value=" mg">mg</option>
-        </select>
-
-    </div>
     <div class="form-group">
         <label asp-for="Stock">Količina na skladištu</label>
         <input asp-for="Stock" class="form-control" />
@@ -125,3 +108,28 @@
         </a>
     </div>
 </form>
+
+<script>
+    ﻿$(document).ready(function () {
+    var $registerRadios = $('input[name="ManufacturerType"]');
+    if ($registerRadios.length) {
+        showManufacturerView();
+        $registerRadios.on('change', function (e) {
+            showManufacturerView();
+        })
+    }
+ });
+
+
+function showManufacturerView() {
+    var value = $('input[name="ManufacturerType"]:checked').first().val();
+    if (value === "new") {
+        $('#drugCreateManufacturer').show();
+        $('#drugSelectManufacturer').hide();
+    } else {
+        $('#drugCreateManufacturer').hide();
+        $('#drugSelectManufacturer').show();
+    }
+}
+
+</script>

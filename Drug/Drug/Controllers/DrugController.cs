@@ -162,8 +162,6 @@ namespace Drug.Controllers
                     Manufacturer = man,
                     Package = pac,
                     Currancy = val,
-                    PackageSize = model.PackageSize.ToString() + model.x,
-                    DrugSize = model.DrugSize.ToString() + model.y,
                     Usage = model.Usage
 
                 };
@@ -264,6 +262,8 @@ namespace Drug.Controllers
             if (!ModelState.IsValid)
             {
                 ViewData["Categories"] = _databaseContext.Disease.ToList();
+                ViewData["Drugs"] = _databaseContext.Drug.ToList();
+
                 ViewData["Manufacturers"] = _databaseContext.Manufacturer.ToList();
                 ViewData["SideEffects"] = _databaseContext.SideEffect.ToList();
                 ViewData["Packages"] = _databaseContext.Package.ToList();
@@ -271,14 +271,47 @@ namespace Drug.Controllers
 
                 return View(nameof(Edit), model);
             }
+
+            Manufacturer man;
+
+            if (model.ManufacturerType == "new")
+            {
+                // Additional validation before creating the Company
+                var requiredFields = new[]
+                {
+                        new Tuple<string, object>("Name", model.Manufacturer.ManufacturerName),
+                        new Tuple<string, object>("About", model.Manufacturer.About)
+
+                    };
+
+                foreach (var field in requiredFields)
+                {
+                    if (field.Item2 == null || field.Item2.Equals(""))
+                    {
+                        ModelState.AddModelError(string.Empty, $"{field.Item1} field is required.");
+                    }
+                }
+                if (!ModelState.IsValid)
+                {
+                    return View(model);
+                }
+
+                man = model.Manufacturer;
+                _databaseContext.Manufacturer.Add(man);
+            }
+            else
+            {
+                man = _databaseContext.Manufacturer.Find(model.ManufacturerId);
+            }
+
             var Drug = _databaseContext.Drug
                 .Include(p => p.DrugSideEffects).ThenInclude(i => i.SideEffect)
                 .Include(r => r.Currancy).Include(i => i.Package)
                 .Include(g => g.DrugDiseases)
                 .ThenInclude(eu => eu.Disease)
-                .First(g => g.DrugId == id);
+                .FirstOrDefault(g => g.DrugId == id);
 
-            Drug.Manufacturer= _databaseContext.Manufacturer.ToList().First(c => c.ManufacturerId == model.ManufacturerId);
+            Drug.Manufacturer= man;
             Drug.Currancy = _databaseContext.Currency.ToList().First(c => c.CurrencyId == model.CurrencyId);
             Drug.Package = _databaseContext.Package.ToList().First(c => c.PackageId == model.PackageId);
 
@@ -288,6 +321,13 @@ namespace Drug.Controllers
             Drug.Quantity = model.Drug.Quantity;
             Drug.Price = model.Drug.Price;
             Drug.DrugName = model.Drug.DrugName;
+            if (model.z == true)
+            {
+                var drugs = new List<Medication>();
+                drugs = model.DrugIds.Select(x => _databaseContext.Drug.Find(x)).ToList();
+                Drug.Substitutions = drugs;
+
+            }
 
             TempData["Success"] = true;
             Drug.DrugDiseases.Clear();
@@ -312,8 +352,17 @@ namespace Drug.Controllers
         [HttpPost]
         public IActionResult Delete(int id, int? page)
         {
+            var messages = _databaseContext.OrderDetail.Include(i => i.Drug).Where(t =>t.Drug.DrugId == id ).ToList();
+            foreach (var t in messages)
+            {
+                _databaseContext.OrderDetail.Remove(t);
+            }
+            _databaseContext.SaveChanges();
+
             _databaseContext.Drug.Remove(new Medication { DrugId = id });
             _databaseContext.SaveChanges();
+
+
             var x = _databaseContext.Drug.ToList().Count;
 
             if ((page - 1) * 8 == x && page != 1)

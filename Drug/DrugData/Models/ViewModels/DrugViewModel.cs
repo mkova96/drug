@@ -38,16 +38,9 @@ namespace DrugData.Models.ViewModels
 
         [DataType(DataType.MultilineText)]
         public String Usage { get; set; }
-
-        public string PackageSize { get; set; }
         public string x { get; set; }
         public string y { get; set; }
-
         public bool z { get; set; }
-
-
-
-        public string DrugSize { get; set; }
         public string ManufacturerType { get; set; }
 
         public int ManufacturerId { get; set; }

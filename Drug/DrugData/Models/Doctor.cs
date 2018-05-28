@@ -12,10 +12,5 @@ namespace DrugData.Models
         public String Biography { get; set; }
 
         public string Education { get; set; }
-
-        public string Title { get; set; }
-
-        public Specialization Specialization { get; set; }
-
     }
 }

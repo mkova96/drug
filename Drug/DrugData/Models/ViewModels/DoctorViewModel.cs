@@ -42,15 +42,6 @@ namespace DrugData.Models.ViewModels
         [Display(Name = "Grad")]
         public int CityId { get; set; }
 
-        public string SpecializationType { get; set; }
-
-        public Specialization Specialization { get; set; }
-
-        public DoctorViewModel()
-        {
-            Specialization = new Specialization();
-            SpecializationType = "existing";
-        }
 
     }
 }

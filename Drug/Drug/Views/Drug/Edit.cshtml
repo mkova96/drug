@@ -32,20 +32,28 @@
     <div class="form-group">
         <label asp-for="Drug.Price">Cijena</label>
         <input asp-for="Drug.Price" class="form-control" />
+        <div class="form-group">
+            <label asp-for="CurrencyId">Valuta</label>
+            <select asp-for="CurrencyId" asp-items="@(new SelectList((IEnumerable<Currency>) @ViewData["Currencies"],"CurrencyId", "CurrencyName"))" class="form-control"></select>
+        </div>
     </div>
     <div class="form-group">
-        <label asp-for="ManufacturerId">Proizvođač</label>
-        <select asp-for="ManufacturerId" asp-items="@(new SelectList((IEnumerable<Manufacturer>) @ViewData["Manufacturers"],"ManufacturerId", "ManufacturerName"))" class="form-control"></select>
+        <label asp-for="Drug.Usage">Uporaba</label>
+        <input asp-for="Drug.Usage" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="PackageId">Pakiranje</label>
+        <select asp-for="PackageId" asp-items="@(new SelectList((IEnumerable<Package>) @ViewData["Packages"],"PackageId", "PackageType"))" class="form-control"></select>
     </div>
     <div class="form-group">
 
         @if (Model.Drug.Quantity < 5)
         {
-            <label asp-for="Drug.Quantity"><font color="red">Kolicina</font></label>
+            <label asp-for="Drug.Quantity"><font color="red">Količina</font></label>
         }
         else
         {
-            <label asp-for="Drug.Quantity">Kolicina</label>
+            <label asp-for="Drug.Quantity">Količina</label>
         }
         <input asp-for="Drug.Quantity" class="form-control" />
     </div>
@@ -57,6 +65,55 @@
         <label asp-for="SideEffectIds">Moguće nuspojave</label>
         <select multiple asp-for="SideEffectIds" asp-items="@(new SelectList((IEnumerable<SideEffect>) @ViewData["SideEffects"], "SideEffectId", "SideEffectName"))" class="form-control"></select>
     </div>
+    <div class="form-group">
+        <label asp-for="z">Zamjenski proizvodi? </label>
+        <select name="z">
+            <option value="true">Da</option>
+            <option value="false">Ne</option>
+        </select>
+    </div>
+
+
+
+    <div class="form-group">
+        <label asp-for="DrugIds">Zamjenski proizvodi</label>
+        <select multiple asp-for="DrugIds" asp-items="@(new SelectList((IEnumerable<Medication>) ViewData["Drugs"], "DrugId", "DrugName"))" class="form-control"></select>
+    </div>
+
+    <div class="col">
+        <h3>Proizvođač</h3>
+        <div class="form-group">
+            <div class="row">
+                <div class="col">
+                    <div class="form-check form-check-inline">
+                        @Html.RadioButtonFor(model => model.ManufacturerType, "existing", new { Class = "form-check-input", Id = "ExistingRadio", Name = "ManufacturerType" })
+                        <label class="form-check-label" for="ExistingRadio">Odaberi postojećeg proizvođača</label>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-check form-check-inline">
+                        @Html.RadioButtonFor(model => model.ManufacturerType, "new", new { Class = "form-check-input", Id = "NewRadio", Name = "ManufacturerType" })
+                        <label class="form-check-label" for="NewRadio">Dodaj novog proizvođača</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" id="drugSelectManufacturer">
+            <label asp-for="ManufacturerId">Proizvođač</label>
+            <select asp-for="ManufacturerId" asp-items="@(new SelectList((IEnumerable<Manufacturer>) @ViewData["Manufacturers"], "ManufacturerId", "ManufacturerName"))" class="form-control"></select>
+        </div>
+        <div class="form-group" id="drugCreateManufacturer" style="display: none">
+            <div class="form-group">
+                <label asp-for="Manufacturer.ManufacturerName">Ime </label>
+                <input type="text" class="form-control" asp-for="Manufacturer.ManufacturerName">
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Manufacturer.About">O proizvođaču </label>
+                <textarea asp-for="Manufacturer.About" class="form-control"></textarea>
+            </div>
+        </div>
+    </div>
 
     <div class="text-center">
         <button type="submit" class="btn btn-primary">Spremi</button>
@@ -66,3 +123,28 @@
     </div>
 
 </form>
+
+<script>
+    ﻿$(document).ready(function () {
+    var $registerRadios = $('input[name="ManufacturerType"]');
+    if ($registerRadios.length) {
+        showManufacturerView();
+        $registerRadios.on('change', function (e) {
+            showManufacturerView();
+        })
+    }
+ });
+
+
+function showManufacturerView() {
+    var value = $('input[name="ManufacturerType"]:checked').first().val();
+    if (value === "new") {
+        $('#drugCreateManufacturer').show();
+        $('#drugSelectManufacturer').hide();
+    } else {
+        $('#drugCreateManufacturer').hide();
+        $('#drugSelectManufacturer').show();
+    }
+}
+
+</script>

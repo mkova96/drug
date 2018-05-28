@@ -21,7 +21,6 @@ namespace DrugData
         public DbSet<City> City { get; set; }
         public DbSet<Country> Country { get; set; }
         public DbSet<Doctor> Doctor { get; set; }
-        public DbSet<Specialization> Specialization { get; set; }
         public DbSet<User> User { get; set; }
         public DbSet<DrugSideEffect> DrugSideEffect { get; set; }
         public DbSet<Cart> Cart { get; set; }
@@ -32,8 +31,11 @@ namespace DrugData
         public DbSet<Currency> Currency { get; set; }
 
 
-
-
-
     }
+
+
+
+
+
 }
+

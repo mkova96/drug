@@ -24,9 +24,7 @@
             <td class="text-center">@item.DrugId</td>
             <td class="text-center">@item.DrugName</td>
             <td class="text-center">
-                <a asp-controller="Cart" asp-action="AddToCart" asp-route-drugId="@item.DrugId"><img class="pull-right" src="~/images/cart.png" alt="" width="35" height="35" /></a>
                 <a asp-action="Edit" asp-route-id="@item.DrugId" class="btn btn-warning btn-sm">Uredi</a>
-                <a asp-action="AddComment" asp-route-id="@item.DrugId" class="btn btn-warning btn-sm">Komentiraj</a>
                 <form asp-action="Delete" asp-route-id="@item.DrugId" asp-route-page="@(Model.PageIndex)"
                       method="POST" style="display: inline-block">
                     <button type="submit" class="btn btn-danger btn-sm">Obriši</button>
@@ -39,32 +37,60 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="column1">
-                                <img src="~/images/pliva.png" class="imageCell" height="170" width="150" />
+                                <div>
+                                    <center><img src="~/images/capsule.png" class="imageCell" height="170px" /></center>
+                                </div>
+                            </div>
+                            <div class="column2">
+                                <div>
+                                    <h1><b><center>@item.DrugName</center></b></h1>
+                                </div>
+                                <div><h3></h3></div>
+                                <div>
+                                    <h4>      Cijena:<b> @item.Price item.Currancy.CurrencyName</b></h4>
+                                </div>
+                                <div>
+                                    <h4>      Datum proizvodnje:<b> @item.DateProduced.Date.ToString("dd/MM/yyyy")</b></h4>
+                                </div>
+                                <div>
+                                    <h4>      Datum isteka valjanosti:<b> @item.DateExpires.Date.ToString("dd/MM/yyyy")</b></h4>
+                                </div>
+                                <div>
+                                    <h4>      Proizvođač:<b> @item.Manufacturer.ManufacturerName</b></h4>
+                                </div>
+                                <div>
+                                    <h4>      Pakiranje:<b> item.Package.PackageType</b></h4>
+                                </div>
+                                <div>
+                                    <h4>      Način uporabe:<b> @item.Usage</b></h4>
+                                </div>
+
 
                             </div>
-                            <div class="column">
+                            <div class="column2">
+                                <h1> </h1>
                                 <div>
-                                    <h4><b><center>@item.DrugName</center></b></h4>
+                                    <h4>Primjenjivo za bolesti:</h4>
                                 </div>
-                                <h1></h1>
                                 <div>
-                                    <h4>Datum proizvodnje: <b>@item.DateProduced.Date.ToString("dd/MM/yyyy")</b></h4>
+                                    @foreach (var x in item.DrugDiseases)
+                                    {
+
+                                        <h4> <b>    •@x.Disease.DiseaseName</b></h4>
+                                    }
                                 </div>
+                                <br /><h4></h4>
 
                                 <div>
-                                    <h4><center>Datum isteka valjanosti: <b>@item.DateExpires.Date.ToString("dd/MM/yyyy")</b></center></h4>
+                                    <h4>
+                                        Moguće nuspojave:
+                                    </h4>
                                 </div>
                                 <div>
-                                    <h4>Djelatnik od: <b>@item.Price</b></h4>
-                                </div>
-
-                            </div>
-                            <div class="column1">
-                                <div>
-                                    <h5><b><center>Kratka biografija</center></b></h5>
-                                </div>
-                                <div>
-                                    @item.Usage
+                                    @foreach (var x in item.DrugSideEffects)
+                                    {
+                                        <h4> <b>    •@x.SideEffect.SideEffectName</b></h4>
+                                    }
                                 </div>
                             </div>
 
@@ -139,14 +165,17 @@
         float: left;
         width: 35%;
         padding: 10px;
-        height: 280px; /* Should be removed. Only for demonstration */
     }
 
     .column1 {
         float: left;
         width: 20%;
         padding: 30px;
-        height: 280px; /* Should be removed. Only for demonstration */
+    }
+    .column2 {
+        float: left;
+        width: 40%;
+        padding: 30px;
     }
 
     /* Clear floats after the columns */

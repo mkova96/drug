@@ -12,11 +12,7 @@ namespace DrugData.Models
         public int DrugId { get; set; }
         public string DrugName { get; set; }
         public virtual Manufacturer Manufacturer { get; set; }
-        public int ManufacturerId { get; set; }//nepotrebno
-
         public Package Package { get; set; }
-        public string PackageSize { get; set; }
-        public string DrugSize { get; set; }
         public DateTime DateProduced { get; set; }
         public DateTime DateExpires {get; set; }
 

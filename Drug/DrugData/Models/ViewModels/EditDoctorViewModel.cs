@@ -8,16 +8,6 @@ namespace DrugData.Models.ViewModels
     {
         public Doctor Doctor { get; set; }
         public int CityId { get; set; }
-        public string SpecializationType { get; set; }
 
-        public Specialization Specialization { get; set; }
-        public int SpecializationId { get; set; }
-
-
-        public EditDoctorViewModel()
-        {
-            Specialization = new Specialization();
-            SpecializationType = "existing";
-        }
     }
 }
