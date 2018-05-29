@@ -60,24 +60,24 @@ namespace Lijek.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             ViewData["Cities"] = _databaseContext.City.OrderBy(p => p.CityPbr).ToList();
 
-            if (!await _roleManager.RoleExistsAsync("Admin"))
+            if (!await _roleManager.RoleExistsAsync("Owner"))
             {
-                var role = new IdentityRole("Admin");
+                var role = new IdentityRole("Owner");
                 await _roleManager.CreateAsync(role);
                 var admin = new User
                 {
                     Name = "Mario",
                     Surname = "Kovačević",
                     Address = "Hipokratova 99",
-                    UserName = "ADMIN",
-                    Email = "admin@lijekovi.com",
+                    UserName = "sanitas@ljekarna.com",
+                    Email = "sanitas@ljekarna.com",
                     City = _databaseContext.City.FirstOrDefault(c => c.CityId==1),
-                    IsAdmin=true,
+                    IsAdmin=false,
                     IsDoctor=false
 
                 };
-                var result1 = await _userManager.CreateAsync(admin, "lupocet500");
-                await _userManager.AddToRoleAsync(admin, "Admin");
+                var result1 = await _userManager.CreateAsync(admin, "sanitas500");
+                await _userManager.AddToRoleAsync(admin, "Owner");
             }
 
             if (!await _roleManager.RoleExistsAsync("User"))

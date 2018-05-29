@@ -27,11 +27,15 @@
             <td class="text-center">@item.UserDate.Date.ToString("dd/MM/yyyy")</td>
             <td class="text-center">@item.FullName</td>
             <td class="text-center">
-                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Uredi</a>
-                <form asp-action="Delete" asp-route-id="@item.Id" asp-route-page="@(Model.PageIndex)"
-                      method="POST" style="display: inline-block">
-                    <button type="submit" class="btn btn-danger btn-sm">Obriši</button>
-                </form>
+                @if (Context.User.IsInRole("Owner"))
+                {
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Uredi</a>
+                    <form asp-action="Delete" asp-route-id="@item.Id" asp-route-page="@(Model.PageIndex)"
+                          method="POST" style="display: inline-block">
+                        <button type="submit" class="btn btn-danger btn-sm">Obriši</button>
+                    </form>
+                }
+                <a asp-action="SendTo" asp-controller="Message" asp-route-id="@item.Id" class="btn btn-success">Poruka</a>
             </td>
         <tr></tr>
         <tr class="bg-light">
@@ -78,10 +82,14 @@
 
 
 </table>
+@if (Context.User.IsInRole("Owner"))
+{
+    <div class="text-center">
+        <a asp-action="Add" class="btn btn-primary">Novi admin</a>
+    </div>
 
-<div class="text-center">
-    <a asp-action="Add" class="btn btn-primary">Novi admin</a>
-</div>
+}
+
 
 @{
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";

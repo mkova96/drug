@@ -49,6 +49,7 @@ namespace Lijek.Controllers
                 searchString = currentFilter;
             }
             var user = await _userManager.GetUserAsync(User);
+
             var students = from s in _databaseContext.Users.Include(t => t.City).ThenInclude(t => t.Country)
                            .Where(p => p.IsAdmin == true).Where(t => t.Id != user.Id.ToString())
                            .Where(p => p.UserName != "ADMIN").Where(t => t.Id != user.Id.ToString())

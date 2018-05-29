@@ -43,8 +43,8 @@ namespace Lijek.Controllers
                 searchString = currentFilter;
             }
             var user = await _userManager.GetUserAsync(User);
-            var students = from s in _databaseContext.Users.Include(t => t.City).ThenInclude(t => t.Country)
-                          .Where(p => p.IsAdmin == false).Where(p => p.IsDoctor == false)
+            var students = from s in _databaseContext.User.Include(t => t.City).ThenInclude(t => t.Country)
+                          .Where(p => p.IsAdmin == false).Where(p => p.IsDoctor == false).Where(t=>t.UserName!="sanitas@ljekarna.com")
 
                            select s;
             if (!String.IsNullOrEmpty(searchString))

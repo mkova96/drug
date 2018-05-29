@@ -27,11 +27,11 @@
 
             <td class="text-center">@item.FullName</td>
             <td class="text-center">
-                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Uredi</a>
-                <form asp-action="Delete" asp-route-id="@item.Id" asp-route-page="@(Model.PageIndex)"
-                      method="POST" style="display: inline-block">
-                    <button type="submit" class="btn btn-danger btn-sm">Obriši</button>
-                </form>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Uredi</a>
+                    <form asp-action="Delete" asp-route-id="@item.Id" asp-route-page="@(Model.PageIndex)"
+                          method="POST" style="display: inline-block">
+                        <button type="submit" class="btn btn-danger btn-sm">Obriši</button>
+                    </form>
             </td>
         <tr></tr>
         <tr class="bg-light">
@@ -53,7 +53,7 @@
                                 </div>
 
                                 <div>
-                                    <h4><center>Obrazovanje: <b>@item.Education</b></center></h4>
+                                    <h4>Obrazovanje: <b>@item.Education</b></h4>
                                 </div>
                                 <div>
                                     <h4>Djelatnik od: <b>@item.UserDate.Date.ToString("dd/MM/yyyy")</b></h4>
@@ -65,7 +65,7 @@
                                     <h4><b>    @item.City.Country.CountryName</b></h4>
                                 </div>
                             </div>
-                            <div class="column1">
+                            <div class="column2">
                                 <div>
                                     <h5><b><center>Kratka biografija</center></b></h5>
                                 </div>
@@ -88,80 +88,86 @@
 
 </table>
 
-<div class="text-center">
-    <a asp-action="Add" class="btn btn-primary">Novi ljekarnik</a>
-</div>
+    <div class="text-center">
+        <a asp-action="Add" class="btn btn-primary">Novi ljekarnik</a>
+    </div>
 
-@{
-    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
-    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
-}
-
-<a asp-action="Index"
-   asp-route-sortOrder="@ViewData["CurrentSort"]"
-   asp-route-page="@(Model.PageIndex - 1)"
-   asp-route-currentFilter="@ViewData["CurrentFilter"]"
-   class="btn btn-default @prevDisabled">
-    Prošla
-</a>
-<a asp-action="Index"
-   asp-route-sortOrder="@ViewData["CurrentSort"]"
-   asp-route-page="@(Model.PageIndex + 1)"
-   asp-route-currentFilter="@ViewData["CurrentFilter"]"
-   class="btn btn-default @nextDisabled">
-    Sljedeća
-</a>
-
-
-<style>
-    #xman {
-        background-color: white;
-        color: black;
-        cursor: pointer;
-        padding: 30px;
-        width: 100%;
-        border: none;
-        text-align: left;
-        outline: none;
-        font-size: 15px;
+    @{
+        var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.HasNextPage ? "disabled" : "";
     }
 
-        .active, #xman:hover {
-            background-color: #c5c5c5;
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-page="@(Model.PageIndex - 1)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-default @prevDisabled">
+        Prošla
+    </a>
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-page="@(Model.PageIndex + 1)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-default @nextDisabled">
+        Sljedeća
+    </a>
+
+
+    <style>
+        #xman {
+            background-color: white;
+            color: black;
+            cursor: pointer;
+            padding: 30px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
         }
 
-    #cman {
-        padding: 0 14px;
-        display: none;
-        overflow: hidden;
-        background-color: #ff0000;
-    }
-</style>
+            .active, #xman:hover {
+                background-color: #c5c5c5;
+            }
 
-<style>
-    * {
-        box-sizing: border-box;
-    }
+        #cman {
+            padding: 0 14px;
+            display: none;
+            overflow: hidden;
+            background-color: #ff0000;
+        }
+    </style>
 
-    /* Create two equal columns that floats next to each other */
-    .column {
-        float: left;
-        width: 35%;
-        padding: 10px;
-        height: 280px; /* Should be removed. Only for demonstration */
-    }
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-    .column1 {
-        float: left;
-        width: 20%;
-        padding: 30px;
-        height: 280px; /* Should be removed. Only for demonstration */
-    }
+        /* Create two equal columns that floats next to each other */
+        .column {
+            float: left;
+            width: 35%;
+            padding: 10px;
+            height: 280px; /* Should be removed. Only for demonstration */
+        }
 
-    /* Clear floats after the columns */
-    .row:after {
-        content: "";
-        display: table;
-        clear: both;
-    }
-</style>
+        .column1 {
+            float: left;
+            width: 20%;
+            padding: 30px;
+            height: 280px; /* Should be removed. Only for demonstration */
+        }
+        .column2 {
+            float: left;
+            width: 40%;
+            padding: 30px;
+            height: 280px; /* Should be removed. Only for demonstration */
+        }
+
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+    </style>
