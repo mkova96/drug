@@ -36,65 +36,129 @@ namespace Drug.Controllers
             return View(drug);
         }
 
-        public async Task<IActionResult> Index(string category, int? page)
+        public async Task<IActionResult> Index(string category, int? page, string[] diseases)
         {
             string _category = category;
-            IQueryable<Medication> drinks;
+            IEnumerable<Medication> drinks;
             ViewData["CurrentCategory"] = category;
+            ViewData["Filteri"] = diseases;
+
 
             string currentCategory = string.Empty;
 
-            if (string.IsNullOrEmpty(category))
-            {
-                drinks = from s in _databaseContext.Drug.OrderBy(p => p.DrugId)
+            var applicationDbContext = _databaseContext.Drug.OrderBy(p => p.DrugId)
                    .Where(p => p.Quantity > 0)
                 .Include(r => r.Currency).Include(i => i.Package).ThenInclude(t => t.Measure)
                 .Include(p => p.Manufacturer).Include(e => e.DrugDiseases)
-                .ThenInclude(eu => eu.Disease)
-                select s;
+                .ThenInclude(eu => eu.Disease).ToList();
+
+            HashSet<Medication> meds = applicationDbContext.ToHashSet();
+
+            System.Diagnostics.Debug.WriteLine("VELICINA"+diseases.Count());
+
+
+            if (diseases.Length != 0)
+            {
+                System.Diagnostics.Debug.WriteLine("USLO");
+
+                HashSet<Medication> ba = new HashSet<Medication>();
+                foreach (var i in meds)
+                {
+                    ba.Add(i);
+                }
+                foreach (var e in meds)
+                {
+                    int check = 0;
+
+                    foreach (var p in diseases)
+                    {
+                        if (e.DrugDiseases.Any(g => g.Disease.DiseaseName.Equals(p)))
+                        {
+                            check = 1;
+                        }
+                    }
+                    if (check == 0)
+                    {
+                        ba.Remove(e);
+                    }
+                }
+                System.Diagnostics.Debug.WriteLine("MEDS" + ba.Count);
+                meds = ba;
+            }
+
+            drinks = meds.ToList();
+
+
+
+            if (string.IsNullOrEmpty(category))
+            {
+                System.Diagnostics.Debug.WriteLine("tu");
+                drinks = meds.ToList();
 
                 currentCategory = "Svi proizvodi";
             }
             else
             {
                 if (string.Equals("Po cijeni silazno", _category, StringComparison.OrdinalIgnoreCase))
-                    drinks = from s in _databaseContext.Drug.OrderByDescending(p => p.Price)
-                    .Where(p => p.Quantity > 0)
-                    .Include(r => r.Currency).Include(i => i.Package).ThenInclude(t => t.Measure)
-                    .Include(p => p.Manufacturer).Include(e => e.DrugDiseases)
-                    .ThenInclude(eu => eu.Disease)
-                    select s;
+                drinks = meds.ToList().OrderByDescending(p => p.Price);
 
                 else if (string.Equals("Po cijeni uzlazno", _category, StringComparison.OrdinalIgnoreCase))
-                    drinks = from s in _databaseContext.Drug.OrderBy(p => p.Price)
-                                        .Where(p => p.Quantity > 0)
-                                        .Include(r => r.Currency).Include(i => i.Package).ThenInclude(t => t.Measure)
-                                        .Include(p => p.Manufacturer).Include(e => e.DrugDiseases)
-                                        .ThenInclude(eu => eu.Disease)
-                             select s;
+                    drinks = meds.ToList().OrderBy(p => p.Price);
+
                 else if (string.Equals("Po isteku valjanosti uzlazno", _category, StringComparison.OrdinalIgnoreCase))
-                    drinks = from s in _databaseContext.Drug.OrderBy(p => p.DateExpires)
-                                        .Where(p => p.Quantity > 0)
-                                        .Include(r => r.Currency).Include(i => i.Package).ThenInclude(t => t.Measure)
-                                        .Include(p => p.Manufacturer).Include(e => e.DrugDiseases)
-                                        .ThenInclude(eu => eu.Disease)
-                             select s;
+                    drinks = meds.ToList().OrderBy(p => p.DateExpires);
+
                 else
                 {
-                    drinks = from s in _databaseContext.Drug.OrderByDescending(p => p.DateExpires)
-                                                            .Where(p => p.Quantity > 0)
-                                                            .Include(r => r.Currency).Include(i => i.Package).ThenInclude(t => t.Measure)
-                                                            .Include(p => p.Manufacturer).Include(e => e.DrugDiseases)
-                                                            .ThenInclude(eu => eu.Disease)
-                             select s;
+                    drinks = meds.ToList().OrderByDescending(p => p.DateExpires);
+
                 }
 
                 currentCategory = _category;
             }
 
             int pageSize = 9;
-            return View(await PaginatedList<Medication>.CreateAsync(drinks.AsNoTracking(), page ?? 1, pageSize));
+            return View(await PaginatedList2<Medication>.CreateAsync(drinks, page ?? 1, pageSize));
         }
 
+        /*public async Task<IActionResult> Index(string[] diseases)
+        {
+            ViewData["Filteri"] = diseases;
+
+            var applicationDbContext = _databaseContext.Drug.OrderBy(p => p.DrugId)
+                   .Where(p => p.Quantity > 0)
+                .Include(r => r.Currency).Include(i => i.Package).ThenInclude(t => t.Measure)
+                .Include(p => p.Manufacturer).Include(e => e.DrugDiseases)
+                .ThenInclude(eu => eu.Disease).ToList();
+
+            HashSet<Medication> meds = applicationDbContext.ToHashSet();
+
+
+            if (diseases.Length != 0)
+            {
+                HashSet<Medication> ba = new HashSet<Medication>();
+                foreach (var i in meds)
+                {
+                    ba.Add(i);
+                }
+                foreach (var e in meds)
+                {
+                    int check = 0;
+
+                    foreach (var p in diseases)
+                    {
+                        if (e.DrugDiseases.Any(g => g.Disease.DiseaseName.Equals(p)))
+                        {
+                            check = 1;
+                        }
+                    }
+                    if (check == 0)
+                    {
+                        ba.Remove(e);
+                    }
+                }
+                meds = ba;
+            }
+        }*/
     }
 }
