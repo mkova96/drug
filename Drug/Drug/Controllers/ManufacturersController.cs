@@ -36,8 +36,6 @@ namespace Drug.Controllers
 
             if (string.IsNullOrEmpty(category))
             {
-                var students = from s in _databaseContext.Manufacturer.Include(p => p.Drugs)
-                               select s;
                 drinks = from s in _databaseContext.Manufacturer.OrderBy(p => p.ManufacturerId).Include(t=>t.Drugs).Where(t=>t.Drugs.Count>0) select s;
                 currentCategory = "Svi proizvođači";
             }
@@ -52,9 +50,6 @@ namespace Drug.Controllers
             }
 
             int pageSize = 3;
-
-            System.Diagnostics.Debug.WriteLine("Ajmooo"+ await drinks.CountAsync());
-
             return View(await PaginatedList<Manufacturer>.CreateAsync(drinks.AsNoTracking(), page ?? 1, pageSize));
 
         }
