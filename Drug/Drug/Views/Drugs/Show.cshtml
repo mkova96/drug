@@ -20,11 +20,11 @@
     </div>
     <div class="column2">
         <div>
-            <h1><b><center>@Model.DrugName</center></b></h1>
+            <h1><b><center>@Model.DrugName @Model.Package.IndividualSize @Model.Package.Measure.MeasureName</center></b></h1>
         </div>
         <h1></h1>
         <div>
-            <h4>      Cijena:<b> @Model.Price @Model.Currancy.CurrencyName</h4></b>
+            <h4>      Cijena:<b> @Model.Price @Model.Currency.CurrencyName</h4></b>
         </div>
         <h4></h4>
 
@@ -46,6 +46,15 @@
         <div>
             <h4>      Pakiranje:<b> @Model.Package.PackageType</b></h4>
         </div>
+        <h4></h4>
+
+        @if (Model.Package.Quantity > 1)
+        {
+            <div>
+                <h4>      Stavki unutar pakiranja:<b> @Model.Package.Quantity</b></h4>
+            </div>
+
+        }
         <h4></h4>
 
         <div>
@@ -120,11 +129,11 @@ else
     }
     else
     {
-        if (User.IsInRole("User"))
+        if (Context.User.IsInRole("Admin") || Context.User.IsInRole("Owner"))
         {
             <div>
                 <h2>
-                    Komentari    <a asp-controller="Drug" asp-action="AddComment" asp-route-id="@Model.DrugId" class="btn btn-warning btn-sm">Komentiraj</a>
+                    Komentari 
                 </h2>
             </div>
         }
@@ -132,9 +141,11 @@ else
         {
             <div>
                 <h2>
-                    Komentari 
+                    Komentari    <a asp-controller="Drug" asp-action="AddComment" asp-route-id="@Model.DrugId" class="btn btn-warning btn-sm">Komentiraj</a>
                 </h2>
             </div>
+
+
         }
 
     }
@@ -184,30 +195,38 @@ else
         </div>
 
     }
-
 }
 else
 {
-    <div>
-        @if (Context.User.Identity.IsAuthenticated == false)
-        {
-            <div>
-                <h3>
-                    Trenutno nema komentara    <a asp-controller="Account" asp-action="Login" class="btn btn-warning btn-sm">Komentiraj</a>
-                </h3>
-            </div>
+    @if (Context.User.Identity.IsAuthenticated == false)
+    {
+                <div>
+                    <h3>
+                        Trenutno nema komentara    <a asp-controller="Account" asp-action="Login" class="btn btn-warning btn-sm">Komentiraj</a>
+                    </h3>
+                </div>
 
+    }
+    else
+    {
+                @if (Context.User.IsInRole("User"))
+                {
+                    <div>
+                        <h3>
+                            Trenutno nema komentara    <a asp-controller="Drug" asp-action="AddComment" asp-route-id="@Model.DrugId" class="btn btn-warning btn-sm">Komentiraj</a>
+                        </h3>
+                    </div>
+                }
+                else
+                {
+                    <div>
+                        <h3>
+                            Trenutno nema komentara 
+                        </h3>
+                    </div>
+                }
         }
-        else
-        {
-            <div>
-                <h3>
-                    Trenutno nema komentara    <a asp-controller="Drug" asp-action="AddComment" asp-route-id="@Model.DrugId" class="btn btn-warning btn-sm">Komentiraj</a>
-                </h3>
-            </div>
-        }
-    </div>
-}
+    }
 
 
 

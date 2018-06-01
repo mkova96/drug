@@ -30,7 +30,7 @@ namespace Drug.Controllers
         {
             Medication drug = _databaseContext.Drug.Include(t => t.Comments).ThenInclude(p => p.User)
                 .Include(p => p.DrugSideEffects).ThenInclude(i => i.SideEffect).Where(p=>p.Quantity>0)
-                .Include(r => r.Currancy).Include(i => i.Package).Include(p => p.Substitutions)
+                .Include(r => r.Currency).Include(i => i.Package).ThenInclude(t => t.Measure).Include(p => p.Substitutions)
                 .Include(p => p.Manufacturer).Include(e => e.DrugDiseases)
                 .ThenInclude(eu => eu.Disease).FirstOrDefault(m => m.DrugId == id);
             return View(drug);
@@ -47,7 +47,7 @@ namespace Drug.Controllers
                 drinks = _databaseContext.Drug.OrderBy(p => p.DrugId).
                     Include(t => t.Comments).ThenInclude(p => p.User)
                 .Include(p => p.DrugSideEffects).ThenInclude(i => i.SideEffect).Where(p => p.Quantity > 0)
-                .Include(r => r.Currancy).Include(i => i.Package).Include(p => p.Substitutions)
+                .Include(r => r.Currency).Include(i => i.Package).ThenInclude(t => t.Measure).Include(p => p.Substitutions)
                 .Include(p => p.Manufacturer).Include(e => e.DrugDiseases)
                 .ThenInclude(eu => eu.Disease).ToList();
                 currentCategory = "Svi proizvodi";

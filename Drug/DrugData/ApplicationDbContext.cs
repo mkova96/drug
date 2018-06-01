@@ -10,7 +10,9 @@ namespace DrugData
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         { }
-        
+
+        public DbSet<Measure> Measure { get; set; }
+
         public DbSet<Medication> Drug { get; set; }
         public DbSet<Disease> Disease { get; set; }
         public DbSet<DrugDisease> DrugDisease { get; set; }

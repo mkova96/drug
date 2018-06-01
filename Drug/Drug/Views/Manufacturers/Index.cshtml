@@ -1,7 +1,8 @@
-﻿@model ManufacturersListViewModel
+﻿@model PaginatedList<DrugData.Models.Manufacturer>
 
+<h2>Proizvođači</h2>
 
-@foreach (var asset in @Model.Manufacturers)
+@foreach (var asset in Model)
 {
 
     <div class="row">
@@ -9,9 +10,11 @@
             <img src="~/images/pliva.png" class="imageCell" />
         </div>
         <div class="column">
-            <div><h4><b><center>@asset.ManufacturerName</center></b></h4>
+            <div>
+                <h4><b><center>@asset.ManufacturerName</center></b></h4>
             </div>
-            <div>@asset.About
+            <div>
+                @asset.About
             </div>
         </div>
         <div class="column1">
@@ -19,19 +22,37 @@
                 <h4><b><center>Proizvodi</center></b></h4>
             </div>
             <div>
-                @foreach(var x in asset.Drugs)
+                @foreach (var x in asset.Drugs)
                 {
-                <center>
-                    <a asp-controller="Drugs" asp-action="Show" asp-route-id="@x.DrugId">@x.DrugName</a>
-                </center>
+                    <center>
+                        <a asp-controller="Drugs" asp-action="Show" asp-route-id="@x.DrugId">@x.DrugName</a>
+                    </center>
 
                 }
             </div>
         </div>
 
     </div>
-   
+
 }
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-page="@(Model.PageIndex - 1)"
+   asp-route-currentCategory="@ViewData["CurrentCategory"]"
+   class="btn btn-default @prevDisabled">
+    Prošla
+</a>
+<a asp-action="Index"
+   asp-route-page="@(Model.PageIndex + 1)"
+   asp-route-currentCategory="@ViewData["CurrentCategory"]"
+   class="btn btn-default @nextDisabled">
+    Sljedeća
+</a>
 
 
 <style>

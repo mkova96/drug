@@ -27,32 +27,36 @@ namespace Drug.Controllers
             _userManager = userManager;
         }
 
-        public ViewResult Index(string category)
+        public async Task<IActionResult> Index(string category, int? page)
         {
             string _category = category;
-            IEnumerable<Manufacturer> drinks;
+            ViewData["CurrentCategory"] = category;
+            IQueryable<Manufacturer> drinks;
             string currentCategory = string.Empty;
 
             if (string.IsNullOrEmpty(category))
             {
-                drinks = _databaseContext.Manufacturer.OrderBy(p => p.ManufacturerId).Include(t=>t.Drugs).Where(t=>t.Drugs.Count>0).ToList();
+                var students = from s in _databaseContext.Manufacturer.Include(p => p.Drugs)
+                               select s;
+                drinks = from s in _databaseContext.Manufacturer.OrderBy(p => p.ManufacturerId).Include(t=>t.Drugs).Where(t=>t.Drugs.Count>0) select s;
                 currentCategory = "Svi proizvođači";
             }
             else
             {
                 if (string.Equals("Po broju proizvoda silazno", _category, StringComparison.OrdinalIgnoreCase))
-                    drinks = _databaseContext.Manufacturer.Include(t => t.Drugs).Where(t => t.Drugs.Count > 0).OrderByDescending(p => p.Drugs.Count).ToList();
-                else 
-                    drinks = _databaseContext.Manufacturer.Include(t => t.Drugs).Where(t => t.Drugs.Count > 0).OrderBy(p => p.Drugs.Count).ToList();
+                    drinks = from s in _databaseContext.Manufacturer.Include(t => t.Drugs).Where(t => t.Drugs.Count > 0).OrderByDescending(p => p.Drugs.Count) select s;
+                else
+                    drinks = from s in _databaseContext.Manufacturer.Include(t => t.Drugs).Where(t => t.Drugs.Count > 0).OrderBy(p => p.Drugs.Count) select s;
 
                 currentCategory = _category;
             }
 
-            return View(new ManufacturersListViewModel
-            {
-                Manufacturers = drinks,
-                CurrentCategory = currentCategory
-            });
+            int pageSize = 3;
+
+            System.Diagnostics.Debug.WriteLine("Ajmooo"+ await drinks.CountAsync());
+
+            return View(await PaginatedList<Manufacturer>.CreateAsync(drinks.AsNoTracking(), page ?? 1, pageSize));
+
         }
 
     }

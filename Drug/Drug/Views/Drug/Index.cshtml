@@ -22,7 +22,7 @@
     {
         <tr data-toggle="collapse" id="xman" data-target="@("#" + item.DrugId.ToString())" style="cursor:pointer;">
             <td class="text-center">@item.DrugId</td>
-            <td class="text-center">@item.DrugName</td>
+            <td class="text-center">@item.DrugName @item.Package.IndividualSize @item.Package.Measure.MeasureName</td>
             <td class="text-center">
                 <a asp-action="Edit" asp-route-id="@item.DrugId" class="btn btn-warning btn-sm">Uredi</a>
                 <form asp-action="Delete" asp-route-id="@item.DrugId" asp-route-page="@(Model.PageIndex)"
@@ -43,11 +43,11 @@
                             </div>
                             <div class="column2">
                                 <div>
-                                    <h1><b><center>@item.DrugName</center></b></h1>
+                                    <h1><b><center>@item.DrugName @item.Package.IndividualSize @item.Package.Measure.MeasureName</center></b></h1>
                                 </div>
                                 <div><h3></h3></div>
                                 <div>
-                                    <h4>      Cijena:<b> @item.Price item.Currancy.CurrencyName</b></h4>
+                                    <h4>      Cijena:<b> @item.Price @item.Currency.CurrencyName</b></h4>
                                 </div>
                                 <div>
                                     <h4>      Datum proizvodnje:<b> @item.DateProduced.Date.ToString("dd/MM/yyyy")</b></h4>
@@ -59,8 +59,15 @@
                                     <h4>      Proizvođač:<b> @item.Manufacturer.ManufacturerName</b></h4>
                                 </div>
                                 <div>
-                                    <h4>      Pakiranje:<b> item.Package.PackageType</b></h4>
+                                    <h4>      Pakiranje:<b> @item.Package.PackageType</b></h4>
                                 </div>
+                                @if (item.Package.Quantity > 1)
+                                {
+                                <div>
+                                    <h4>      Stavki unutar pakiranja:<b> @item.Package.Quantity</b></h4>
+                                </div>
+
+                                }
                                 <div>
                                     <h4>      Način uporabe:<b> @item.Usage</b></h4>
                                 </div>

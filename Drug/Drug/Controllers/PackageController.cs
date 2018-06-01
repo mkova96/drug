@@ -68,15 +68,51 @@ namespace Drug.Controllers
         [HttpGet]
         public ViewResult Add()
         {
+            ViewData["Measures"] = _databaseContext.Measure.ToList();
+
             return View(new PackageViewModel());
         }
 
         [HttpPost]
         public IActionResult Create(PackageViewModel model)
         {
+            ViewData["Measures"] = _databaseContext.Measure.ToList();
+
             if (ModelState.IsValid)
             {
-                var ses = new Package { PackageType = model.PackageType};
+                Measure man;
+
+                if (model.MeasureType == "new")
+                {
+                    // Additional validation before creating the Company
+                    var requiredFields = new[]
+                    {
+                        new Tuple<string, object>("Name", model.Measure.MeasureName),
+
+                    };
+
+                    foreach (var field in requiredFields)
+                    {
+                        if (field.Item2 == null || field.Item2.Equals(""))
+                        {
+                            ModelState.AddModelError(string.Empty, $"{field.Item1} field is required.");
+                        }
+                    }
+                    if (!ModelState.IsValid)
+                    {
+                        return View(model);
+                    }
+
+                    man = model.Measure;
+                    _databaseContext.Measure.Add(man);
+                }
+                else
+                {
+                    man = _databaseContext.Measure.Find(model.MeasureId);
+                }
+
+                var ses = new Package { PackageType = model.PackageType,Quantity=model.Quantity,IndividualSize=model.IndividualSize};
+                ses.Measure = man;
                 var x = _databaseContext.Package.FirstOrDefault(g => g.PackageType == ses.PackageType);
 
                 if (x != null)

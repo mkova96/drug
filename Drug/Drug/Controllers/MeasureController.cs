@@ -1,7 +1,6 @@
 ﻿using DrugData;
 using DrugData.Models;
 using DrugData.Models.ViewModels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
@@ -10,16 +9,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Lijek.Controllers
+namespace Drug.Controllers
 {
-   // [Authorize(Roles = "Admin")]
-
-    public class SideEffectController:Controller
+    public class MeasureController:Controller
     {
         private readonly ApplicationDbContext _databaseContext;
         private readonly IActionDescriptorCollectionProvider _actionDescriptorCollectionProvider;
 
-        public SideEffectController(ApplicationDbContext context,
+        public MeasureController(ApplicationDbContext context,
             IActionDescriptorCollectionProvider actionDescriptorCollectionProvider)
         {
             _databaseContext = context;
@@ -42,57 +39,57 @@ namespace Lijek.Controllers
                 searchString = currentFilter;
             }
 
-            var students = from s in _databaseContext.SideEffect
+            var students = from s in _databaseContext.Measure
                            select s;
             if (!String.IsNullOrEmpty(searchString))
             {
-                students = students.Where(s => s.SideEffectName.Contains(searchString));
+                students = students.Where(s => s.MeasureName.Contains(searchString));
             }
             switch (sortOrder)
             {
                 case "name_desc":
-                    students = students.OrderByDescending(s => s.SideEffectName);
+                    students = students.OrderByDescending(s => s.MeasureName);
                     break;
                 case "Id":
-                    students = students.OrderBy(s => s.SideEffectId);
+                    students = students.OrderBy(s => s.MeasureId);
                     break;
                 case "Id_desc":
-                    students = students.OrderByDescending(s => s.SideEffectId);
+                    students = students.OrderByDescending(s => s.MeasureId);
                     break;
                 default:
-                    students = students.OrderBy(s => s.SideEffectName);
+                    students = students.OrderBy(s => s.MeasureName);
                     break;
             }
 
             int pageSize = 8;
-            return View(await PaginatedList<SideEffect>.CreateAsync(students.AsNoTracking(), page ?? 1, pageSize));
+            return View(await PaginatedList<Measure>.CreateAsync(students.AsNoTracking(), page ?? 1, pageSize));
         }
 
         [HttpGet]
         public ViewResult Add()
         {
-            return View(new SideEffectViewModel());
+            return View(new MeasureViewModel());
         }
 
         [HttpPost]
-        public IActionResult Create(SideEffectViewModel model)
+        public IActionResult Create(MeasureViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var sideEffect = new SideEffect { SideEffectName = model.Name};
-                var x = _databaseContext.SideEffect.FirstOrDefault(g => g.SideEffectName == sideEffect.SideEffectName);
+                var ses = new Measure { MeasureName = model.MeasureName };
+                var x = _databaseContext.Measure.FirstOrDefault(g => g.MeasureName == ses.MeasureName);
 
                 if (x != null)
                 {
-                    TempData[Constants.Message] = $"Nuspojava tog imena već postoji.\n";
+                    TempData[Constants.Message] = $"Mjerna jedinica tog imena već postoji.\n";
                     TempData[Constants.ErrorOccurred] = true;
                     return RedirectToAction(nameof(Add));
                 }
-                _databaseContext.SideEffect.Add(sideEffect);
+                _databaseContext.Measure.Add(ses);
 
                 TempData["Success"] = true;
                 _databaseContext.SaveChanges();
-                TempData[Constants.Message] = $"Nuspojava je dodana";
+                TempData[Constants.Message] = $"Mjerna jedinica je dodana";
                 TempData[Constants.ErrorOccurred] = false;
             }
 
@@ -102,21 +99,22 @@ namespace Lijek.Controllers
         [HttpPost]
         public IActionResult Delete(int id, int? page)
         {
-            var ses = _databaseContext.SideEffect
-            .FirstOrDefault(p => p.SideEffectId == id);
+            var ses = _databaseContext.Measure
+            .FirstOrDefault(p => p.MeasureId == id);
+
             try
             {
-                _databaseContext.SideEffect.Remove(ses);
+                _databaseContext.Measure.Remove(ses);
                 _databaseContext.SaveChanges();
-                TempData[Constants.Message] = $"Nuspojava je obrisana";
+                TempData[Constants.Message] = $"Mjerna jedinica je obrisana";
                 TempData[Constants.ErrorOccurred] = false;
             }
-            catch(Exception exc)
+            catch (Exception exc)
             {
-                TempData[Constants.Message] = $"Nuspojavu nije moguće obrisati jer postoje lijekovi koju ju sadrže.";
+                TempData[Constants.Message] = $"Mjernu jedinicu nije moguće obrisati jer postoje pakiranja koji ju sadrže.";
                 TempData[Constants.ErrorOccurred] = true;
             }
-            var x = _databaseContext.SideEffect.ToList().Count;
+            var x = _databaseContext.Measure.ToList().Count;
 
             if ((page - 1) * 8 == x && page != 1)
             {
@@ -128,44 +126,43 @@ namespace Lijek.Controllers
         [HttpGet]
         public ViewResult Edit(int id)
         {
-            var ses = _databaseContext.SideEffect
-            .FirstOrDefault(p => p.SideEffectId == id);
+            var ses = _databaseContext.Measure
+            .FirstOrDefault(p => p.MeasureId == id);
 
             ViewData["Success"] = TempData["Success"];
 
-            var model = new EditSideEffectViewModel
+            var model = new EditMeasureViewModel
             {
-                SideEffect = ses
+                Measure = ses
             };
             return View(model);
         }
         [HttpPost]
-        public IActionResult Update(int id, EditSideEffectViewModel model)
+        public IActionResult Update(int id, EditMeasureViewModel model)
         {
 
 
             if (ModelState.IsValid)
             {
-                var ses = _databaseContext.SideEffect
+                var ses = _databaseContext.Measure
 
-                .FirstOrDefault(m => m.SideEffectId == id);
+                .FirstOrDefault(m => m.MeasureId == id);
 
-                ses.SideEffectName = model.SideEffect.SideEffectName;
+                ses.MeasureName = model.Measure.MeasureName;
 
-                var x = _databaseContext.SideEffect.Where(g => (g.SideEffectName == ses.SideEffectName && g.SideEffectId != id)).ToList();
+                var x = _databaseContext.Measure.Where(g => (g.MeasureName == ses.MeasureName && g.MeasureId != id)).ToList();
                 if (x.Count > 0)
                 {
-                    TempData[Constants.Message] = $"Nuspojava tog imena već postoji.\n";
+                    TempData[Constants.Message] = $"Mjerna jedinica tog imena već postoji.\n";
                     TempData[Constants.ErrorOccurred] = true;
                     return RedirectToAction("Edit", new { id = id });
                 }
 
                 TempData["Success"] = true;
                 _databaseContext.SaveChanges();
-                TempData[Constants.Message] = $"Nuspojava je promijenjena";
+                TempData[Constants.Message] = $"Mjerna jedinica je promijenjena";
                 TempData[Constants.ErrorOccurred] = false;
-            
-        }
+            }
             return RedirectToAction(nameof(Index));
         }
     }

@@ -1,0 +1,21 @@
+﻿@model DrugData.Models.ViewModels.EditMeasureViewModel
+
+<form asp-action="Update" asp-route-id="@Model.Measure.MeasureId" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    @if (@ViewData["Success"] != null)
+    {
+        <div class="alert alert-success">Mjerna jedinica spremljena</div>
+    }
+    <h2>Uredi</h2>
+    <div class="form-group">
+        <label asp-for="Measure.MeasureName">Naziv </label>
+        <input asp-for="Measure.MeasureName" class="form-control" />
+    </div>
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary">Spremi</button>
+        <a asp-action="Index">
+            <button type="button" class="btn btn-secondary">Odustani</button>
+        </a>
+    </div>
+
+</form>

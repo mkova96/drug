@@ -26,7 +26,7 @@ namespace DrugData.Models
         [Required]
         public decimal Price { get; set; }
 
-        public Currency Currancy { get; set; }
+        public Currency Currency { get; set; }
         public virtual ICollection<DrugDisease> DrugDiseases { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<DrugSideEffect> DrugSideEffects { get; set; }
