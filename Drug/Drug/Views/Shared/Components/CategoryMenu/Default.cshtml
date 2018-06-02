@@ -1,8 +1,8 @@
-﻿<li class="dropdown">
+﻿<li class="dropdown" >
     <a asp-controller="Drugs"
        asp-action="Index"
-       class="dropdown-toggle" data-toggle="dropdown">Proizvodi<b class="caret"></b></a>
-    <ul class="dropdown-menu">
+       class="dropdown-toggle"  data-toggle="dropdown" >Proizvodi<b class="caret"></b></a>
+    <ul class="dropdown-menu" id="xman">
         @foreach (var category in Model)
         {
             <li>
@@ -10,9 +10,17 @@
                    asp-route-category="@category">@category</a>
             </li>
         }
-        <li class="divider"></li>
         <li>
             <a asp-controller="Drugs" asp-action="Index" asp-route-category="">Svi proizvodi</a>
         </li>
     </ul>
 </li>
+
+<style>
+
+
+    #xman {
+        height: auto !important;
+        overflow: visible !important;
+    }
+    </style>

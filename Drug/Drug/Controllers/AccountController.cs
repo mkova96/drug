@@ -26,6 +26,7 @@ namespace Lijek.Controllers
         private readonly ILogger _logger;
         private readonly ApplicationDbContext _databaseContext;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly Cart _cart;
 
 
         public AccountController(
@@ -33,13 +34,15 @@ namespace Lijek.Controllers
             SignInManager<User> signInManager,
             ILogger<AccountController> logger,
             ApplicationDbContext databaseContext,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,
+            Cart cart)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _databaseContext = databaseContext;
             _roleManager = roleManager;
+            _cart = cart;
         }
 
         [HttpGet]
@@ -218,6 +221,8 @@ namespace Lijek.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
+            _cart.ClearCart();
+
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
             return RedirectToAction("Index", "UnregHome");

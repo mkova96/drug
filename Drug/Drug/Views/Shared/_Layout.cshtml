@@ -15,15 +15,16 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
+    <nav class="navbar navbar-inverse navbar-fixed-top" id="xman" role="navigation">
+        <div class="container" >
+            <div class="navbar-header" >
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
+
                 <a class="navbar-brand" asp-controller="Drugs" asp-action="Index">Ljekarna Sanitas</a>
             </div>
 
@@ -31,42 +32,72 @@
                 <ul class="nav navbar-nav">
                     @await Component.InvokeAsync("CategoryMenu")
                     @await Component.InvokeAsync("ManufacturerMenu")
-                    @await  Html.PartialAsync("_Docs")
+                    @await Html.PartialAsync("_Docs")
+                    @await Html.PartialAsync("Search")
 
 
 
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
                 @await Component.InvokeAsync("CartSummary")
-                <form class="navbar-form navbar-right" asp-controller="Search" asp-action="SearchAction" method="get">
-                    <div class="custom-search-input">
-                        <input class="form-control" name="SearchString" type="text" placeholder="Pretraži" aria-label="Search">
-                    </div>
-                    <div class="custom-search-button">
-                        <button class="btn btn-outline-light" type="submit">Pretraži</button>
-                    </div>
-                </form>
+
 
             </div>
+
+            <style>
+                body {
+                    margin: 0;
+                    font-family: Arial, Helvetica, sans-serif;
+                }
+
+                .navbar {
+                    overflow: hidden;
+                    background-color: #333;
+                    font-family: Arial;
+                }
+                    .navbar a {
+                        float: left;
+                        font-size: 16px;
+                        color: white;
+                        text-align: center;
+                        padding: 14px 16px;
+                        text-decoration: none;
+                    }
+
+                #xman {
+                    overflow: hidden;
+                    background-color: #333;
+                    z-index:5;
+                }
+
+                    #xman a {
+                        float: left;
+                        color: #f2f2f2;
+                        text-align: center;
+                        padding: 14px 16px;
+                        text-decoration: none;
+                        font-size: 17px;
+                    }
+
+                        #xman a:hover {
+                            background-color: #ddd;
+                            color: black;
+                        }
+
+                        #xman a.active {
+                            background-color: #4CAF50;
+                            color: white;
+                        }
+            </style>
 
             <div class="navbar-collapse collapse">
 
                 </ul>
 
-                <div class="collapse navbar-collapse justify-content-between" id="supNavbar">
-                    <!--<form class="form-inline custom-search" asp-controller="Search" asp-action="SearchAction">
-            <div class="custom-search-input">
-                <input class="form-control" name="SearchString" type="text" placeholder="Pretraži" aria-label="Search">
-            </div>
-            <div class="custom-search-button">
-                <button class="btn btn-outline-light" type="submit">Pretraži</button>
-            </div>
-        </form>-->
-                    <!--PROVJERI JEL PRIKAZE-->
-                </div>
+
             </div>
             <!--<div class="navbar-collapse collapse">
-     
+
     </div>-->
         </div>
     </nav>

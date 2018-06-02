@@ -1,45 +1,46 @@
 ﻿@model PaginatedList2<DrugData.Models.Medication>
 
+        <h1>Proizvodi</h1>
 
-<button class="dropdown">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Filtriraj<span class="caret"></span></a>
-    <ul class="dropdown-menu" role="menu">
+        <button class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Filtriraj po bolesti<span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <form asp-controller="Drugs" asp-action="Index" method="get" style="text-align:center">
+                    @{
 
+                        HashSet
+                        <Disease>
+                            genres = new HashSet<Disease>
+                                ();
+                        foreach (var album in Model)
+                        {
+                            foreach (var genre in album.DrugDiseases)
+                            {
+                                genres.Add(genre.Disease);
 
-        <li class="divider"></li>
-        <li style="text-align:center" class="dropdown-header">Opcije filtriranja</li>
-        <form asp-controller="Drugs" asp-action="Index" method="get" style="text-align:center">
-            <li style="text-align:center" class="dropdown-header">Bolesti</li>
-            @{
+                            }
 
-                HashSet
-                <Disease>
-                    genres = new HashSet<Disease>
-                        ();
-                foreach (var album in Model)
-                {
-                    foreach (var genre in album.DrugDiseases)
-                    {
-                        genres.Add(genre.Disease);
+                        }
 
+                        foreach (var g in genres.OrderBy(x => x.DiseaseName))
+                        {
+                            <li><input type="checkbox" name="diseases" value="@g.DiseaseName" />@g.DiseaseName</li>
+                        }
+                        <li class="divider"></li>
+
+                        <input type="submit" name="submit" value="Filtriraj" />
                     }
 
-                }
+                </form>
 
-                foreach (var g in genres.OrderBy(x => x.DiseaseName))
-                {
-                    <li><input type="checkbox" name="diseases" value="@g.DiseaseName" />@g.DiseaseName</li>
-                }
-                <li class="divider"></li>
-                <input type="submit" name="submit" value="Filtriraj" />
-            }
 
-        </form>
+            </ul>
+        </button>
 
-        <li class="divider"></li>
 
-    </ul>
-</button>
+
+
+
 
 <div class="row marginTop">
     @foreach (var drink in Model)
@@ -91,3 +92,10 @@
    class="btn btn-default @nextDisabled">
     Sljedeća
 </a>
+
+<style>
+    #mad {
+        display: inline-block;
+        margin: 0;
+    }
+</style>

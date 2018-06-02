@@ -22,15 +22,21 @@
             <div class="card-body">
                 @if (@m.GetOtherUser(UserManager.GetUserId(User)).IsAdmin == true)
                 {
-                  <h5 class="card-title">Admin:</h5>
+                <h5 class="card-title">Admin : @m.GetOtherUser(UserManager.GetUserId(User)).FullName</h5>
 
-                }else if (@m.GetOtherUser(UserManager.GetUserId(User)).IsDoctor == true)
+                }
+                else if (@m.GetOtherUser(UserManager.GetUserId(User)).IsDoctor == true)
                 {
-                    <h5 class="card-title">Dr. @m.GetOtherUser(UserManager.GetUserId(User)).FullName:</h5>
+                    <h5 class="card-title">Ljekarnik : @m.GetOtherUser(UserManager.GetUserId(User)).FullName</h5>
+                }
+                else if (@m.GetOtherUser(UserManager.GetUserId(User)).UserName == "sanitas@ljekarna.com")
+                {
+                    <h5 class="card-title">Ljekarna Sanitas</h5>
+
                 }
                 else
                 {
-                   <h5 class="card-title">@m.GetOtherUser(UserManager.GetUserId(User)).FullName:</h5>
+                    <h5 class="card-title">Korisnik : @m.GetOtherUser(UserManager.GetUserId(User)).FullName:</h5>
                 }
                 <h6 class="card-subtitle mb-2 text-muted">@m.MessageDate.ToString("dd. MMM. yyyy.")</h6>
                 <p class="card-text">@m.Body</p>

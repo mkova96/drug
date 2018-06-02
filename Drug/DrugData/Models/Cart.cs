@@ -28,7 +28,7 @@ namespace DrugData.Models
 
         public static Cart GetCart(IServiceProvider services)
         {
-            System.Diagnostics.Debug.WriteLine("POZVANO");
+
 
             ISession session = services.GetRequiredService<IHttpContextAccessor>()?.HttpContext.Session;
 

@@ -45,17 +45,27 @@ namespace Lijek.Controllers
         public async Task<ViewResult> Add()
         {
             var user = await _userManager.GetUserAsync(User);
-            if (user.IsAdmin == true)
+            if (user.IsAdmin)
             {
                 ViewData["Users"] = _databaseContext.Users.ToList().Where(t=>t.Id!=user.Id);
                 return View(new MessageViewModel());
             }
-            else
+            else if (user.IsDoctor)
             {
-                ViewData["Users"] = _databaseContext.Doctor.ToList()/*.Where(t=>t.Id!=user.Id)*/;
+                ViewData["Users"] = _databaseContext.Users.ToList().Where(t=>t.Id!=user.Id).Where(t=>t.UserName!="sanitas@ljekarna.com");
                 return View(new MessageViewModel());
             }
-            
+            else if (user.UserName=="sanitas@ljekarna.com")
+            {
+                ViewData["Users"] = _databaseContext.Users.ToList().Where(t => t.Id != user.Id).Where(t => t.IsAdmin==true);
+                return View(new MessageViewModel());
+            }
+            else
+            {
+                ViewData["Users"] = _databaseContext.Users.ToList().Where(t => t.Id != user.Id).Where(t => t.IsDoctor == true);
+                return View(new MessageViewModel());
+            }
+
         }
 
         [HttpGet]
@@ -107,8 +117,7 @@ namespace Lijek.Controllers
             if (ModelState.IsValid)
             {
                 sender = await _userManager.GetUserAsync(User);
-                if (sender.IsAdmin == true)
-                {
+
                     var receiver = _databaseContext.Users.Find(model.ReceiverId);
                     _databaseContext.Message.Add(new Message
                     {
@@ -119,31 +128,28 @@ namespace Lijek.Controllers
                     });
                     TempData["Success"] = true;
                     _databaseContext.SaveChanges();
-
-                }else{
-
-                    var receiver = _databaseContext.Doctor.Find(model.ReceiverId);
-                    _databaseContext.Message.Add(new Message
-                    {
-                        Body = model.About,
-                        MessageDate = DateTime.Now,
-                        Sender = sender,
-                        Receiver = receiver
-                    });
-                    TempData["Success"] = true;
-                    _databaseContext.SaveChanges();
-                }
                 
             }
             else
             {
-                if (sender.IsAdmin == true)
+                if (sender.IsAdmin)
                 {
-                    ViewData["Users"] = _databaseContext.Users.ToList().Where(p=>p.Id!=sender.Id);
+                    ViewData["Users"] = _databaseContext.Users.ToList().Where(t => t.Id != sender.Id);
                     return View("Add", model);
-                }else
+                }
+                else if (sender.IsDoctor)
                 {
-                    ViewData["Users"] = _databaseContext.Doctor.ToList()/*.Where(p=>p.Id!=sender.Id)*/;
+                    ViewData["Users"] = _databaseContext.Users.ToList().Where(t => t.Id != sender.Id).Where(t => t.UserName != "sanitas@ljekarna.com");
+                    return View("Add", model);
+                }
+                else if (sender.UserName == "sanitas@ljekarna.com")
+                {
+                    ViewData["Users"] = _databaseContext.Users.ToList().Where(t => t.Id != sender.Id).Where(t => t.IsAdmin == true);
+                    return View("Add", model);
+                }
+                else
+                {
+                    ViewData["Users"] = _databaseContext.Users.ToList().Where(t => t.Id != sender.Id).Where(t => t.IsDoctor == true);
                     return View("Add", model);
                 }
 

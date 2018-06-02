@@ -15,7 +15,7 @@
                 }
 
             }
-            else
+            else if (User.IsInRole("User"))
             {
                 <h3 class="pull-right">
                     <a asp-controller="Cart" asp-action="AddToCart"

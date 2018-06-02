@@ -4,41 +4,43 @@
 }
 <h2>@ViewData["Title"]</h2>
 <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+    <hr />
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="row">
         <div class="col">
             <div class="form-group">
                 <label asp-for="Name">Ime</label>
-                <input asp-for="Name" class="form-control" />
+                <input asp-for="Name" id="da" class="form-control" />
             </div>
             <div class="form-group">
                 <label asp-for="Surname">Prezime</label>
-                <input asp-for="Surname" class="form-control" />
+                <input asp-for="Surname" id="da" class="form-control" />
             </div>
             <div class="form-group">
                 <label asp-for="Email"></label>
-                <input asp-for="Email" class="form-control" />
+                <input asp-for="Email" id="da" class="form-control" />
             </div>
             <div class="form-group">
                 <label asp-for="Password">Lozinka</label>
-                <input asp-for="Password" class="form-control" />
+                <input asp-for="Password" id="da" class="form-control" />
+
             </div>
             <div class="form-group">
                 <label asp-for="ConfirmPassword">Potvrdite lozinku</label>
-                <input asp-for="ConfirmPassword" class="form-control" />
+                <input asp-for="ConfirmPassword" id="da" class="form-control" />
             </div>
             <div class="form-group">
                 <label asp-for="Address"></label>
-                <input asp-for="Address" class="form-control" />
+                <input asp-for="Address" id="da" class="form-control" />
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="CityId">Grad</label>
-                <select asp-for="CityId" asp-items="@(new SelectList((IEnumerable<City>) @ViewData["Cities"],"CityId", "CityPbr"))" class="form-control"></select>
+                <select asp-for="CityId" id="ne" asp-items="@(new SelectList((IEnumerable<City>) @ViewData["Cities"],"CityId", "CityPbr"))" class="form-control"></select>
             </div>
 
             <div class="form-group">
-                <b>Hrvatska</b> 
+                <b>Hrvatska</b>
             </div>
 
         </div>
@@ -47,3 +49,24 @@
     <button type="submit" class="btn btn-primary">Registriraj se</button>
 </form>
 
+<style>
+    #da {
+        width: 35%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        margin-left: 35px display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    #ne {
+        width: 35%;
+        padding: 8px 20px;
+        margin: 8px 0;
+        margin-left: 35px display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+</style>

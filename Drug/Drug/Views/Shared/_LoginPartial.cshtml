@@ -6,24 +6,27 @@
 { <ul class="nav navbar-nav navbar-right">
     <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Moj profil<span class="caret"></span></a>
-        <ul class="dropdown-menu" role="menu">
+        <ul class="dropdown-menu" role="menu" id="xman">
             <li><a asp-controller="Manage" asp-action="Index">Uredi profil</a></li>
             <li><a asp-controller="Manage" asp-action="ChangePassword">Promijeni lozinku</a></li>
             <li><a asp-controller="Message" asp-action="Index">Poruke</a></li>
-            <li class="divider"></li>
             <li>
-                <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
+                <div>
+                    <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
             <li class="nav-item">
                 <button type="submit" class="btn btn-link nav-link">Odjava</button>
             </li>
             </form>
+            </div>
+</li>
+                
         </ul>
     </li>
     @if (User.IsInRole("Admin"))
     {
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Admin <span class="caret"></span></a>
-            <ul class="dropdown-menu" role="menu">
+            <ul class="dropdown-menu" role="menu" id="xman">
                 <li><a asp-controller="Drug" asp-action="Index">Proizvodi</a></li>
                 <li><a asp-controller="Doctor" asp-action="Index">Ljekarnici</a></li>
                 <li><a asp-controller="User" asp-action="Index">Korisnici</a></li>
@@ -41,9 +44,9 @@
     }
     else if (User.IsInRole("Owner"))
     {
-        <li class="dropdown">
+        <li class="dropdown" >
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Vlasnik<span class="caret"></span></a>
-            <ul class="dropdown-menu" role="menu">
+            <ul class="dropdown-menu" role="menu" id="xman">
                 <li><a asp-controller="Admin" asp-action="Index">Admini</a></li>
             </ul>
         </li>
@@ -60,3 +63,12 @@
         <li class="nav-item"><a asp-controller="Account" asp-action="Login" class="nav-link">Prijava</a></li>
     </ul>
     }
+
+    <style>
+
+
+        #xman {
+            height: auto !important;
+            overflow: visible !important;
+        }
+    </style>

@@ -6,22 +6,29 @@
 @if (Model.Receiver.IsDoctor == true)
 {
     <h2>
-        Poruke s dr. @Model.Receiver.FullName
+        Poruke s ljekarnikom @Model.Receiver.FullName
     </h2>
 
 }
-else if (Model.Receiver.IsAdmin==true)
+else if (Model.Receiver.IsAdmin == true)
 {
     <h2>
-        Poruke s adminom
+        Poruke s adminom @Model.Receiver.FullName
+    </h2>
+
+}
+else if (Model.Receiver.UserName == "sanitas@ljekarna.com")
+{
+    <h2>
+        Poruke sa Sanitas ljekarnom
     </h2>
 
 }
 else
 {
-<h2>
-    Poruke s @Model.Receiver.FullName
-</h2>
+    <h2>
+        Poruke s korisnikom @Model.Receiver.FullName
+    </h2>
 
 }
 
@@ -29,32 +36,38 @@ else
 {
     <div class="alert alert-success">Poruka poslana</div>
 }
-<ul class="list-group">
-    @foreach (var m in Model.Messages)
-    {
-        @if (m.Sender.IsDoctor == true)
+    <ul class="list-group">
+        @foreach (var m in Model.Messages)
         {
-            <ul class="list-group">
-                <li class="list-group-item"><strong>dr. @m.Sender.FullName</strong>: @m.Body</li>
-            </ul>
-        }
-        else if (m.Sender.IsAdmin == true)
-        {
-            <ul class="list-group">
-                <li class="list-group-item"><strong>Admin</strong>: @m.Body</li>
-            </ul>
-        }
+            @if (m.Sender.IsDoctor == true)
+            {
+                <ul class="list-group">
+                    <li class="list-group-item"><strong>@m.Sender.FullName</strong>: @m.Body</li>
+                </ul>
+            }
+            else if (m.Sender.IsAdmin == true)
+            {
+                <ul class="list-group">
+                    <li class="list-group-item"><strong>@m.Sender.FullName</strong>: @m.Body</li>
+                </ul>
+            }
+            else if (m.Sender.UserName == "sanitas@ljekarna.com")
+            {
+                <ul class="list-group">
+                    <li class="list-group-item"><strong>Sanitas ljekarna</strong>: @m.Body</li>
+                </ul>
+            }
 
-        else
-        {
-            <ul class="list-group">
-                <li class="list-group-item"><strong>@m.Sender.FullName</strong>: @m.Body</li>
-            </ul>
+            else
+            {
+                <ul class="list-group">
+                    <li class="list-group-item"><strong>@m.Sender.FullName</strong>: @m.Body</li>
+                </ul>
+            }
+
+
         }
-
-
-    }
-</ul>
+    </ul>
 <form asp-action="CreateFromShow" asp-route-id="@Model.Receiver.Id" asp-route-MessageId="@Model.CurrentMessageId" method="post">
     <div class="Message_Text">
         <textarea class="form-control send-new-message" asp-for="About" placeholder="Unesi novu poruku"></textarea>

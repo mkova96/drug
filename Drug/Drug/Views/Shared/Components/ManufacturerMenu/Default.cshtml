@@ -2,7 +2,7 @@
     <a asp-controller="Manufacturers"
        asp-action="Index"
        class="dropdown-toggle" data-toggle="dropdown">Proizvođači<b class="caret"></b></a>
-    <ul class="dropdown-menu">
+    <ul class="dropdown-menu" id="xman">
         @foreach (var category in Model)
         {
             <li>
@@ -10,9 +10,17 @@
                    asp-route-category="@category">@category</a>
             </li>
         }
-        <li class="divider"></li>
         <li>
             <a asp-controller="Manufacturers" asp-action="Index" asp-route-category="">Svi proizvođači</a>
         </li>
     </ul>
 </li>
+
+<style>
+
+
+    #xman {
+        height: auto !important;
+        overflow: visible !important;
+    }
+</style>

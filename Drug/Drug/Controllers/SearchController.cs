@@ -8,8 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Diagnostics;
-
-
+using Microsoft.EntityFrameworkCore;
 
 namespace Lijek.Controllers
 {
@@ -33,24 +32,13 @@ namespace Lijek.Controllers
             }
 
             var searchLower = searchString.ToLower().Split(" ");
-            IEnumerable<Disease> categories =
-                _databaseContext.Disease.Where(c => searchForArray(c.DiseaseName.ToLower(), searchLower)).ToList();
-            IEnumerable<Medication> drugs =
-                _databaseContext.Drug.Where(c => searchForArray(c.DrugName.ToLower(), searchLower)).ToList();
-            IEnumerable<Manufacturer> manufacturers =
-                _databaseContext.Manufacturer.Where(c => searchForArray(c.ManufacturerName.ToLower(), searchLower)).ToList();
-
-            /* IEnumerable<User> users = _databaseContext.Users.Where(u =>
-                 searchForArray(u.UserName.ToLower(), searchLower) || searchForArray(u.Name.ToLower(), searchLower) ||
-                 searchForArray(u.Surname.ToLower(), searchLower)).ToList();*/
+            var  drugs =
+                _databaseContext.Drug.Include(i => i.Package).ThenInclude(t => t.Measure).Where(c => searchForArray(c.DrugName.ToLower(), searchLower)).ToList();
 
 
             var searchResults = new SearchActionViewModel
             {
-               // Users = users,
-                Categories = categories,
-                Drugs=drugs,
-                Manufacturers=manufacturers
+                Drugs=drugs
             };
             return View(searchResults);
         }

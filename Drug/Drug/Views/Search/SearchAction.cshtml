@@ -2,42 +2,28 @@
     ViewData["Title"] = "Rezultati pretrage";
 }
 @model SearchActionViewModel
-<h3>Rezultati</h3>
+<h1>Rezultati</h1>
+<hr />
 
-@if (Model != null && (Model.Categories.Any() | Model.Drugs.Any()|| Model.Manufacturers.Any()/*|| Model.Users.Any()*/))
+@if (Model != null && Model.Drugs.Any())
 {
-<ul class="list-group">
-    @if (Model.Categories != null && Model.Categories.Any())
-    {
-        foreach (var c in Model.Categories)
+    <ul class="list-group">
+
+        @if (Model.Drugs != null && Model.Drugs.Any())
         {
-            <a class="list-group-item" asp-controller="Disease" asp-action="Show" asp-route-id="@c.DiseaseId">@c.DiseaseName</a>
+            foreach (var c in Model.Drugs)
+            {
+        <h4>
+            <a asp-controller="Drugs" asp-action="Show" asp-route-id="@c.DrugId">
+                @c.DrugName @c.Package.IndividualSize @c.Package.Measure.MeasureName
+            </a>
+        </h4>
+                
+            }
         }
-    }
-    @if (Model.Drugs != null && Model.Drugs.Any())
-    {
-        foreach (var c in Model.Drugs)
-        {
-            <a class="list-group-item" asp-controller="Drug" asp-action="Show" asp-route-id="@c.DrugId">@c.DrugName</a>
-        }
-    }
-    @if (Model.Manufacturers != null && Model.Manufacturers.Any())
-    {
-        foreach (var c in Model.Manufacturers)
-        {
-            <a class="list-group-item" asp-controller="Manufacturer" asp-action="Show" asp-route-id="@c.ManufacturerId">@c.ManufacturerName</a>
-        }
-    }
-    <!--if (Model.Users != null && Model.Users.Any())
-     {
-         foreach (var u in Model.Users)
-         {
-             <a class="list-group-item" asp-controller="User" asp-action="Show" asp-route-id="u.Id">u.Fullname (u.Email)</a>
-         }
-     }-->
-</ul>
+    </ul>
 }
 else
 {
-    <p>Nema rezultata o postavljenom upitu.</p>
+    <h4>Nema rezultata o postavljenom upitu.</h4>
 }
