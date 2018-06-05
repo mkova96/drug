@@ -249,7 +249,7 @@ namespace Drug.Controllers
             ViewData["Categories"] = _databaseContext.Disease.ToList();
             ViewData["Manufacturers"] = _databaseContext.Manufacturer.ToList();
             ViewData["SideEffects"] = _databaseContext.SideEffect.ToList();
-            ViewData["Drugs"] = _databaseContext.Drug.ToList();
+            ViewData["Drugs"] = _databaseContext.Drug.ToList().Where(t=>t.DrugId!=id);
             ViewData["Packages"] = _databaseContext.Package.Include(t => t.Measure).ToList();
             ViewData["Currencies"] = _databaseContext.Currency.ToList();
 
@@ -264,7 +264,7 @@ namespace Drug.Controllers
             if (!ModelState.IsValid)
             {
                 ViewData["Categories"] = _databaseContext.Disease.ToList();
-                ViewData["Drugs"] = _databaseContext.Drug.ToList();
+                ViewData["Drugs"] = _databaseContext.Drug.ToList().Where(t => t.DrugId != id);
 
                 ViewData["Manufacturers"] = _databaseContext.Manufacturer.ToList();
                 ViewData["SideEffects"] = _databaseContext.SideEffect.ToList();

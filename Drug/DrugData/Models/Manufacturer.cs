@@ -9,7 +9,6 @@ namespace DrugData.Models
     {
         public int ManufacturerId { get; set; }
 
-        [Required]
         [StringLength(100)]
         public string ManufacturerName { get; set; }
 
