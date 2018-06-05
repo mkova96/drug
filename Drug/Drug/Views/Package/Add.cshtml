@@ -8,15 +8,15 @@
     </h2>
     <div class="form-group">
         <label asp-for="PackageType">Tip pakiranja </label>
-        <input asp-for="PackageType" class="form-control" />
+        <input asp-for="PackageType" id="da" class="form-control" />
     </div>
     <div class="form-group">
         <label asp-for="Quantity">Količina unutar pakiranja </label>
-        <input asp-for="Quantity" class="form-control" />
+        <input asp-for="Quantity" id="da" class="form-control" />
     </div>
     <div class="form-group">
         <label asp-for="IndividualSize">Pojedinačna veličina</label>
-        <input asp-for="IndividualSize" class="form-control" />
+        <input asp-for="IndividualSize" id="da" class="form-control" />
     </div>
 
 
@@ -40,12 +40,12 @@
         </div>
         <div class="form-group" id="drugSelectMeasure">
             <label asp-for="MeasureId">Mjerna jedinica</label>
-            <select asp-for="MeasureId" asp-items="@(new SelectList((IEnumerable<Measure>) @ViewData["Measures"], "MeasureId", "MeasureName"))" class="form-control"></select>
+            <select asp-for="MeasureId" id="ne" asp-items="@(new SelectList((IEnumerable<Measure>) @ViewData["Measures"], "MeasureId", "MeasureName"))" class="form-control"></select>
         </div>
         <div class="form-group" id="drugCreateMeasure" style="display: none">
             <div class="form-group">
                 <label asp-for="Measure.MeasureName">Naziv</label>
-                <input type="text" class="form-control" asp-for="Measure.MeasureName">
+                <input type="text" id="da" class="form-control"  asp-for="Measure.MeasureName">
             </div>
         </div>
     </div>
@@ -82,3 +82,25 @@ function showMeasureView() {
 }
 
 </script>
+
+<style>
+    #da {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        margin-left: 35px display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    #ne {
+        width: 100%;
+        padding: 8px 20px;
+        margin: 8px 0;
+        margin-left: 35px display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+</style>

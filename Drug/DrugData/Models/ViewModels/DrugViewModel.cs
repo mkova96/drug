@@ -12,6 +12,10 @@ namespace DrugData.Models.ViewModels
         [StringLength(100, ErrorMessage = "Ime mora biti kraće od 100 znakova!")]
         public string Name { get; set; }
 
+        [Required]
+        [DataType(DataType.ImageUrl)]
+        public string ImagePath { get; set; }
+
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy}", ApplyFormatInEditMode = true)]

@@ -12,5 +12,9 @@ namespace DrugData.Models
         public String Biography { get; set; }
 
         public string Education { get; set; }
+
+        [DataType(DataType.ImageUrl)]
+        public string ImagePath   { get;set;}
+
     }
 }

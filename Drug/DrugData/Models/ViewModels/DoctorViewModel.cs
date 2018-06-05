@@ -42,6 +42,10 @@ namespace DrugData.Models.ViewModels
         [Display(Name = "Grad")]
         public int CityId { get; set; }
 
+        [Required]
+        [DataType(DataType.ImageUrl)]
+        public string ImagePath { get; set; }
+
 
     }
 }

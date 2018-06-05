@@ -17,23 +17,40 @@
         </th>
         <th class="text-center"><a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Naziv</a></th>
         <th class="text-center">
-        </th>
     </tr>
     @foreach (var item in Model)
     {
-        <tr id="xman">
+        <tr data-toggle="collapse" id="xman" data-target="@("#" + item.PackageId.ToString())" style="cursor:pointer;">
             <td class="text-center">@item.PackageId</td>
             <td class="text-center">@item.PackageType</td>
             <td class="text-center">
                 <a asp-action="Edit" asp-route-id="@item.PackageId" class="btn btn-warning btn-sm">Uredi</a>
-                <form asp-action="Delete" asp-route-id="@item.PackageId" asp-route-page="@(Model.PageIndex)"
+                <form asp-action="Delete" asp-route-id="@item.PackageId" D-route-page="@(Model.PageIndex)"
                       method="POST" style="display: inline-block">
                     <button type="submit" class="btn btn-danger btn-sm">Obriši</button>
                 </form>
             </td>
+        <tr></tr>
+        <tr class="bg-light">
+            <td colspan="8" style="padding:0;margin:0;">
+                <div id="@item.PackageId" class="subRow collapse">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div>
+                                <h4>Količina unutar pakiranja: <b>@item.Quantity</b> </h4>
+                            </div>
+                            <div>
+                                <h4>Veličina pojedinačne stavke: <b>@item.IndividualSize @item.Measure.MeasureName</b></h4>
+                            </div>
+
+                        </div>
+                </div>
+            </td>
+        </tr>
         </tr>
     }
 </table>
+
 
 <div class="text-center">
     <a asp-action="Add" class="btn btn-primary">Novo pakiranje</a>

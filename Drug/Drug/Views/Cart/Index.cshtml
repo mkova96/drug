@@ -20,9 +20,9 @@
                 <tr>
                     <td class="text-center">@line.Quantity</td>
                     <td class="text-left">@line.Drug.DrugName</td>
-                    <td class="text-right">@line.Drug.Price.ToString("c")</td>
+                    <td class="text-right">@line.Drug.Price HRK</td>
                     <td class="text-right">
-                        @((line.Quantity * line.Drug.Price).ToString("c"))
+                        @((line.Quantity * line.Drug.Price)) HRK
                     </td>
                     <td class="text-center"><a class="glyphicon glyphicon-remove text-danger remove" asp-controller="Cart" asp-action="RemoveFromCart" asp-route-drugId="@line.Drug.DrugId"></a></td>
                 </tr>
@@ -32,7 +32,7 @@
             <tr>
                 <td colspan="3" class="text-right">Sveukupno:</td>
                 <td class="text-right">
-                    @Model.CartTotal.ToString("c")
+                    @Model.CartTotal HRK
                 </td>
             </tr>
         </tfoot>

@@ -9,7 +9,7 @@
     </h2>
     <div class="form-group">
         <label asp-for="Name">Naziv</label>
-        <input asp-for="Name" class="form-control" />
+        <input asp-for="Name" id="da" class="form-control" />
     </div>
     <div class="form-group">
         <label asp-for="Produced">Datum proizvodnje</label>
@@ -21,15 +21,19 @@
     </div>
     <div class="form-group">
         <label asp-for="Price">Cijena</label>
-        <input asp-for="Price" class="form-control" />
+        <input asp-for="Price" id="da" class="form-control" />
         <div class="form-group">
             <label asp-for="CurrencyId">Valuta</label>
             <select asp-for="CurrencyId" asp-items="@(new SelectList((IEnumerable<Currency>) @ViewData["Currencies"],"CurrencyId", "CurrencyName"))" class="form-control"></select>
         </div>
     </div>
     <div class="form-group">
+        <label asp-for="ImagePath">Slika</label>
+        <input asp-for="ImagePath" id="da"class="form-control" />
+    </div>
+    <div class="form-group">
         <label asp-for="Usage">Uporaba</label>
-        <input asp-for="Usage" class="form-control" />
+        <input asp-for="Usage" id="da" class="form-control" />
     </div>
     <div class="form-group">
         <label asp-for="PackageId">Pakiranje</label>
@@ -88,7 +92,7 @@
         <div class="form-group" id="drugCreateManufacturer" style="display: none">
             <div class="form-group">
                 <label asp-for="Manufacturer.ManufacturerName">Ime </label>
-                <input type="text" class="form-control" asp-for="Manufacturer.ManufacturerName">
+                <input type="text" id="da" class="form-control" asp-for="Manufacturer.ManufacturerName">
             </div>
 
             <div class="form-group">
@@ -133,3 +137,15 @@ function showManufacturerView() {
 }
 
 </script>
+
+<style>
+    #da {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        margin-left: 35px display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+</style>

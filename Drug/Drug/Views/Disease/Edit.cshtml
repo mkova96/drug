@@ -9,11 +9,11 @@
     <h2>Uredi</h2>
     <div class="form-group">
         <label asp-for="Category.DiseaseName">Naziv </label>
-        <input asp-for="Category.DiseaseName" class="form-control" />
+        <input asp-for="Category.DiseaseName" id="da" class="form-control" />
     </div>
     <div class="form-group">
         <label asp-for="Category.ICD">Međunarodna klasifikacija bolesti </label>
-        <input asp-for="Category.ICD" class="form-control">
+        <input asp-for="Category.ICD" id="da" class="form-control">
     </div>
 
     <div class="text-center">
@@ -24,3 +24,15 @@
     </div>
 
 </form>
+
+<style>
+    #da {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        margin-left: 35px display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+</style>

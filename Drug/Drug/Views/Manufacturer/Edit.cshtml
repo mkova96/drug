@@ -9,11 +9,11 @@
     <h2>Uredi</h2>
     <div class="form-group">
         <label asp-for="Manufacturer.ManufacturerName">Naziv </label>
-        <input asp-for="Manufacturer.ManufacturerName" class="form-control" />
+        <input asp-for="Manufacturer.ManufacturerName" id="da" class="form-control" />
     </div>
     <div class="form-group">
         <label asp-for="Manufacturer.About">O proizvođaču </label>
-        <textarea asp-for="Manufacturer.About" class="form-control"></textarea>
+        <textarea asp-for="Manufacturer.About" id="da" class="form-control"></textarea>
     </div>
 
     <div class="text-center">
@@ -24,3 +24,11 @@
     </div>
 
 </form>
+
+<style>
+    #da {
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+</style>

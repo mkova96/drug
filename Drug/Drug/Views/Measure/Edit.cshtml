@@ -9,7 +9,7 @@
     <h2>Uredi</h2>
     <div class="form-group">
         <label asp-for="Measure.MeasureName">Naziv </label>
-        <input asp-for="Measure.MeasureName" class="form-control" />
+        <input asp-for="Measure.MeasureName" id="da" class="form-control" />
     </div>
     <div class="text-center">
         <button type="submit" class="btn btn-primary">Spremi</button>
@@ -19,3 +19,11 @@
     </div>
 
 </form>
+
+<style>
+    #da {
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+</style>

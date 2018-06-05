@@ -120,7 +120,8 @@ namespace Lijek.Controllers
                     City = city,
                     Education = model.Education,
                     IsDoctor=true,
-                    IsAdmin=false
+                    IsAdmin=false,
+                    ImagePath=model.ImagePath
                 };
                 var x = _databaseContext.User.FirstOrDefault(g => g.Email == doc.Email);
 
@@ -193,7 +194,7 @@ namespace Lijek.Controllers
                 user.NormalizedUserName = model.Doctor.Email.ToUpper();
                 user.NormalizedEmail = model.Doctor.Email.ToUpper();
                 user.Biography = model.Doctor.Biography;
-                user.UserDate = DateTime.Now;
+                user.ImagePath = model.Doctor.ImagePath;
 
                 var x = _databaseContext.User.Where(g => (g.Email == user.Email && g.Id != id)).ToList();
                 if (x.Count > 0)

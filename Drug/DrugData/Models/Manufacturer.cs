@@ -15,6 +15,8 @@ namespace DrugData.Models
 
         [DataType(DataType.MultilineText)]
         public String About { get; set; }
+        [DataType(DataType.ImageUrl)]
+        public string ImagePath { get; set; }
 
 
         public virtual ICollection<Medication> Drugs { get; set; }

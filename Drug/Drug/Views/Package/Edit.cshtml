@@ -9,8 +9,23 @@
     <h2>Uredi</h2>
     <div class="form-group">
         <label asp-for="Package.PackageType">Naziv </label>
-        <input asp-for="Package.PackageType" class="form-control" />
+        <input asp-for="Package.PackageType" id="da" class="form-control" />
     </div>
+
+    <div class="form-group">
+        <label asp-for="Package.Quantity">Količina unutar pakiranja </label>
+        <input asp-for="Package.Quantity" id="da" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Package.IndividualSize">Pojedinačna veličina</label>
+        <input asp-for="Package.IndividualSize" id="da" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="MeasureId">Mjerna jedinica</label>
+        <select asp-for="MeasureId" asp-items="@(new SelectList((IEnumerable<Measure>) @ViewData["Measures"], "MeasureId", "MeasureName"))" class="form-control"></select>
+    </div>
+
     <div class="text-center">
         <button type="submit" class="btn btn-primary">Spremi</button>
         <a asp-action="Index">
@@ -18,4 +33,13 @@
         </a>
     </div>
 
+
 </form>
+
+<style>
+    #da {
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+</style>

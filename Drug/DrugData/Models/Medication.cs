@@ -16,6 +16,9 @@ namespace DrugData.Models
         public DateTime DateProduced { get; set; }
         public DateTime DateExpires {get; set; }
 
+        [DataType(DataType.ImageUrl)]
+        public string ImagePath { get; set; }
+
         [DataType(DataType.MultilineText)]
         public String Usage { get; set; }
 

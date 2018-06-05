@@ -8,11 +8,11 @@
     </h2>
     <div class="form-group">
         <label asp-for="Name">Naziv </label>
-        <input asp-for="Name" class="form-control" />
+        <input asp-for="Name" id="da" class="form-control" />
     </div>
     <div class="form-group">
         <label asp-for="MKB">Međunarodna klasifikacija bolesti</label>
-        <input asp-for="MKB" class="form-control">
+        <input asp-for="MKB" id="da" class="form-control">
     </div>
 
     <div class="text-center">
@@ -22,3 +22,15 @@
         </a>
     </div>
 </form>
+
+<style>
+    #da {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        margin-left: 35px display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+</style>

@@ -1,11 +1,11 @@
 ﻿@model Medication
 <div class="col-sm-4 col-lg-4 col-md-4">
-    <div class="thumbnail" > 
-        <img src="~/images/capsule.png" style="min-height:150px;height:150px;"/>
+    <div class="thumbnail" >
+        <img src=@Model.ImagePath class="imageCell" height="150" />
         <div class="caption">
             @if (User.IsInRole("Admin"))
             {
-                if (Model.Quantity < 5 || Model.DateExpires<=DateTime.Now)
+                if (Model.Quantity < 5 || Model.DateExpires <= DateTime.Now)
                 {
                     <h3 class="pull-right">
                         <a asp-controller="Drug" asp-action="Edit"
@@ -23,12 +23,19 @@
                 </h3>
 
             }
-
+            else if (!User.Identity.IsAuthenticated)
+            {
+                <h3 class="pull-right">
+                    <a asp-controller="Account" asp-action="Login"
+                       ><img class="pull-right" src="~/images/cart.png" alt="" width="35" height="35" /></a>
+                </h3>
+            }
             <h3>
                 <a asp-controller="Drugs" asp-action="Show" asp-route-id="@Model.DrugId">@Model.DrugName @Model.Package.IndividualSize@Model.Package.Measure.MeasureName</a>
                 @Model.Price.ToString() @Model.Currency.CurrencyName.ToString()
             </h3>
-            <!--<p>Model.ShortDescription</p>-->
         </div>
     </div>
 </div>
+
+

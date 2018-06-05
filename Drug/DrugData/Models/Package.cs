@@ -23,6 +23,6 @@ namespace DrugData.Models
         public virtual ICollection<Medication> Drugs { get; set; }
 
         [NotMapped]
-        public virtual string PackageData => $"{PackageType}, količina u pakiranju: {Quantity}, pojedinačna veličina: {IndividualSize} {Measure.MeasureName}";
+        public  virtual string PackageData => $"{PackageType}, količina u pakiranju: {Quantity}, pojedinačna veličina: {IndividualSize} {Measure.MeasureName}";
     }
 }

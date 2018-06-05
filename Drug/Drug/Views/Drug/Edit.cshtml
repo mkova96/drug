@@ -10,7 +10,7 @@
 
     <div class="form-group">
         <label asp-for="Drug.DrugName">Naziv</label>
-        <input asp-for="Drug.DrugName" class="form-control" />
+        <input asp-for="Drug.DrugName" id="da" class="form-control" />
     </div>
     <div class="form-group">
         <label asp-for="Drug.DateProduced">Datum proizvodnje</label>
@@ -31,15 +31,19 @@
     </div>
     <div class="form-group">
         <label asp-for="Drug.Price">Cijena</label>
-        <input asp-for="Drug.Price" class="form-control" />
+        <input asp-for="Drug.Price" id="da" class="form-control" />
         <div class="form-group">
             <label asp-for="CurrencyId">Valuta</label>
             <select asp-for="CurrencyId" asp-items="@(new SelectList((IEnumerable<Currency>) @ViewData["Currencies"],"CurrencyId", "CurrencyName"))" class="form-control"></select>
         </div>
     </div>
     <div class="form-group">
+        <label asp-for="Drug.ImagePath">Slika</label>
+        <input asp-for="Drug.ImagePath" id="da" class="form-control" />
+    </div>
+    <div class="form-group">
         <label asp-for="Drug.Usage">Uporaba</label>
-        <input asp-for="Drug.Usage" class="form-control" />
+        <input asp-for="Drug.Usage" id="da" class="form-control" />
     </div>
     <div class="form-group">
         <label asp-for="PackageId">Pakiranje</label>
@@ -105,7 +109,7 @@
         <div class="form-group" id="drugCreateManufacturer" style="display: none">
             <div class="form-group">
                 <label asp-for="Manufacturer.ManufacturerName">Ime </label>
-                <input type="text" class="form-control" asp-for="Manufacturer.ManufacturerName">
+                <input type="text" id="da" class="form-control" asp-for="Manufacturer.ManufacturerName">
             </div>
 
             <div class="form-group">
@@ -125,26 +129,39 @@
 </form>
 
 <script>
-    ﻿$(document).ready(function () {
-    var $registerRadios = $('input[name="ManufacturerType"]');
-    if ($registerRadios.length) {
-        showManufacturerView();
-        $registerRadios.on('change', function (e) {
+    $(document).ready(function () {
+        var $registerRadios = $('input[name="ManufacturerType"]');
+        if ($registerRadios.length) {
             showManufacturerView();
-        })
-    }
- });
+            $registerRadios.on('change', function (e) {
+                showManufacturerView();
+            })
+        }
+    });
 
 
-function showManufacturerView() {
-    var value = $('input[name="ManufacturerType"]:checked').first().val();
-    if (value === "new") {
-        $('#drugCreateManufacturer').show();
-        $('#drugSelectManufacturer').hide();
-    } else {
-        $('#drugCreateManufacturer').hide();
-        $('#drugSelectManufacturer').show();
+    function showManufacturerView() {
+        var value = $('input[name="ManufacturerType"]:checked').first().val();
+        if (value === "new") {
+            $('#drugCreateManufacturer').show();
+            $('#drugSelectManufacturer').hide();
+        } else {
+            $('#drugCreateManufacturer').hide();
+            $('#drugSelectManufacturer').show();
+        }
     }
-}
 
 </script>
+
+<style>
+    #da {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        margin-left: 35px display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+</style>
+

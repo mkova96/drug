@@ -39,7 +39,7 @@ namespace Drug.Controllers
                 searchString = currentFilter;
             }
 
-            var students = from s in _databaseContext.Package
+            var students = from s in _databaseContext.Package.Include(t=>t.Measure)
                            select s;
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -162,13 +162,16 @@ namespace Drug.Controllers
         [HttpGet]
         public ViewResult Edit(int id)
         {
-            var ses = _databaseContext.Package
+            ViewData["Measures"] = _databaseContext.Measure.ToList();
+
+            var ses = _databaseContext.Package.Include(t=>t.Measure)
             .FirstOrDefault(p => p.PackageId == id);
 
             ViewData["Success"] = TempData["Success"];
 
             var model = new EditPackageViewModel
             {
+                MeasureId = ses.Measure.MeasureId,
                 Package = ses
             };
             return View(model);
@@ -176,15 +179,16 @@ namespace Drug.Controllers
         [HttpPost]
         public IActionResult Update(int id, EditPackageViewModel model)
         {
-
+            ViewData["Measures"] = _databaseContext.Measure.ToList();
 
             if (ModelState.IsValid)
             {
-                var ses = _databaseContext.Package
-
-                .FirstOrDefault(m => m.PackageId == id);
+                    var ses = _databaseContext.Package.Include(p=>p.Measure).FirstOrDefault(m => m.PackageId == id);
+                    ses.Measure = _databaseContext.Measure.ToList().First(c => c.MeasureId == model.MeasureId);
 
                 ses.PackageType = model.Package.PackageType;
+                ses.IndividualSize = model.Package.IndividualSize;
+                ses.Quantity = model.Package.Quantity;
 
                 var x = _databaseContext.Package.Where(g => (g.PackageType == ses.PackageType && g.PackageId != id)).ToList();
                 if (x.Count > 0)
@@ -194,8 +198,12 @@ namespace Drug.Controllers
                     return RedirectToAction("Edit", new { id = id });
                 }
 
+                System.Diagnostics.Debug.WriteLine("pero"+ses.PackageData==null);
+
                 TempData["Success"] = true;
                 _databaseContext.SaveChanges();
+                System.Diagnostics.Debug.WriteLine("pero" + ses.PackageData == null);
+
                 TempData[Constants.Message] = $"Pakiranje je promijenjeno";
                 TempData[Constants.ErrorOccurred] = false;
             }

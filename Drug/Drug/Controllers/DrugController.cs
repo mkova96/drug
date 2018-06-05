@@ -162,7 +162,9 @@ namespace Drug.Controllers
                     Manufacturer = man,
                     Package = pac,
                     Currency = val,
-                    Usage = model.Usage
+                    Usage = model.Usage,
+                    ImagePath=model.ImagePath
+                 
 
                 };
                 
@@ -321,6 +323,8 @@ namespace Drug.Controllers
             Drug.Quantity = model.Drug.Quantity;
             Drug.Price = model.Drug.Price;
             Drug.DrugName = model.Drug.DrugName;
+            Drug.ImagePath = model.Drug.ImagePath;
+
             if (model.z == true)
             {
                 var drugs = new List<Medication>();

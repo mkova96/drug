@@ -7,5 +7,9 @@ namespace DrugData.Models.ViewModels
     public class EditPackageViewModel
     {
         public Package Package { get; set; }
+
+        public int MeasureId { get; set; }
+
+
     }
 }

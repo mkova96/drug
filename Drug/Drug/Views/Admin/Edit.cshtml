@@ -9,19 +9,19 @@
     <h2>Uredi</h2>
     <div class="form-group">
         <label asp-for="User.Name">Ime</label>
-        <input type="text" class="form-control" asp-for="User.Name">
+        <input type="text" id="da" class="form-control" asp-for="User.Name">
     </div>
     <div class="form-group">
         <label asp-for="User.Surname">Prezime</label>
-        <input type="text" class="form-control" asp-for="User.Surname">
+        <input type="text" id="da" class="form-control" asp-for="User.Surname">
     </div>
     <div class="form-group">
         <label asp-for="User.Email">E-Mail adresa</label>
-        <input type="text" class="form-control" asp-for="User.Email">
+        <input type="text" id="da" class="form-control" asp-for="User.Email">
     </div>
     <div class="form-group">
         <label asp-for="User.Address">Adresa</label>
-        <input asp-for="User.Address" class="form-control" />
+        <input asp-for="User.Address" id="da" class="form-control" />
         <span asp-validation-for="User.Address" class="text-danger"></span>
     </div>
     <div class="form-group">
@@ -42,3 +42,15 @@
     </div>
 
 </form>
+
+<style>
+    #da {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        margin-left: 35px display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+</style>

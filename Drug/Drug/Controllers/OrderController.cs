@@ -1,9 +1,11 @@
 ﻿
 using DrugData;
 using DrugData.Models;
+using DrugData.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,9 +28,14 @@ namespace Lijek.Controllers
             _userManager = userManager;
             _context = context;
         }
-        [Authorize]
-        public IActionResult Checkout()
+
+        [HttpGet]
+        public async Task<IActionResult> Checkout()
         {
+            var user = await _userManager.GetUserAsync(User);
+
+            var userx = _context.User.Include(t => t.City).FirstOrDefault(t => t.Id == user.Id);
+
             var items = _cart.GetCartDrugs();
             _cart.DrugCarts = items;
             foreach (var x in _cart.DrugCarts)
@@ -47,13 +54,15 @@ namespace Lijek.Controllers
                 return RedirectToAction("Index", "Cart");
 
             }
-            return View();
+            return View(new OrderViewModel{ Address=userx.Address,CityName=userx.City.CityName,Email=userx.Email,FirstName=userx.Name,LastName=userx.Surname,ZipCode=userx.City.PostCode.ToString() });
         }
 
         [HttpPost]
         //[Authorize]
-        public IActionResult Checkout(Order order)
+        public IActionResult Checkout(OrderViewModel model)
         {
+            System.Diagnostics.Debug.WriteLine("mee"+model.Address);
+
             var items = _cart.GetCartDrugs();
             _cart.DrugCarts = items;
 
@@ -66,6 +75,10 @@ namespace Lijek.Controllers
 
             if (ModelState.IsValid)
             {
+                var user = _context.User.FirstOrDefault(t => t.Email == model.Email);
+                var order = new Order { Address= model.Address, FirstName = model.FirstName,LastName=model.LastName,User=user,
+                    CityName =model.CityName,CountryName="Hrvatska",Email=model.Email,ZipCode=model.ZipCode };
+
                 _orderRepository.CreateOrder(order, _userManager.GetUserId(User));
                 _cart.ClearCart();
 
@@ -81,7 +94,7 @@ namespace Lijek.Controllers
                 return RedirectToAction("Index", "Drugs");
             }
 
-            return View(order);
+            return View(model);
         }
 
     }

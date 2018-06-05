@@ -8,7 +8,7 @@
     </h2>
     <div class="form-group">
         <label asp-for="CurrencyName">Naziv valute </label>
-        <input asp-for="CurrencyName" class="form-control" />
+        <input asp-for="CurrencyName" id="da" class="form-control" />
     </div>
 
     <div class="text-center">
@@ -18,3 +18,15 @@
         </a>
     </div>
 </form>
+
+<style>
+    #da {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        margin-left: 35px display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+</style>

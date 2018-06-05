@@ -9,19 +9,24 @@
     <h2>Uredi</h2>
     <div class="form-group">
         <label asp-for="Doctor.Name">Ime</label>
-        <input type="text" class="form-control" asp-for="Doctor.Name">
+        <input type="text" id="da" class="form-control" asp-for="Doctor.Name">
     </div>
     <div class="form-group">
         <label asp-for="Doctor.Surname">Prezime</label>
-        <input type="text" class="form-control" asp-for="Doctor.Surname">
+        <input type="text" id="da" class="form-control" asp-for="Doctor.Surname">
     </div>
     <div class="form-group">
         <label asp-for="Doctor.Email">E-Mail adresa</label>
-        <input type="text" class="form-control" asp-for="Doctor.Email">
+        <input type="text" id="da" class="form-control" asp-for="Doctor.Email">
     </div>
     <div class="form-group">
+        <label asp-for="Doctor.ImagePath">Slika</label>
+        <input asp-for="Doctor.ImagePath" id="da" class="form-control" />
+    </div>
+
+    <div class="form-group">
         <label asp-for="Doctor.Address">Adresa</label>
-        <input asp-for="Doctor.Address" class="form-control" />
+        <input asp-for="Doctor.Address" id="da" class="form-control" />
         <span asp-validation-for="Doctor.Address" class="text-danger"></span>
     </div>
     <div class="form-group">
@@ -38,7 +43,7 @@
     </div>
     <div class="form-group">
         <label asp-for="Doctor.Education">Obrazovanje </label>
-        <input type="text" class="form-control" asp-for="Doctor.Education">
+        <input type="text" id="da" class="form-control" asp-for="Doctor.Education">
     </div>
 
     <div class="text-center">
@@ -49,3 +54,15 @@
     </div>
 
 </form>
+
+<style>
+    #da {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        margin-left: 35px display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+</style>
