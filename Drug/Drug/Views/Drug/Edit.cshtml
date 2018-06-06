@@ -47,7 +47,7 @@
     </div>
     <div class="form-group">
         <label asp-for="PackageId">Pakiranje</label>
-        <select asp-for="PackageId" asp-items="@(new SelectList((IEnumerable<Package>) @ViewData["Packages"],"PackageId", "PackageType"))" class="form-control"></select>
+        <select asp-for="PackageId" asp-items="@(new SelectList((IEnumerable<Package>) @ViewData["Packages"],"PackageId", "PackageData"))" class="form-control"></select>
     </div>
     <div class="form-group">
 
@@ -84,39 +84,9 @@
         <select multiple asp-for="DrugIds" asp-items="@(new SelectList((IEnumerable<Medication>) ViewData["Drugs"], "DrugId", "DrugName"))" class="form-control"></select>
     </div>
 
-    <div class="col">
-        <h3>Proizvođač</h3>
-        <div class="form-group">
-            <div class="row">
-                <div class="col">
-                    <div class="form-check form-check-inline">
-                        @Html.RadioButtonFor(model => model.ManufacturerType, "existing", new { Class = "form-check-input", Id = "ExistingRadio", Name = "ManufacturerType" })
-                        <label class="form-check-label" for="ExistingRadio">Odaberi postojećeg proizvođača</label>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="form-check form-check-inline">
-                        @Html.RadioButtonFor(model => model.ManufacturerType, "new", new { Class = "form-check-input", Id = "NewRadio", Name = "ManufacturerType" })
-                        <label class="form-check-label" for="NewRadio">Dodaj novog proizvođača</label>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="form-group" id="drugSelectManufacturer">
-            <label asp-for="ManufacturerId">Proizvođač</label>
-            <select asp-for="ManufacturerId" asp-items="@(new SelectList((IEnumerable<Manufacturer>) @ViewData["Manufacturers"], "ManufacturerId", "ManufacturerName"))" class="form-control"></select>
-        </div>
-        <div class="form-group" id="drugCreateManufacturer" style="display: none">
-            <div class="form-group">
-                <label asp-for="Manufacturer.ManufacturerName">Ime </label>
-                <input type="text" id="da" class="form-control" asp-for="Manufacturer.ManufacturerName">
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Manufacturer.About">O proizvođaču </label>
-                <textarea asp-for="Manufacturer.About" class="form-control"></textarea>
-            </div>
-        </div>
+    <div class="form-group">
+        <label asp-for="ManufacturerId">Proizvođač</label>
+        <select asp-for="ManufacturerId" asp-items="@(new SelectList((IEnumerable<Manufacturer>) @ViewData["Manufacturers"],"ManufacturerId", "ManufacturerName"))" class="form-control"></select>
     </div>
 
     <div class="text-center">
@@ -128,30 +98,6 @@
 
 </form>
 
-<script>
-    $(document).ready(function () {
-        var $registerRadios = $('input[name="ManufacturerType"]');
-        if ($registerRadios.length) {
-            showManufacturerView();
-            $registerRadios.on('change', function (e) {
-                showManufacturerView();
-            })
-        }
-    });
-
-
-    function showManufacturerView() {
-        var value = $('input[name="ManufacturerType"]:checked').first().val();
-        if (value === "new") {
-            $('#drugCreateManufacturer').show();
-            $('#drugSelectManufacturer').hide();
-        } else {
-            $('#drugCreateManufacturer').hide();
-            $('#drugSelectManufacturer').show();
-        }
-    }
-
-</script>
 
 <style>
     #da {

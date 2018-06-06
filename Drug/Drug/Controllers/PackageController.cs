@@ -3,6 +3,7 @@ using DrugData.Models;
 using DrugData.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -81,6 +82,7 @@ namespace Drug.Controllers
             if (ModelState.IsValid)
             {
                 Measure man;
+                Measure x;
 
                 if (model.MeasureType == "new")
                 {
@@ -104,6 +106,14 @@ namespace Drug.Controllers
                     }
 
                     man = model.Measure;
+                    x = _databaseContext.Measure.FirstOrDefault(g => g.MeasureName == man.MeasureName);
+
+                    if (x != null)
+                    {
+                        TempData[Constants.Message] = $"Mjerna jedinica tog imena već postoji.\n";
+                        TempData[Constants.ErrorOccurred] = true;
+                        return RedirectToAction(nameof(Add));
+                    }
                     _databaseContext.Measure.Add(man);
                 }
                 else
@@ -113,11 +123,14 @@ namespace Drug.Controllers
 
                 var ses = new Package { PackageType = model.PackageType,Quantity=model.Quantity,IndividualSize=model.IndividualSize};
                 ses.Measure = man;
-                var x = _databaseContext.Package.FirstOrDefault(g => g.PackageType == ses.PackageType);
+                ses.MeasureName = man.MeasureName;
+                var z = _databaseContext.Package.FirstOrDefault(g => (g.PackageType == ses.PackageType && g.IndividualSize==ses.IndividualSize && g.Quantity==ses.Quantity && g.Measure==ses.Measure));
 
-                if (x != null)
+                System.Diagnostics.Debug.WriteLine(ses.MeasureName + ses.IndividualSize + ses.PackageType + ses.Quantity);
+
+                if (z != null)
                 {
-                    TempData[Constants.Message] = $"Pakiranje tog imena već postoji.\n";
+                    TempData[Constants.Message] = $"Takvo pakiranje već postoji.\n";
                     TempData[Constants.ErrorOccurred] = true;
                     return RedirectToAction(nameof(Add));
                 }
@@ -189,20 +202,18 @@ namespace Drug.Controllers
                 ses.PackageType = model.Package.PackageType;
                 ses.IndividualSize = model.Package.IndividualSize;
                 ses.Quantity = model.Package.Quantity;
+                ses.MeasureName = ses.Measure.MeasureName;
 
-                var x = _databaseContext.Package.Where(g => (g.PackageType == ses.PackageType && g.PackageId != id)).ToList();
+                var x = _databaseContext.Package.Where(g => (g.PackageType == ses.PackageType && g.IndividualSize == ses.IndividualSize && g.Quantity == ses.Quantity && g.MeasureName == ses.MeasureName && g.PackageId != id)).ToList();
                 if (x.Count > 0)
                 {
-                    TempData[Constants.Message] = $"Pakiranje tog imena već postoji.\n";
+                    TempData[Constants.Message] = $"Takvo pakiranje već postoji.\n";
                     TempData[Constants.ErrorOccurred] = true;
                     return RedirectToAction("Edit", new { id = id });
                 }
 
-                System.Diagnostics.Debug.WriteLine("pero"+ses.PackageData==null);
-
                 TempData["Success"] = true;
                 _databaseContext.SaveChanges();
-                System.Diagnostics.Debug.WriteLine("pero" + ses.PackageData == null);
 
                 TempData[Constants.Message] = $"Pakiranje je promijenjeno";
                 TempData[Constants.ErrorOccurred] = false;

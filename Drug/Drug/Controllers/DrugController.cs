@@ -92,6 +92,8 @@ namespace Drug.Controllers
             ViewData["Drugs"] = _databaseContext.Drug.ToList();
             ViewData["Packages"] = _databaseContext.Package.Include(t => t.Measure).ToList();
             ViewData["Currencies"] = _databaseContext.Currency.ToList();
+            ViewData["Measures"] = _databaseContext.Measure.ToList();
+
 
             return View(new DrugViewModel());
         }
@@ -107,20 +109,24 @@ namespace Drug.Controllers
             ViewData["Drugs"] = _databaseContext.Drug.ToList();
             ViewData["Packages"] = _databaseContext.Package.Include(t=>t.Measure).ToList();
             ViewData["Currencies"] = _databaseContext.Currency.ToList();
+            ViewData["Measures"] = _databaseContext.Measure.ToList();
 
 
 
             if (ModelState.IsValid)
             {
                 Manufacturer man;
+                Manufacturer x;
 
                 if (model.ManufacturerType == "new")
                 {
                     // Additional validation before creating the Company
                     var requiredFields = new[]
                     {
-                        new Tuple<string, object>("Name", model.Manufacturer.ManufacturerName),
-                        new Tuple<string, object>("About", model.Manufacturer.About)
+                        new Tuple<string, object>("Polje s imenom", model.Manufacturer.ManufacturerName),
+                        new Tuple<string, object>("Polje s opisom proizvođača", model.Manufacturer.About),
+                        new Tuple<string, object>("Polje sa slikom", model.Manufacturer.ImagePath)
+
 
                     };
 
@@ -128,7 +134,7 @@ namespace Drug.Controllers
                     {
                         if (field.Item2 == null || field.Item2.Equals(""))
                         {
-                            ModelState.AddModelError(string.Empty, $"{field.Item1} field is required.");
+                            ModelState.AddModelError(string.Empty, $"{field.Item1} je obvezno.");
                         }
                     }
                     if (!ModelState.IsValid)
@@ -137,6 +143,14 @@ namespace Drug.Controllers
                     }
 
                     man = model.Manufacturer;
+                    x = _databaseContext.Manufacturer.FirstOrDefault(g => g.ManufacturerName == man.ManufacturerName);
+
+                    if (x != null)
+                    {
+                        TempData[Constants.Message] = $"Proizvođač tog imena već postoji.\n";
+                        TempData[Constants.ErrorOccurred] = true;
+                        return RedirectToAction(nameof(Add));
+                    }
                     _databaseContext.Manufacturer.Add(man);
                 }
                 else
@@ -144,10 +158,59 @@ namespace Drug.Controllers
                     man = _databaseContext.Manufacturer.Find(model.ManufacturerId);
                 }
 
+                ///////////////
+                Package pac;
+                Package y;
+
+                if (model.PackageType == "new")
+                {
+                    // Additional validation before creating the Company
+                    var requiredFields = new[]
+                    {
+                        new Tuple<string, object>("Polje s tipom pakiranja", model.Package.PackageType),
+                        new Tuple<string, object>("Polje s količinom unutar pakiranja", model.Package.Quantity),
+                        new Tuple<string, object>("Polje s veličinom pojedinačne stavke", model.Package.IndividualSize),
+                        //new Tuple<string, object>("Measure", model.Package.Measure),
+
+
+                    };
+
+                    foreach (var field in requiredFields)
+                    {
+                        if (field.Item2 == null || field.Item2.Equals(""))
+                        {
+                            ModelState.AddModelError(string.Empty, $"{field.Item1} je obavezno.");
+                        }
+                    }
+                    if (!ModelState.IsValid)
+                    {
+                        return View(model);
+                    }
+
+                    var m = _databaseContext.Measure.FirstOrDefault(t => t.MeasureId == model.MeasureId);
+                    pac = model.Package;
+                    pac.Measure = m;
+
+                    y = _databaseContext.Package.FirstOrDefault(g => (g.PackageType == pac.PackageType && g.IndividualSize == pac.IndividualSize && g.Quantity == pac.Quantity && g.Measure == pac.Measure));
+
+                    if (y != null)
+                    {
+                        TempData[Constants.Message] = $"Takvo pakiranje već postoji.\n";
+                        TempData[Constants.ErrorOccurred] = true;
+                        return RedirectToAction(nameof(Add));
+                    }
+                    _databaseContext.Package.Add(pac);
+                }
+                else
+                {
+                    pac = _databaseContext.Package.Include(t=>t.Measure).FirstOrDefault(t=>t.PackageId==model.PackageId);
+                }
+                ///////////////
+
 
 
                 var val = _databaseContext.Currency.FirstOrDefault(m => m.CurrencyId == model.CurrencyId);
-                var pac = _databaseContext.Package.FirstOrDefault(m => m.PackageId == model.PackageId);
+                //var pac = _databaseContext.Package.FirstOrDefault(m => m.PackageId == model.PackageId);
                 var drugCategories = new List<DrugDisease>();
                 var ses = new List<DrugSideEffect>();
 
@@ -203,9 +266,9 @@ namespace Drug.Controllers
                         }
                     }
 
-                var x = _databaseContext.Drug.FirstOrDefault(g => (g.DrugName == drug.DrugName && g.Manufacturer==drug.Manufacturer && g.Package==drug.Package));
+                var z = _databaseContext.Drug.FirstOrDefault(g => (g.DrugName == drug.DrugName && g.Manufacturer==drug.Manufacturer && g.Package==drug.Package));
 
-                if (x != null)
+                if (z != null)
                 {
                     TempData[Constants.Message] = $"Takav lijek već postoji.\n";
                     TempData[Constants.ErrorOccurred] = true;
@@ -226,6 +289,8 @@ namespace Drug.Controllers
                 ViewData["Drugs"] = _databaseContext.Drug.ToList();
                 ViewData["Packages"] = _databaseContext.Package.Include(t => t.Measure).ToList();
                 ViewData["Currencies"] = _databaseContext.Currency.ToList();
+                ViewData["Measures"] = _databaseContext.Measure.ToList();
+
 
 
                 return View("Add", model);
@@ -246,12 +311,13 @@ namespace Drug.Controllers
             var categoryIds = Drug.DrugDiseases.Select(eu => eu.Disease.DiseaseId);
             var sesIds = Drug.DrugSideEffects.Select(eu => eu.SideEffect.SideEffectId);
 
+            ViewData["SideEffects"] = _databaseContext.SideEffect.ToList();
             ViewData["Categories"] = _databaseContext.Disease.ToList();
             ViewData["Manufacturers"] = _databaseContext.Manufacturer.ToList();
-            ViewData["SideEffects"] = _databaseContext.SideEffect.ToList();
-            ViewData["Drugs"] = _databaseContext.Drug.ToList().Where(t=>t.DrugId!=id);
+            ViewData["Drugs"] = _databaseContext.Drug.Where(g=>g.DrugId!=id).ToList();
             ViewData["Packages"] = _databaseContext.Package.Include(t => t.Measure).ToList();
             ViewData["Currencies"] = _databaseContext.Currency.ToList();
+            ViewData["Measures"] = _databaseContext.Measure.ToList();
 
 
             return View(new EditDrugViewModel { Drug = Drug, SideEffectIds = sesIds, CategoryIds = categoryIds,
@@ -261,50 +327,27 @@ namespace Drug.Controllers
         [HttpPost]
         public IActionResult Update(int id, EditDrugViewModel model)
         {
+            ViewData["SideEffects"] = _databaseContext.SideEffect.ToList();
+            ViewData["Categories"] = _databaseContext.Disease.ToList();
+            ViewData["Manufacturers"] = _databaseContext.Manufacturer.ToList();
+            ViewData["Drugs"] = _databaseContext.Drug.Where(g => g.DrugId != id).ToList();
+            ViewData["Packages"] = _databaseContext.Package.Include(t => t.Measure).ToList();
+            ViewData["Currencies"] = _databaseContext.Currency.ToList();
+            ViewData["Measures"] = _databaseContext.Measure.ToList();
             if (!ModelState.IsValid)
             {
-                ViewData["Categories"] = _databaseContext.Disease.ToList();
-                ViewData["Drugs"] = _databaseContext.Drug.ToList().Where(t => t.DrugId != id);
-
-                ViewData["Manufacturers"] = _databaseContext.Manufacturer.ToList();
                 ViewData["SideEffects"] = _databaseContext.SideEffect.ToList();
+                ViewData["Categories"] = _databaseContext.Disease.ToList();
+                ViewData["Manufacturers"] = _databaseContext.Manufacturer.ToList();
+                ViewData["Drugs"] = _databaseContext.Drug.ToList();
                 ViewData["Packages"] = _databaseContext.Package.Include(t => t.Measure).ToList();
                 ViewData["Currencies"] = _databaseContext.Currency.ToList();
+                ViewData["Measures"] = _databaseContext.Measure.ToList();
 
                 return View(nameof(Edit), model);
             }
 
-            Manufacturer man;
-
-            if (model.ManufacturerType == "new")
-            {
-                // Additional validation before creating the Company
-                var requiredFields = new[]
-                {
-                        new Tuple<string, object>("Name", model.Manufacturer.ManufacturerName),
-                        new Tuple<string, object>("About", model.Manufacturer.About)
-
-                    };
-
-                foreach (var field in requiredFields)
-                {
-                    if (field.Item2 == null || field.Item2.Equals(""))
-                    {
-                        ModelState.AddModelError(string.Empty, $"{field.Item1} field is required.");
-                    }
-                }
-                if (!ModelState.IsValid)
-                {
-                    return View(model);
-                }
-
-                man = model.Manufacturer;
-                _databaseContext.Manufacturer.Add(man);
-            }
-            else
-            {
-                man = _databaseContext.Manufacturer.Find(model.ManufacturerId);
-            }
+            var man = _databaseContext.Manufacturer.FirstOrDefault(t => t.ManufacturerId == model.ManufacturerId);
 
             var Drug = _databaseContext.Drug
                 .Include(p => p.DrugSideEffects).ThenInclude(i => i.SideEffect)

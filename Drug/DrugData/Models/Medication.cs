@@ -13,7 +13,13 @@ namespace DrugData.Models
         public string DrugName { get; set; }
         public virtual Manufacturer Manufacturer { get; set; }
         public Package Package { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy}", ApplyFormatInEditMode = true)]
         public DateTime DateProduced { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy}", ApplyFormatInEditMode = true)]
         public DateTime DateExpires {get; set; }
 
         [DataType(DataType.ImageUrl)]

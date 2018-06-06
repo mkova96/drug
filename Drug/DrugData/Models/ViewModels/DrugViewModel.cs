@@ -46,18 +46,27 @@ namespace DrugData.Models.ViewModels
         public string y { get; set; }
         public bool z { get; set; }
         public string ManufacturerType { get; set; }
+        public Manufacturer Manufacturer { get; set; }
 
         public int ManufacturerId { get; set; }
+        public int MeasureId { get; set; }
+
+
+        public string PackageType { get; set; }
+        public Package Package { get; set; }
+
         public int PackageId { get; set; }
         public int CurrencyId { get; set; }
 
 
-        public Manufacturer Manufacturer { get; set; }
 
         public DrugViewModel()
         {
             Manufacturer = new Manufacturer();
             ManufacturerType = "existing";
+
+            Package = new Package();
+            PackageType = "existing";
         }
 
     }

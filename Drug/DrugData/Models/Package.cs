@@ -10,7 +10,6 @@ namespace DrugData.Models
     {
         public int PackageId { get; set; }
 
-        [Required]
         [StringLength(100)]
         public string PackageType { get; set; }
 
@@ -22,7 +21,9 @@ namespace DrugData.Models
 
         public virtual ICollection<Medication> Drugs { get; set; }
 
+        public string MeasureName { get; set; }
+
         [NotMapped]
-        public  virtual string PackageData => $"{PackageType}, količina u pakiranju: {Quantity}, pojedinačna veličina: {IndividualSize} {Measure.MeasureName}";
+        public  virtual string PackageData => $"{PackageType}, količina u pakiranju: {Quantity}, pojedinačna veličina: {IndividualSize} {MeasureName}";
     }
 }

@@ -29,16 +29,13 @@
     </div>
     <div class="form-group">
         <label asp-for="ImagePath">Slika</label>
-        <input asp-for="ImagePath" id="da"class="form-control" />
+        <input asp-for="ImagePath" id="da" class="form-control" />
     </div>
     <div class="form-group">
         <label asp-for="Usage">Uporaba</label>
         <input asp-for="Usage" id="da" class="form-control" />
     </div>
-    <div class="form-group">
-        <label asp-for="PackageId">Pakiranje</label>
-        <select asp-for="PackageId" asp-items="@(new SelectList((IEnumerable<Package>) @ViewData["Packages"],"PackageId", "PackageData"))" class="form-control"></select>
-    </div>
+
 
     <div class="form-group">
         <label asp-for="Stock">Količina na skladištu</label>
@@ -99,9 +96,55 @@
                 <label asp-for="Manufacturer.About">O proizvođaču </label>
                 <textarea asp-for="Manufacturer.About" class="form-control"></textarea>
             </div>
+            <div class="form-group">
+                <label asp-for="Manufacturer.ImagePath">Slika</label>
+                <input asp-for="Manufacturer.ImagePath" id="da" class="form-control" />
+            </div>
         </div>
     </div>
 
+    <div class="col">
+        <h3>Pakiranje</h3>
+        <div class="form-group">
+            <div class="row">
+                <div class="col">
+                    <div class="form-check form-check-inline">
+                        @Html.RadioButtonFor(model => model.PackageType, "existing", new { Class = "form-check-input", Id = "ExistingRadio", Name = "PackageType" })
+                        <label class="form-check-label" for="ExistingRadio">Odaberi postojeće pakiranje</label>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-check form-check-inline">
+                        @Html.RadioButtonFor(model => model.PackageType, "new", new { Class = "form-check-input", Id = "NewRadio", Name = "PackageType" })
+                        <label class="form-check-label" for="NewRadio">Dodaj novo pakiranje</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" id="drugSelectPackage">
+            <label asp-for="PackageId">Pakiranje</label>
+            <select asp-for="PackageId" asp-items="@(new SelectList((IEnumerable<Package>) @ViewData["Packages"], "PackageId", "PackageData"))" class="form-control"></select>
+        </div>
+        <div class="form-group" id="drugCreatePackage" style="display: none">
+            <div class="form-group">
+                <label asp-for="Package.PackageType">Naziv </label>
+                <input type="text" id="da" class="form-control" asp-for="Package.PackageType">
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Package.Quantity">Količina u pakiranju </label>
+                <input asp-for="Package.Quantity" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Package.IndividualSize">Pojedinačna veličina </label>
+                <input asp-for="Package.IndividualSize" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="MeasureId">Mjerna jedinica</label>
+                <select asp-for="MeasureId" id="ne" asp-items="@(new SelectList((IEnumerable<Measure>) @ViewData["Measures"], "MeasureId", "MeasureName"))" class="form-control"></select>
+            </div>
+        </div>
+    </div>
 
 
 
@@ -125,16 +168,38 @@
  });
 
 
-function showManufacturerView() {
-    var value = $('input[name="ManufacturerType"]:checked').first().val();
+function showPackageView() {
+    var value = $('input[name="PackageType"]:checked').first().val();
     if (value === "new") {
-        $('#drugCreateManufacturer').show();
-        $('#drugSelectManufacturer').hide();
+        $('#drugCreatePackage').show();
+        $('#drugSelectPackage').hide();
     } else {
-        $('#drugCreateManufacturer').hide();
-        $('#drugSelectManufacturer').show();
+        $('#drugCreatePackage').hide();
+        $('#drugSelectPackage').show();
     }
 }
+
+    $(document).ready(function () {
+        var $registerRadios = $('input[name="PackageType"]');
+        if ($registerRadios.length) {
+            showPackageView();
+            $registerRadios.on('change', function (e) {
+                showPackageView();
+            })
+        }
+    });
+
+
+    function showManufacturerView() {
+        var value = $('input[name="ManufacturerType"]:checked').first().val();
+        if (value === "new") {
+            $('#drugCreateManufacturer').show();
+            $('#drugSelectManufacturer').hide();
+        } else {
+            $('#drugCreateManufacturer').hide();
+            $('#drugSelectManufacturer').show();
+        }
+    }
 
 </script>
 
