@@ -8,12 +8,13 @@ namespace DrugData.Models.ViewModels
     public class PackageViewModel
     {
 
-        [Required]
-        [StringLength(20)]
+        [Required(ErrorMessage = "Naziv pakiranja je obavezan")]
         public string PackageType { get; set; }
 
+        [Range(1, 1000, ErrorMessage = "Količina unutar pakiranja mora biti veća od 0")]
         public int Quantity { get; set; }
 
+        [Range(1, 1000, ErrorMessage = "Veličina pojedinačne stavke unutar pakiranja mora biti veća od 0")]
         public int IndividualSize { get; set; }
 
         public string MeasureType { get; set; }

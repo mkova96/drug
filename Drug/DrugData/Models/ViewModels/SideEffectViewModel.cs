@@ -7,8 +7,7 @@ namespace DrugData.Models.ViewModels
 {
     public class SideEffectViewModel
     {
-        [Required]
-        [StringLength(100)]
+        [Required(ErrorMessage = "Naziv nuspojave je obavezan.")]
         public string Name { get; set; }
     }
 }

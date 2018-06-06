@@ -274,6 +274,13 @@ namespace Drug.Controllers
                     TempData[Constants.ErrorOccurred] = true;
                     return RedirectToAction(nameof(Add));
                 }
+                if (drug.DateProduced>=drug.DateExpires)
+                {
+                    TempData[Constants.Message] = $"Datum isteka roka mora biti veći od datuma proizvodnje.\n";
+                    TempData[Constants.ErrorOccurred] = true;
+                    return RedirectToAction(nameof(Add));
+                }
+
                 _databaseContext.Drug.Add(drug);
 
                     TempData["Success"] = true;
@@ -454,15 +461,15 @@ namespace Drug.Controllers
 
                 _databaseContext.Comment.Add(comment);
 
-                System.Diagnostics.Debug.WriteLine("AAA" + comment.CommentId.ToString());
-                System.Diagnostics.Debug.WriteLine("USER" + sender.FullName.ToString());
-
                 sender.Comments.Add(comment);
                 Drug.Comments.Add(comment);
                 _databaseContext.SaveChanges();
+                return RedirectToAction("Show", "Drugs", new { Id = Drug.DrugId });
+
 
             }
-            return RedirectToAction("Show", "Drugs", new { Id = Drug.DrugId });
+            return View("AddComment", model);
+
         }
 
         [HttpGet]

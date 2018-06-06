@@ -7,8 +7,7 @@ namespace DrugData.Models.ViewModels
 {
     public class CurrencyViewModel
     {
-        [Required]
-        [StringLength(3)]
+        [Required(ErrorMessage = "Naziv valute je obavezan.")]
         public string CurrencyName { get; set; }
     }
 }

@@ -7,8 +7,7 @@ namespace DrugData.Models.ViewModels
 {
     public class MeasureViewModel
     {
-        [Required]
-        [StringLength(5)]
+        [Required(ErrorMessage = "Naziv mjerne jedinice je obavezan")]
         public string MeasureName { get; set; }
     }
 }

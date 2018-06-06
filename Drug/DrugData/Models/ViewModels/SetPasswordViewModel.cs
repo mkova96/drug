@@ -7,8 +7,8 @@ namespace DrugData.Models.ViewModels
 {
     public class SetPasswordViewModel
     {
-        [Required]
-        [StringLength(100, ErrorMessage = "Lozinka mora sadržavati najmanje {2} znakova, a najviše {1}.", MinimumLength = 6)]
+        [Required(ErrorMessage = "Morate unijeti svoju lozinku")]
+        [StringLength(100, ErrorMessage = "Lozinka mora imati minimalno 6 znakova te kombinaciju slova i znamenki", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Nova lozinka")]
         public string NewPassword { get; set; }

@@ -7,27 +7,27 @@ namespace DrugData.Models.ViewModels
 {
     public class OrderViewModel
     {
-        [Required(ErrorMessage = "Unesite svoje ime")]
+        [Required(ErrorMessage = "Morate unijeti svoje ime")]
         [Display(Name = "Ime")]
         [StringLength(50)]
         public string FirstName { get; set; }
 
-        [Required(ErrorMessage = "Unesite svoje prezime")]
+        [Required(ErrorMessage = "Morate unijeti svoje prezime")]
         [Display(Name = "Prezime")]
         [StringLength(50)]
         public string LastName { get; set; }
 
-        [Required(ErrorMessage = "Unesite svoju adresu")]
+        [Required(ErrorMessage = "Morate unijeti svoju adresu")]
         [StringLength(100)]
         [Display(Name = "Adresa")]
         public string Address { get; set; }
 
-        [Required(ErrorMessage = "Unesite svoj poštanski broj")]
+        [Required(ErrorMessage = "Morate unijeti svoj poštanski broj")]
         [Display(Name = "Poštanski broj")]
         [StringLength(10, MinimumLength = 4)]
         public string ZipCode { get; set; }
 
-        [Required(ErrorMessage = "Unesite svoj grad")]
+        [Required(ErrorMessage = "Morate unijeti svoj grad")]
         [Display(Name = "Grad")]
         [StringLength(100)]
         public string CityName { get; set; }
@@ -36,7 +36,7 @@ namespace DrugData.Models.ViewModels
         [StringLength(50)]
         public string CountryName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Morate unijeti svoju mail adresu")]
         [StringLength(50)]
         [DataType(DataType.EmailAddress)]
         [RegularExpression(@"(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|""(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*"")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])",

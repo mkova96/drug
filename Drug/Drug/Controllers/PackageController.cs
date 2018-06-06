@@ -140,9 +140,12 @@ namespace Drug.Controllers
                 _databaseContext.SaveChanges();
                 TempData[Constants.Message] = $"Pakiranje je dodano";
                 TempData[Constants.ErrorOccurred] = false;
-            }
+                return RedirectToAction(nameof(Index));
 
-            return RedirectToAction(nameof(Index));
+            }
+            return View("Add", model);
+
+
         }
 
         [HttpPost]

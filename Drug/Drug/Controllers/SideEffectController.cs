@@ -94,9 +94,16 @@ namespace Lijek.Controllers
                 _databaseContext.SaveChanges();
                 TempData[Constants.Message] = $"Nuspojava je dodana";
                 TempData[Constants.ErrorOccurred] = false;
+
+                return RedirectToAction(nameof(Index));
+
+            }
+            else
+            {
+                return View("Add", model);
+
             }
 
-            return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
@@ -143,12 +150,9 @@ namespace Lijek.Controllers
         public IActionResult Update(int id, EditSideEffectViewModel model)
         {
 
-
-            if (ModelState.IsValid)
+           if (ModelState.IsValid)
             {
-                var ses = _databaseContext.SideEffect
-
-                .FirstOrDefault(m => m.SideEffectId == id);
+                var ses = _databaseContext.SideEffect.FirstOrDefault(m => m.SideEffectId == id);
 
                 ses.SideEffectName = model.SideEffect.SideEffectName;
 
@@ -164,9 +168,13 @@ namespace Lijek.Controllers
                 _databaseContext.SaveChanges();
                 TempData[Constants.Message] = $"Nuspojava je promijenjena";
                 TempData[Constants.ErrorOccurred] = false;
-            
-        }
-            return RedirectToAction(nameof(Index));
+
+                return RedirectToAction(nameof(Index));
+
+
+            }
+            return View("Edit",model);
+
         }
     }
 }

@@ -91,9 +91,12 @@ namespace Drug.Controllers
                 _databaseContext.SaveChanges();
                 TempData[Constants.Message] = $"Valuta je dodana";
                 TempData[Constants.ErrorOccurred] = false;
-            }
+                return RedirectToAction(nameof(Index));
 
-            return RedirectToAction(nameof(Index));
+            }
+            return View("Add", model);
+
+
         }
 
         [HttpPost]

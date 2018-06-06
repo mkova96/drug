@@ -7,12 +7,16 @@ namespace DrugData.Models.ViewModels
 {
     public class ManufacturerViewModel
     {
-        [Required]
-        [StringLength(100)]
+        [Required(ErrorMessage = "Naziv proizvođača je obavezan")]
         public string Name { get; set; }
 
+        [Required(ErrorMessage = "Tekst o proizvođaču je obavezan")]
         [DataType(DataType.MultilineText)]
         public string About { get; set; }
+
+        [Required(ErrorMessage = "Poveznica slike proizvođača je obavezna")]
+        [DataType(DataType.ImageUrl)]
+        public string ImagePath { get; set; }
 
 
 

@@ -91,9 +91,12 @@ namespace Lijek.Controllers
                 _databaseContext.SaveChanges();
                 TempData[Constants.Message] = $"Proizvođač je dodan";
                 TempData[Constants.ErrorOccurred] = false;
-            }
+                return RedirectToAction(nameof(Index));
 
-            return RedirectToAction(nameof(Index));
+            }
+            return View("Add", model);
+
+
         }
 
         [HttpPost]

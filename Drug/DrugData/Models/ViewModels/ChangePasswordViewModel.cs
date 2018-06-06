@@ -12,8 +12,8 @@ namespace DrugData.Models.ViewModels
         [Display(Name = "Trenutna lozinka")]
         public string OldPassword { get; set; }
 
-        [Required]
-        [StringLength(100, ErrorMessage = "Lozinka mora sadržavati barem {2} znakova, a najviše {1}.", MinimumLength = 6)]
+        [Required(ErrorMessage = "Morate unijeti svoju novu lozinku")]
+        [StringLength(100, ErrorMessage = "Lozinka mora imati minimalno 6 znakova te kombinaciju slova i znamenki", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Nova lozinka")]
         public string NewPassword { get; set; }
