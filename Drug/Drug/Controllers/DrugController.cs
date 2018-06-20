@@ -392,16 +392,38 @@ namespace Drug.Controllers
         [HttpPost]
         public IActionResult Delete(int id, int? page)
         {
-            var messages = _databaseContext.OrderDetail.Include(i => i.Drug).Where(t =>t.Drug.DrugId == id ).ToList();
-            foreach (var t in messages)
+            var drug = _databaseContext.Drug.FirstOrDefault(t => t.DrugId == id);
+
+            var ses = _databaseContext.DrugSideEffect.Where(i => i.Drug == drug);
+            foreach (var z in ses)
             {
-                _databaseContext.OrderDetail.Remove(t);
+                _databaseContext.DrugSideEffect.Remove(z);
+            }
+            var cars = _databaseContext.DrugCart.Where(i => i.Drug == drug);
+            foreach (var z in cars)
+            {
+                _databaseContext.DrugCart.Remove(z);
+            }
+
+            var dis = _databaseContext.DrugDisease.Where(i => i.Drug == drug);
+            foreach(var z in dis)
+            {
+                _databaseContext.DrugDisease.Remove(z);
             }
             _databaseContext.SaveChanges();
 
-            _databaseContext.Drug.Remove(new Medication { DrugId = id });
-            _databaseContext.SaveChanges();
-
+            try
+            {
+                _databaseContext.Drug.Remove(drug);
+                _databaseContext.SaveChanges();
+                TempData[Constants.Message] = $"Proizvod je obrisan";
+                TempData[Constants.ErrorOccurred] = false;
+            }
+            catch (Exception exc)
+            {
+                TempData[Constants.Message] = $"Proizvod nije moguće obrisati jer postoje narudžbe koji ga sadrže.";
+                TempData[Constants.ErrorOccurred] = true;
+            }
 
             var x = _databaseContext.Drug.ToList().Count;
 
