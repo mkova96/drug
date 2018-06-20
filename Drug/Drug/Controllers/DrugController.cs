@@ -134,11 +134,15 @@ namespace Drug.Controllers
                     {
                         if (field.Item2 == null || field.Item2.Equals(""))
                         {
-                            ModelState.AddModelError(string.Empty, $"{field.Item1} je obvezno.");
+                            System.Diagnostics.Debug.WriteLine("UŠO");
+                            ModelState.AddModelError("Error", $"{field.Item1} je obvezno.");
                         }
                     }
+
                     if (!ModelState.IsValid)
                     {
+                        System.Diagnostics.Debug.WriteLine("UŠO2");
+
                         return View(model);
                     }
 
@@ -232,7 +236,7 @@ namespace Drug.Controllers
                 };
                 
 
-                if (model.z == true)
+                if (model.SubstitutionType == "existing")
                 {
                     var drugs = new List<Medication>();
                     drugs = model.DrugIds.Select(id => _databaseContext.Drug.Find(id)).ToList();

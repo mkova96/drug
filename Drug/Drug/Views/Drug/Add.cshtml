@@ -1,5 +1,7 @@
 ﻿@model DrugData.Models.ViewModels.DrugViewModel
-
+<p class="text-danger">
+    @ViewBag.FirstNameError
+</p>
 <form asp-action="Create" method="POST">
     <div asp-validation-summary="All" class="text-danger"></div>
 
@@ -49,19 +51,45 @@
         <label asp-for="SideEffectIds">Moguće nuspojave</label>
         <select multiple asp-for="SideEffectIds" asp-items="@(new SelectList((IEnumerable<SideEffect>) @ViewData["SideEffects"], "SideEffectId", "SideEffectName"))" class="form-control"></select>
     </div>
-    <div class="form-group">
-        <label asp-for="z">Zamjenski proizvodi? </label>
-        <select name="z">
-            <option value="true">Da</option>
-            <option value="false">Ne</option>
-        </select>
-    </div>
+    @*<div class="form-group">
+            <label asp-for="z">Zamjenski proizvodi? </label>
+            <select name="z">
+                <option value="true">Da</option>
+                <option value="false">Ne</option>
+            </select>
+        </div>
 
 
 
-    <div class="form-group">
-        <label asp-for="DrugIds">Zamjenski proizvodi</label>
-        <select multiple asp-for="DrugIds" asp-items="@(new SelectList((IEnumerable<Medication>) ViewData["Drugs"], "DrugId", "DrugName"))" class="form-control"></select>
+        <div class="form-group">
+            <label asp-for="DrugIds">Zamjenski proizvodi</label>
+            <select multiple asp-for="DrugIds" asp-items="@(new SelectList((IEnumerable<Medication>) ViewData["Drugs"], "DrugId", "DrugName"))" class="form-control"></select>
+        </div>*@
+
+    <div class="col">
+        <h5><b>Zamjenski proizvodi?</b></h5>
+        <div class="form-group">
+            <div class="row">
+                <div class="col">
+                    <div class="form-check form-check-inline">
+                        @Html.RadioButtonFor(model => model.SubstitutionType, "existing", new { Class = "form-check-input", Id = "ExistingRadio", Name = "SubstitutionType" })
+                        <label class="form-check-label" for="ExistingRadio">Da</label>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-check form-check-inline">
+                        @Html.RadioButtonFor(model => model.SubstitutionType, "new", new { Class = "form-check-input", Id = "NewRadio", Name = "SubstitutionType" })
+                        <label class="form-check-label" for="NewRadio">Ne</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" id="drugSelectSubstitution">
+            <label asp-for="DrugIds">Zamjenski proizvodi</label>
+            <select multiple asp-for="DrugIds" asp-items="@(new SelectList((IEnumerable<Medication>) ViewData["Drugs"], "DrugId", "DrugName"))" class="form-control"></select>
+        </div>
+        <div class="form-group" id="drugCreateSubstitution" style="display: none">
+        </div>
     </div>
 
     <div class="col">
@@ -157,27 +185,27 @@
 </form>
 
 <script>
-    ﻿$(document).ready(function () {
-    var $registerRadios = $('input[name="ManufacturerType"]');
-    if ($registerRadios.length) {
-        showManufacturerView();
-        $registerRadios.on('change', function (e) {
+    $(document).ready(function () {
+        var $registerRadios = $('input[name="ManufacturerType"]');
+        if ($registerRadios.length) {
             showManufacturerView();
-        })
-    }
- });
+            $registerRadios.on('change', function (e) {
+                showManufacturerView();
+            })
+        }
+    });
 
 
-function showPackageView() {
-    var value = $('input[name="PackageType"]:checked').first().val();
-    if (value === "new") {
-        $('#drugCreatePackage').show();
-        $('#drugSelectPackage').hide();
-    } else {
-        $('#drugCreatePackage').hide();
-        $('#drugSelectPackage').show();
+    function showPackageView() {
+        var value = $('input[name="PackageType"]:checked').first().val();
+        if (value === "new") {
+            $('#drugCreatePackage').show();
+            $('#drugSelectPackage').hide();
+        } else {
+            $('#drugCreatePackage').hide();
+            $('#drugSelectPackage').show();
+        }
     }
-}
 
     $(document).ready(function () {
         var $registerRadios = $('input[name="PackageType"]');
@@ -198,6 +226,28 @@ function showPackageView() {
         } else {
             $('#drugCreateManufacturer').hide();
             $('#drugSelectManufacturer').show();
+        }
+    }
+
+    $(document).ready(function () {
+        var $registerRadios = $('input[name="SubstitutionType"]');
+        if ($registerRadios.length) {
+            showSubstitutionView();
+            $registerRadios.on('change', function (e) {
+                showSubstitutionView();
+            })
+        }
+    });
+
+
+    function showSubstitutionView() {
+        var value = $('input[name="SubstitutionType"]:checked').first().val();
+        if (value === "new") {
+            $('#drugCreateSubstitution').show();
+            $('#drugSelectSubstitution').hide();
+        } else {
+            $('#drugCreateSubstitution').hide();
+            $('#drugSelectSubstitution').show();
         }
     }
 
