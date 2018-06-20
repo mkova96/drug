@@ -120,30 +120,13 @@ namespace Drug.Controllers
 
                 if (model.ManufacturerType == "new")
                 {
-                    // Additional validation before creating the Company
-                    var requiredFields = new[]
+                  
+                    if (model.Manufacturer.ManufacturerName==null || model.Manufacturer.About == null|| model.Manufacturer.ImagePath == null)
                     {
-                        new Tuple<string, object>("Polje s imenom", model.Manufacturer.ManufacturerName),
-                        new Tuple<string, object>("Polje s opisom proizvođača", model.Manufacturer.About),
-                        new Tuple<string, object>("Polje sa slikom", model.Manufacturer.ImagePath)
-
-
-                    };
-
-                    foreach (var field in requiredFields)
-                    {
-                        if (field.Item2 == null || field.Item2.Equals(""))
-                        {
-                            System.Diagnostics.Debug.WriteLine("UŠO");
-                            ModelState.AddModelError("Error", $"{field.Item1} je obvezno.");
-                        }
-                    }
-
-                    if (!ModelState.IsValid)
-                    {
-                        System.Diagnostics.Debug.WriteLine("UŠO2");
-
-                        return View(model);
+                        TempData[Constants.Message] = $"Sva polja za proizvođača su obavezna.\n";
+                        TempData[Constants.ErrorOccurred] = true;
+                        System.Diagnostics.Debug.WriteLine("fuego");
+                        return View("Add", model);
                     }
 
                     man = model.Manufacturer;
@@ -153,7 +136,7 @@ namespace Drug.Controllers
                     {
                         TempData[Constants.Message] = $"Proizvođač tog imena već postoji.\n";
                         TempData[Constants.ErrorOccurred] = true;
-                        return RedirectToAction(nameof(Add));
+                        return View("Add", model);
                     }
                     _databaseContext.Manufacturer.Add(man);
                 }
@@ -168,27 +151,12 @@ namespace Drug.Controllers
 
                 if (model.PackageType == "new")
                 {
-                    // Additional validation before creating the Company
-                    var requiredFields = new[]
+                    if (model.Package.PackageType == null || model.Package.Quantity ==0 || model.Package.IndividualSize==0 )
                     {
-                        new Tuple<string, object>("Polje s tipom pakiranja", model.Package.PackageType),
-                        new Tuple<string, object>("Polje s količinom unutar pakiranja", model.Package.Quantity),
-                        new Tuple<string, object>("Polje s veličinom pojedinačne stavke", model.Package.IndividualSize),
-                        //new Tuple<string, object>("Measure", model.Package.Measure),
-
-
-                    };
-
-                    foreach (var field in requiredFields)
-                    {
-                        if (field.Item2 == null || field.Item2.Equals(""))
-                        {
-                            ModelState.AddModelError(string.Empty, $"{field.Item1} je obavezno.");
-                        }
-                    }
-                    if (!ModelState.IsValid)
-                    {
-                        return View(model);
+                        TempData[Constants.Message] = $"Sva polja za pakiranje su obavezna te moraju biti različita od 0.\n";
+                        TempData[Constants.ErrorOccurred] = true;
+                        System.Diagnostics.Debug.WriteLine("fuego");
+                        return View("Add", model);
                     }
 
                     var m = _databaseContext.Measure.FirstOrDefault(t => t.MeasureId == model.MeasureId);
@@ -201,7 +169,7 @@ namespace Drug.Controllers
                     {
                         TempData[Constants.Message] = $"Takvo pakiranje već postoji.\n";
                         TempData[Constants.ErrorOccurred] = true;
-                        return RedirectToAction(nameof(Add));
+                        return View("Add", model);
                     }
                     _databaseContext.Package.Add(pac);
                 }
@@ -211,7 +179,21 @@ namespace Drug.Controllers
                 }
                 ///////////////
 
+                try
+                {
+                    if (model.SubstitutionType == "existing" && !model.DrugIds.Any())
+                    {
 
+                    }
+
+                }
+                catch (Exception exc)
+                {
+                    System.Diagnostics.Debug.WriteLine("konj");
+                    TempData[Constants.Message] = $"Zamjenski proizvodi su obavezni.\n";
+                    TempData[Constants.ErrorOccurred] = true;
+                    return View("Add", model);
+                }
 
                 var val = _databaseContext.Currency.FirstOrDefault(m => m.CurrencyId == model.CurrencyId);
                 //var pac = _databaseContext.Package.FirstOrDefault(m => m.PackageId == model.PackageId);
@@ -276,13 +258,13 @@ namespace Drug.Controllers
                 {
                     TempData[Constants.Message] = $"Takav lijek već postoji.\n";
                     TempData[Constants.ErrorOccurred] = true;
-                    return RedirectToAction(nameof(Add));
+                    return View("Add", model);
                 }
                 if (drug.DateProduced>=drug.DateExpires)
                 {
                     TempData[Constants.Message] = $"Datum isteka roka mora biti veći od datuma proizvodnje.\n";
                     TempData[Constants.ErrorOccurred] = true;
-                    return RedirectToAction(nameof(Add));
+                    return View("Add", model);
                 }
 
                 _databaseContext.Drug.Add(drug);

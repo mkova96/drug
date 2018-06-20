@@ -39,8 +39,7 @@ namespace DrugData.Models.ViewModels
         [MinLength(1)]
         public List<int> SideEffectIds { get; set; }
 
-        [Required(ErrorMessage = "Zamjenski proizvodi nisu uneseni")]
-        [MinLength(1)]
+
         public List<int> DrugIds { get; set; }
 
         [Required(ErrorMessage = "Način uporabe proizvoda je obavezan")]
@@ -75,7 +74,7 @@ namespace DrugData.Models.ViewModels
             PackageType = "existing";
 
             Drug = new Medication();
-            SubstitutionType = "existing";
+            SubstitutionType = "new";
 
 
         }
