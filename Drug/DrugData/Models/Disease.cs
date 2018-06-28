@@ -9,11 +9,10 @@ namespace DrugData.Models
     {
         public int DiseaseId { get; set; }
 
-        [Required]
-        [StringLength(100)]
+        [Required(ErrorMessage = "Naziv bolesti je obavezan.")]
         public string DiseaseName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Međunarodni klasifikacijski broj bolesti je obavezan.")]
         [StringLength(3)]
         public string ICD { get; set; }
 

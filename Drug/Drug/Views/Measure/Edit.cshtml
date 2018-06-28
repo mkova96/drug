@@ -2,10 +2,7 @@
 
 <form asp-action="Update" asp-route-id="@Model.Measure.MeasureId" method="post">
     <div asp-validation-summary="All" class="text-danger"></div>
-    @if (@ViewData["Success"] != null)
-    {
-        <div class="alert alert-success">Mjerna jedinica spremljena</div>
-    }
+
     <h2>Uredi</h2>
     <div class="form-group">
         <label asp-for="Measure.MeasureName">Naziv </label>

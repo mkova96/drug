@@ -9,19 +9,21 @@ namespace DrugData.Models.ViewModels
     {
         public string Username { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Morate unijeti mail adresu")]
         [EmailAddress]
         public string Email { get; set; }
 
+        [Required(ErrorMessage = "Morate unijeti ime")]
         [Display(Name = "Ime")]
         public string Name { get; set; }
 
+        [Required(ErrorMessage = "Morate unijeti prezime")]
         [Display(Name = "Prezime")]
         public string Surname { get; set; }
 
         public string StatusMessage { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Morate unijeti adresu")]
         [Display(Name = "Adresa")]
         public string Address { get; set; }
 

@@ -2,10 +2,7 @@
 
 <form asp-action="Update" asp-route-id="@Model.Category.DiseaseId" method="post">
     <div asp-validation-summary="All" class="text-danger"></div>
-    @if (@ViewData["Success"] != null)
-    {
-        <div class="alert alert-success">Tip bolesti spremljen</div>
-    }
+
     <h2>Uredi</h2>
     <div class="form-group">
         <label asp-for="Category.DiseaseName">Naziv </label>

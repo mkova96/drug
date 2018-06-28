@@ -76,7 +76,7 @@ namespace Lijek.Controllers
         {
             if (ModelState.IsValid)
             {
-                var man = new Manufacturer { ManufacturerName = model.Name,About=model.About };
+                var man = new Manufacturer { ManufacturerName = model.Name,About=model.About,ImagePath=model.ImagePath };
                 var x = _databaseContext.Manufacturer.FirstOrDefault(g => g.ManufacturerName == man.ManufacturerName);
 
                 if (x != null)
@@ -143,7 +143,11 @@ namespace Lijek.Controllers
         [HttpPost]
         public IActionResult Update(int id, EditManufacturerViewModel model)
         {
+            if (id != 0)
+            {
+                model.Manufacturer.ManufacturerId = id;
 
+            }
 
             if (ModelState.IsValid)
             {
@@ -151,6 +155,7 @@ namespace Lijek.Controllers
 
                 man.ManufacturerName = model.Manufacturer.ManufacturerName;
                 man.About = model.Manufacturer.About;
+                man.ImagePath = model.Manufacturer.ImagePath;
 
                 var x = _databaseContext.Manufacturer.Where(g => (g.ManufacturerName == man.ManufacturerName && g.ManufacturerId!=id)).ToList();
                 if (x.Count>0)
@@ -164,8 +169,14 @@ namespace Lijek.Controllers
                 _databaseContext.SaveChanges();
                 TempData[Constants.Message] = $"Proizvođač je promijenjen";
                 TempData[Constants.ErrorOccurred] = false;
+                return RedirectToAction(nameof(Index));
+
             }
-            return RedirectToAction(nameof(Index));
+            else
+            {
+                return View("Edit", model);
+
+            }
         }
 
         public ViewResult Show(int id)

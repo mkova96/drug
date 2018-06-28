@@ -2,10 +2,7 @@
 
 <form asp-action="Update" asp-route-id="@Model.Doctor.Id" method="post">
     <div asp-validation-summary="All" class="text-danger"></div>
-    @if (@ViewData["Success"] != null)
-    {
-        <div class="alert alert-success">Admin spremljen</div>
-    }
+
     <h2>Uredi</h2>
     <div class="form-group">
         <label asp-for="Doctor.Name">Ime</label>
@@ -27,7 +24,6 @@
     <div class="form-group">
         <label asp-for="Doctor.Address">Adresa</label>
         <input asp-for="Doctor.Address" id="da" class="form-control" />
-        <span asp-validation-for="Doctor.Address" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="CityId">Grad</label>

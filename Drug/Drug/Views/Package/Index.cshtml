@@ -22,7 +22,7 @@
     {
         <tr data-toggle="collapse" id="xman" data-target="@("#" + item.PackageId.ToString())" style="cursor:pointer;">
             <td class="text-center">@item.PackageId</td>
-            <td class="text-center">@item.PackageType</td>
+            <td class="text-center">@item.PackageType-@item.Quantity-@item.IndividualSize @item.Measure.MeasureName</td>
             <td class="text-center">
                 <a asp-action="Edit" asp-route-id="@item.PackageId" class="btn btn-warning btn-sm">Uredi</a>
                 <form asp-action="Delete" asp-route-id="@item.PackageId" D-route-page="@(Model.PageIndex)"

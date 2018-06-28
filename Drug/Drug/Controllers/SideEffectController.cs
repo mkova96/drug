@@ -144,16 +144,29 @@ namespace Lijek.Controllers
             {
                 SideEffect = ses
             };
+            System.Diagnostics.Debug.WriteLine("ID" + ses.SideEffectId);
+
             return View(model);
         }
         [HttpPost]
         public IActionResult Update(int id, EditSideEffectViewModel model)
         {
-
-           if (ModelState.IsValid)
+            if (id != 0)
             {
-                var ses = _databaseContext.SideEffect.FirstOrDefault(m => m.SideEffectId == id);
+                model.SideEffect.SideEffectId = id;
 
+            }
+
+            if (ModelState.IsValid)
+            {
+
+                if (id == model.SideEffect.SideEffectId)
+                {
+                    System.Diagnostics.Debug.WriteLine("YEEEA");
+
+                }
+
+                var ses = _databaseContext.SideEffect.FirstOrDefault(m => m.SideEffectId == id);
                 ses.SideEffectName = model.SideEffect.SideEffectName;
 
                 var x = _databaseContext.SideEffect.Where(g => (g.SideEffectName == ses.SideEffectName && g.SideEffectId != id)).ToList();
@@ -173,8 +186,14 @@ namespace Lijek.Controllers
 
 
             }
-            return View("Edit",model);
+            else
+            {
+                return View("Edit",model);
+            }
+
 
         }
+
+        
     }
 }

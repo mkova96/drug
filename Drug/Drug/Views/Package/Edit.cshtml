@@ -2,10 +2,7 @@
 
 <form asp-action="Update" asp-route-id="@Model.Package.PackageId" method="post">
     <div asp-validation-summary="All" class="text-danger"></div>
-    @if (@ViewData["Success"] != null)
-    {
-        <div class="alert alert-success">Pakiranje spremljeno</div>
-    }
+
     <h2>Uredi</h2>
     <div class="form-group">
         <label asp-for="Package.PackageType">Naziv </label>

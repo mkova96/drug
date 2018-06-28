@@ -7,7 +7,12 @@ namespace DrugData.Models.ViewModels
 {
     public class EditDrugViewModel
     {
+        [Required(ErrorMessage = "Bolesti na koje je proizvod primjenjiv su obavezne")]
+        [MinLength(1)]
         public IEnumerable<int> CategoryIds { get; set; }
+
+        [Required(ErrorMessage = "Moguće nuspojave proizvoda su obavezne")]
+        [MinLength(1)]
         public IEnumerable<int> SideEffectIds { get; set; }
 
         public Medication Drug { get; set; }
@@ -19,15 +24,14 @@ namespace DrugData.Models.ViewModels
         public bool z { get; set; }
         public List<int> DrugIds { get; set; }
 
-        public string ManufacturerType { get; set; }
+        public string SubstitutionType { get; set; }
 
         public int ManufacturerId { get; set; }
-        public Manufacturer Manufacturer { get; set; }
 
         public EditDrugViewModel()
         {
-            Manufacturer = new Manufacturer();
-            ManufacturerType = "existing";
+            Drug = new Medication();
+            SubstitutionType = "new";
         }
 
 

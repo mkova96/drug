@@ -143,7 +143,11 @@ namespace Lijek.Controllers
         [HttpPost]
         public IActionResult Update(int id, EditCategoryViewModel model)
         {
+            if (id != 0)
+            {
+                model.Category.DiseaseId = id;
 
+            }
 
             if (ModelState.IsValid)
             {
@@ -166,8 +170,12 @@ namespace Lijek.Controllers
                 _databaseContext.SaveChanges();
                 TempData[Constants.Message] = $"Bolest je promijenjena";
                 TempData[Constants.ErrorOccurred] = false;
+
+                return RedirectToAction(nameof(Index));
+
             }
-            return RedirectToAction(nameof(Index));
+            return View("Edit", model);
+
         }
 
         public ViewResult Show(int id)

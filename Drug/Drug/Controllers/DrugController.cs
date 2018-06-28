@@ -327,6 +327,12 @@ namespace Drug.Controllers
             ViewData["Packages"] = _databaseContext.Package.Include(t => t.Measure).ToList();
             ViewData["Currencies"] = _databaseContext.Currency.ToList();
             ViewData["Measures"] = _databaseContext.Measure.ToList();
+
+            if (id!=0)
+            {
+                model.Drug.DrugId = id;
+
+            }
             if (!ModelState.IsValid)
             {
                 ViewData["SideEffects"] = _databaseContext.SideEffect.ToList();
@@ -349,6 +355,8 @@ namespace Drug.Controllers
                 .ThenInclude(eu => eu.Disease)
                 .FirstOrDefault(g => g.DrugId == id);
 
+            
+
             Drug.Manufacturer= man;
             Drug.Currency = _databaseContext.Currency.ToList().First(c => c.CurrencyId == model.CurrencyId);
             Drug.Package = _databaseContext.Package.ToList().First(c => c.PackageId == model.PackageId);
@@ -361,10 +369,25 @@ namespace Drug.Controllers
             Drug.DrugName = model.Drug.DrugName;
             Drug.ImagePath = model.Drug.ImagePath;
 
-            if (model.z == true)
+            var z = _databaseContext.Drug.FirstOrDefault(g => (g.DrugName == Drug.DrugName && g.Manufacturer == Drug.Manufacturer && g.Package == Drug.Package));
+
+            if (z != null)
+            {
+                TempData[Constants.Message] = $"Takav lijek već postoji.\n";
+                TempData[Constants.ErrorOccurred] = true;
+                return View(nameof(Edit), model);
+            }
+            if (Drug.DateProduced >= Drug.DateExpires)
+            {
+                TempData[Constants.Message] = $"Datum isteka roka mora biti veći od datuma proizvodnje.\n";
+                TempData[Constants.ErrorOccurred] = true;
+                return View(nameof(Edit), model);
+            }
+
+            if (model.SubstitutionType == "existing")
             {
                 var drugs = new List<Medication>();
-                drugs = model.DrugIds.Select(x => _databaseContext.Drug.Find(x)).ToList();
+                drugs = model.DrugIds.Select(i => _databaseContext.Drug.Find(i)).ToList();
                 Drug.Substitutions = drugs;
 
             }
@@ -410,6 +433,7 @@ namespace Drug.Controllers
             {
                 _databaseContext.DrugDisease.Remove(z);
             }
+
             _databaseContext.SaveChanges();
 
             try

@@ -13,6 +13,7 @@ namespace DrugData.Models
 
         public User User { get; set; }
 
+        [Required(ErrorMessage = "Sadržaj komentara je obavezan.")]
         [DataType(DataType.MultilineText)]
         public string Content { get; set; }
     }

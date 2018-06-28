@@ -11,8 +11,10 @@ namespace DrugData.Models
 {
     public class User : IdentityUser
     {
-
+        [Required(ErrorMessage = "Morate unijeti ime")]
         public string Name { get; set; }
+
+        [Required(ErrorMessage = "Morate unijeti prezime")]
         public string Surname { get; set; }
         public DateTime UserDate { get; set; }
 
@@ -30,7 +32,8 @@ namespace DrugData.Models
         public virtual ICollection<Comment> Comments { get; set; }
 
 
-        [Required]
+        [Required(ErrorMessage = "Morate unijeti adresu")]
+        [Display(Name = "Adresa")]
         public String Address { get; set; }
 
         public virtual City City { get; set; }

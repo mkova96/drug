@@ -143,7 +143,11 @@ namespace Drug.Controllers
         [HttpPost]
         public IActionResult Update(int id, EditMeasureViewModel model)
         {
+            if (id != 0)
+            {
+                model.Measure.MeasureId = id;
 
+            }
 
             if (ModelState.IsValid)
             {
@@ -165,8 +169,14 @@ namespace Drug.Controllers
                 _databaseContext.SaveChanges();
                 TempData[Constants.Message] = $"Mjerna jedinica je promijenjena";
                 TempData[Constants.ErrorOccurred] = false;
+                return RedirectToAction(nameof(Index));
+
             }
-            return RedirectToAction(nameof(Index));
+            else
+            {
+                return View("Edit", model);
+
+            }
         }
     }
 }

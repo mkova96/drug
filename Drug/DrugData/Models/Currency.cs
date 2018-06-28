@@ -10,8 +10,7 @@ namespace DrugData.Models
     {
         public int CurrencyId { get; set; }
 
-        [Required]
-        [StringLength(3)]
+        [Required(ErrorMessage = "Naziv valute je obavezan.")]
         public string CurrencyName { get; set; }
 
     }

@@ -144,7 +144,11 @@ namespace Drug.Controllers
         [HttpPost]
         public IActionResult Update(int id, EditCurrencyViewModel model)
         {
+            if (id != 0)
+            {
+                model.Currency.CurrencyId = id;
 
+            }
 
             if (ModelState.IsValid)
             {
@@ -166,8 +170,12 @@ namespace Drug.Controllers
                 _databaseContext.SaveChanges();
                 TempData[Constants.Message] = $"Valuta je promijenjena";
                 TempData[Constants.ErrorOccurred] = false;
+
+                return RedirectToAction(nameof(Index));
+
             }
-            return RedirectToAction(nameof(Index));
+            return View("Edit", model);
+
         }
     }
 }

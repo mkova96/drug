@@ -28,7 +28,7 @@ namespace DrugData.Models.ViewModels
         [Range(1, 1000, ErrorMessage = "Količina proizvoda na skladištu mora biti veća od 0")]
         public int Stock { get; set; }
 
-        [Range(0, 10000, ErrorMessage = "Cijena mora biti veća od 0")]
+        [Range(1, 10000, ErrorMessage = "Cijena mora biti veća od 0")]
         public decimal Price { get; set; }
 
         [Required(ErrorMessage = "Bolesti na koje je proizvod primjenjiv su obavezne")]

@@ -170,6 +170,13 @@ namespace Lijek.Controllers
         [HttpPost]
         public IActionResult Update(string id, EditUserViewModel model)
         {
+            ViewData["Cities"] = _databaseContext.City.OrderBy(p => p.CityPbr).ToList();
+
+            if (id != null)
+            {
+                model.User.Id = id;
+
+            }
             var city = _databaseContext.City.FirstOrDefault(m => m.CityId == model.CityId);
             var country = _databaseContext.Country.FirstOrDefault(m => m.CountryId == 1);
 
@@ -178,31 +185,43 @@ namespace Lijek.Controllers
             if (ModelState.IsValid)
                 {
                     var user = _databaseContext.Users.FirstOrDefault(g => g.Id == id);
+                    if (model.User.Email == null)
+                    {
+                        TempData[Constants.Message] = $"Morate unijeti mail adresu";
+                        TempData[Constants.ErrorOccurred] = true;
+                        return View("Edit", model);
+                    }
                     user.Email = model.User.Email;
                     user.Name = model.User.Name;
                     user.Surname = model.User.Surname;
                     user.Address = model.User.Address;
                     user.City = city;
-                user.UserName = model.User.Email;
-                user.NormalizedUserName = model.User.Email.ToUpper();
-                user.NormalizedEmail =  model.User.Email.ToUpper();
+                    user.UserName = model.User.Email;
+                    user.NormalizedUserName = model.User.Email.ToUpper();
+                    user.NormalizedEmail =  model.User.Email.ToUpper();
 
                 var x = _databaseContext.User.Where(g => (g.Email == user.Email && g.Id != id)).ToList();
                 if (x.Count > 0)
                 {
                     TempData[Constants.Message] = $"Korisnik s tim mailom već postoji.\n";
                     TempData[Constants.ErrorOccurred] = true;
-                    return RedirectToAction("Edit", new { id = id });
+                    return View("Edit", model);
                 }
 
                 TempData["Success"] = true;
                     _databaseContext.SaveChanges();
                 TempData[Constants.Message] = $"Admin je promijenjen";
                 TempData[Constants.ErrorOccurred] = false;
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                ViewData["Cities"] = _databaseContext.City.OrderBy(p => p.CityPbr).ToList();
+                return View("Edit", model);
+
             }
 
-                      
-            return RedirectToAction(nameof(Index));
+
         }
         private void AddErrors(IdentityResult result)
         {

@@ -175,6 +175,11 @@ namespace Lijek.Controllers
         [HttpPost]
         public IActionResult Update(string id, EditDoctorViewModel model)
         {
+            if (id!=null)
+            {
+                model.Doctor.Id = id;
+
+            }
             ViewData["Cities"] = _databaseContext.City.OrderBy(p => p.CityPbr).ToList();
 
             var city = _databaseContext.City.FirstOrDefault(m => m.CityId == model.CityId);
@@ -185,6 +190,12 @@ namespace Lijek.Controllers
             if (ModelState.IsValid)
             {
                 var user = _databaseContext.Doctor.FirstOrDefault(g => g.Id == id);
+                if (model.Doctor.Email==null)
+                {
+                    TempData[Constants.Message] = $"Morate unijeti mail adresu";
+                    TempData[Constants.ErrorOccurred] = true;
+                    return View("Edit", model);
+                }
                 user.Email = model.Doctor.Email;
                 user.Name = model.Doctor.Name;
                 user.Surname = model.Doctor.Surname;
@@ -201,17 +212,24 @@ namespace Lijek.Controllers
                 {
                     TempData[Constants.Message] = $"Korisnik s tim mailom već postoji.\n";
                     TempData[Constants.ErrorOccurred] = true;
-                    return RedirectToAction("Edit", new { id = id });
+                    return View("Edit", model);
                 }
 
                 TempData["Success"] = true;
                 _databaseContext.SaveChanges();
                 TempData[Constants.Message] = $"Ljekarnik je promijenjen";
                 TempData[Constants.ErrorOccurred] = false;
+                return RedirectToAction(nameof(Index));
+
+            }
+            else
+            {
+                ViewData["Cities"] = _databaseContext.City.OrderBy(p => p.CityPbr).ToList();
+                return View("Edit", model);
+
             }
 
 
-            return RedirectToAction(nameof(Index));
         }
 
         private void AddErrors(IdentityResult result)

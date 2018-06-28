@@ -196,6 +196,11 @@ namespace Drug.Controllers
         public IActionResult Update(int id, EditPackageViewModel model)
         {
             ViewData["Measures"] = _databaseContext.Measure.ToList();
+            if (id != 0)
+            {
+                model.Package.PackageId = id;
+
+            }
 
             if (ModelState.IsValid)
             {
@@ -220,8 +225,15 @@ namespace Drug.Controllers
 
                 TempData[Constants.Message] = $"Pakiranje je promijenjeno";
                 TempData[Constants.ErrorOccurred] = false;
+                return RedirectToAction(nameof(Index));
+
             }
-            return RedirectToAction(nameof(Index));
+            else
+            {
+                ViewData["Measures"] = _databaseContext.Measure.ToList();
+                return View("Edit", model);
+
+            }
         }
     }
 }

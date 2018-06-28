@@ -9,11 +9,14 @@ namespace DrugData.Models
     {
         public int ManufacturerId { get; set; }
 
-        [StringLength(100)]
+        [Required(ErrorMessage = "Naziv proizvođača je obavezan")]
         public string ManufacturerName { get; set; }
 
+        [Required(ErrorMessage = "Tekst o proizvođaču je obavezan")]
         [DataType(DataType.MultilineText)]
         public String About { get; set; }
+
+        [Required(ErrorMessage = "Poveznica slike proizvođača je obavezna")]
         [DataType(DataType.ImageUrl)]
         public string ImagePath { get; set; }
 

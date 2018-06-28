@@ -10,11 +10,14 @@ namespace DrugData.Models
     {
         public int PackageId { get; set; }
 
-        [StringLength(100)]
+        [Required(ErrorMessage = "Naziv pakiranja je obavezan")]
         public string PackageType { get; set; }
 
+        [Required(ErrorMessage = "Količina unutar pakiranja je obavezna")]
+        [Range(1, 1000, ErrorMessage = "Količina unutar pakiranja mora biti veća od 0")]
         public int Quantity { get; set; }
 
+        [Range(1, 1000, ErrorMessage = "Veličina pojedinačne stavke unutar pakiranja mora biti veća od 0")]
         public int IndividualSize { get; set; }
 
         public Measure Measure { get; set; }
