@@ -22,38 +22,35 @@
 
     @foreach (var item in Model)
     {
-    <tr data-toggle="collapse" id="xman" data-target="@("#" + item.Id.ToString())" style="cursor:pointer;">
-        <td class="text-center">@item.UserDate.Date.ToString("dd/MM/yyyy")</td>
-        <td class="text-center">@item.FullName</td>
-        <td class="text-center">
-            <a asp-action="SendTo" asp-controller="Message" asp-route-id="@item.Id" class="btn btn-success">Poruka</a>
+        <tr data-toggle="collapse" id="xman" data-target="@("#" + item.Id.ToString())" style="cursor:pointer;">
+            <td class="text-center">@item.UserDate.Date.ToString("dd/MM/yyyy")</td>
+            <td class="text-center">@item.FullName</td>
+            <td class="text-center">
+                <a asp-action="SendTo" asp-controller="Message" asp-route-id="@item.Id" class="btn btn-success"><b>✉</b></a>
 
-            <form asp-action="Delete" asp-route-id="@item.Id" asp-route-page="@(Model.PageIndex)"
-                  method="POST" style="display: inline-block">
-                <button type="submit" class="btn btn-danger btn-sm">Obriši</button>
-            </form>
-        </td>
-<tr></tr>
+                <form asp-action="Delete" asp-route-id="@item.Id" asp-route-page="@(Model.PageIndex)"
+                      method="POST" style="display: inline-block">
+                    <button type="submit" class="btn btn-danger btn-sm"><text id="xyz">✘</text></button>
+                </form>
+            </td>
+        <tr></tr>
         <tr class="bg-light">
             <td colspan="8" style="padding:0;margin:0;">
                 <div id="@item.Id" class="subRow collapse">
                     <div class="container-fluid">
                         <div class="row">
-                            <div class="column1">
-                                <img src="~/images/pliva.png" class="imageCell" height="170" width="150" />
-
-                            </div>
+                            
                             <div class="column">
                                 <div>
                                     <h4><b><center>@item.FullName</center></b></h4>
                                 </div>
                                 <h1></h1>
                                 <div>
-                                    <h4>Mail: <b>@item.Email</b></h4>
+                                    <h4>   Mail: <b>@item.Email</b></h4>
                                 </div>
                                 <h1></h1>
                                 <div>
-                                    <h4>Član od: <b>@item.UserDate.Date.ToString("dd/MM/yyyy")</b></h4>
+                                    <h4>   Član od: <b>@item.UserDate.Date.ToString("dd/MM/yyyy")</b></h4>
                                 </div>
                             </div>
                             <div class="column1">
@@ -79,6 +76,26 @@
 
 </table>
 
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">
+    ◄
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
+    ►
+</a>
+
 <style>
     #xman {
         background-color: white;
@@ -102,10 +119,15 @@
         overflow: hidden;
         background-color: #ff0000;
     }
+
     #da {
         border: 1px solid #ccc;
         border-radius: 4px;
         box-sizing: border-box;
+    }
+
+    #xyz {
+        font-size: 15px;
     }
 </style>
 

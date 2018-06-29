@@ -39,6 +39,7 @@ else
     <ul class="list-group">
         @foreach (var m in Model.Messages)
         {
+
             @if (m.Sender.IsDoctor == true)
             {
                 <ul class="list-group">

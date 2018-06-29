@@ -24,7 +24,7 @@ namespace Lijek.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
             var user = await _userManager.GetUserAsync(User);
             var id = user.Id;
@@ -38,7 +38,21 @@ namespace Lijek.Controllers
                                                             " AND (\"Message\".\"SenderId\" = {0} OR \"Message\".\"ReceiverId\" = {1})))",
                     id, id)
                 .ToList();
-            return View(messages);
+
+            var students = from s in _databaseContext.Message
+                .Include(message => message.Receiver)
+                .Include(message => message.Sender).FromSql("SELECT * FROM \"Message\"" +
+                                                            " WHERE \"Message\".\"MessageDate\" = (SELECT MAX(\"m\".\"MessageDate\") FROM \"Message\" AS \"m\"" +
+                                                            " WHERE (\"m\".\"SenderId\" = \"Message\".\"SenderId\" AND \"m\".\"ReceiverId\" = \"Message\".\"ReceiverId\"" +
+                                                            " AND (\"Message\".\"SenderId\" = {0} OR \"Message\".\"ReceiverId\" = {1}))" +
+                                                            " OR (\"m\".\"SenderId\" = \"Message\".\"ReceiverId\" AND \"m\".\"ReceiverId\" = \"Message\".\"SenderId\"" +
+                                                            " AND (\"Message\".\"SenderId\" = {0} OR \"Message\".\"ReceiverId\" = {1})))",
+                    id, id)
+                           select s;
+
+            int pageSize = 8;
+            return View(await PaginatedList<Message>.CreateAsync(students, page ?? 1, pageSize));
+            //return View(messages);
         }
 
         [HttpGet]

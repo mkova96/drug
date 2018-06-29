@@ -97,22 +97,33 @@ namespace Lijek.Controllers
             }
             _databaseContext.SaveChanges();
 
-            _databaseContext.Database.ExecuteSqlCommand("DELETE FROM \"AspNetUsers\" WHERE \"AspNetUsers\".\"Id\" = {0}", id);
-            _databaseContext.SaveChanges();
-
-            var userx = await _userManager.GetUserAsync(User);
-
-
-            var x = _databaseContext.Users.Where(p => p.IsAdmin == true).Where(t => t.Id != userx.Id.ToString()).ToList().Count;
-
-
-            if ((page - 1) * 8 == x - 1 && page != 1)
+            try
             {
-                --page;
+                _databaseContext.Database.ExecuteSqlCommand("DELETE FROM \"AspNetUsers\" WHERE \"AspNetUsers\".\"Id\" = {0}", id);
+                _databaseContext.SaveChanges();
+
+                var userx = await _userManager.GetUserAsync(User);
+
+
+                var x = _databaseContext.Users.Where(p => p.IsAdmin == true).Where(t => t.Id != userx.Id.ToString()).ToList().Count;
+
+
+                if ((page - 1) * 8 == x - 1 && page != 1)
+                {
+                    --page;
+                }
+                TempData[Constants.Message] = $"Korisnik je obrisan";
+                TempData[Constants.ErrorOccurred] = false;
+
+                return RedirectToAction(nameof(Index), new { page = page });
+            }
+            catch(Exception e)
+            {
+                TempData[Constants.Message] = $"Korisnika nije moguće obrisati";
+                TempData[Constants.ErrorOccurred] = true;
+                return RedirectToAction(nameof(Index), new { page = page });
             }
 
-
-            return RedirectToAction(nameof(Index), new { page = page });
         }
 
 

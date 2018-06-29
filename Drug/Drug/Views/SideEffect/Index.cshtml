@@ -25,10 +25,10 @@
             <td class="text-center">@item.SideEffectId</td>
             <td class="text-center">@item.SideEffectName</td>
             <td class="text-center">
-                <a asp-action="Edit" asp-route-id="@item.SideEffectId" class="btn btn-warning btn-sm">Uredi</a>
+                <a asp-action="Edit" asp-route-id="@item.SideEffectId" class="btn btn-warning btn-sm"><text id="roki">✎</text></a>
                 <form asp-action="Delete" asp-route-id="@item.SideEffectId" asp-route-page="@(Model.PageIndex)"
                       method="POST" style="display: inline-block">
-                    <button type="submit" class="btn btn-danger btn-sm">Obriši</button>
+                    <button type="submit" class="btn btn-danger btn-sm">✘</button>
                 </form>
             </td>
         </tr>
@@ -87,4 +87,5 @@
         border-radius: 4px;
         box-sizing: border-box;
     }
+
 </style>

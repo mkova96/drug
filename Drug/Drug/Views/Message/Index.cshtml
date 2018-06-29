@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Poruke";
 }
-@model IEnumerable<Message>
+@model PaginatedList<DrugData.Models.Message>
 <h2>
     Popis poruka
     <a asp-action="Add" class="btn btn-primary btn-sm">Nova poruka</a>
@@ -22,7 +22,7 @@
             <div class="card-body">
                 @if (@m.GetOtherUser(UserManager.GetUserId(User)).IsAdmin == true)
                 {
-                <h5 class="card-title">Admin : @m.GetOtherUser(UserManager.GetUserId(User)).FullName</h5>
+                    <h5 class="card-title">Admin : @m.GetOtherUser(UserManager.GetUserId(User)).FullName</h5>
 
                 }
                 else if (@m.GetOtherUser(UserManager.GetUserId(User)).IsDoctor == true)
@@ -44,3 +44,18 @@
         </a>
     }
 </ul>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-page="@(Model.PageIndex - 1)"
+   class="btn btn-default @prevDisabled">
+    ◄
+</a>
+<a asp-action="Index"
+   asp-route-page="@(Model.PageIndex + 1)"
+   class="btn btn-default @nextDisabled">
+    ►
+</a>
