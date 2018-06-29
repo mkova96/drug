@@ -121,44 +121,6 @@ namespace Drug.Controllers
             return View(await PaginatedList2<Medication>.CreateAsync(drinks, page ?? 1, pageSize));
         }
 
-        /*public async Task<IActionResult> Index(string[] diseases)
-        {
-            ViewData["Filteri"] = diseases;
-
-            var applicationDbContext = _databaseContext.Drug.OrderBy(p => p.DrugId)
-                   .Where(p => p.Quantity > 0)
-                .Include(r => r.Currency).Include(i => i.Package).ThenInclude(t => t.Measure)
-                .Include(p => p.Manufacturer).Include(e => e.DrugDiseases)
-                .ThenInclude(eu => eu.Disease).ToList();
-
-            HashSet<Medication> meds = applicationDbContext.ToHashSet();
-
-
-            if (diseases.Length != 0)
-            {
-                HashSet<Medication> ba = new HashSet<Medication>();
-                foreach (var i in meds)
-                {
-                    ba.Add(i);
-                }
-                foreach (var e in meds)
-                {
-                    int check = 0;
-
-                    foreach (var p in diseases)
-                    {
-                        if (e.DrugDiseases.Any(g => g.Disease.DiseaseName.Equals(p)))
-                        {
-                            check = 1;
-                        }
-                    }
-                    if (check == 0)
-                    {
-                        ba.Remove(e);
-                    }
-                }
-                meds = ba;
-            }
-        }*/
+      
     }
 }

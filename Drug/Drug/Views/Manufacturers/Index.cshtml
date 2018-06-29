@@ -22,13 +22,20 @@
                 <h4><b><center>Proizvodi</center></b></h4>
             </div>
             <div>
-                @foreach (var x in asset.Drugs)
-                {
+                @{int r = 0;}
+                    @foreach (var x in asset.Drugs)
+                    {
+                        if (r == 5)
+                        {
+                            break;
+
+                        }
                     <center>
                         <a asp-controller="Drugs" asp-action="Show" asp-route-id="@x.DrugId">@x.DrugName</a>
                     </center>
+                        ++r;
 
-                }
+                    }
             </div>
         </div>
 
@@ -41,17 +48,17 @@
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
 
-<a asp-action="Index"
-   asp-route-page="@(Model.PageIndex - 1)"
-   asp-route-currentCategory="@ViewData["CurrentCategory"]"
-   class="btn btn-default @prevDisabled">
-    Prošla
-</a>
+    <a asp-action="Index"
+       asp-route-page="@(Model.PageIndex - 1)"
+       asp-route-currentCategory="@ViewData["CurrentCategory"]"
+       class="btn btn-default @prevDisabled">
+        ◄
+    </a>
 <a asp-action="Index"
    asp-route-page="@(Model.PageIndex + 1)"
    asp-route-currentCategory="@ViewData["CurrentCategory"]"
    class="btn btn-default @nextDisabled">
-    Sljedeća
+    ►
 </a>
 
 

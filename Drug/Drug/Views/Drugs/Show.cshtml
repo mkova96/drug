@@ -7,28 +7,29 @@
         <div>
             @if (!User.Identity.IsAuthenticated)
             {
-            <center>
-                <p class="btn btn-group">
-                    <a class="btn btn-success" id="cartButton" asp-controller="Account" asp-action="Login">
-                        Dodaj u košaricu
-                    </a>
-                </p>
-            </center>
-                
+
+                <center id="xxx">
+                    <p class="btn btn-group">
+                        <a class="btn btn-success" id="cartButton" asp-controller="Account" asp-action="Login">
+                            Dodaj u košaricu
+                        </a>
+                    </p>
+                </center>
+
 
             }
             else
             {
                 if (User.IsInRole("User"))
                 {
-            <center>
-                <p class="btn btn-group">
-                    <a class="btn btn-success" id="cartButton" asp-controller="Cart" asp-action="AddToCart" asp-route-drugId="@Model.DrugId">
-                        Dodaj u košaricu
-                    </a>
+                    <center>
+                        <p class="btn btn-group">
+                            <a class="btn btn-success" id="cartButton" asp-controller="Cart" asp-action="AddToCart" asp-route-drugId="@Model.DrugId">
+                                Dodaj u košaricu
+                            </a>
 
-                </p>
-            </center>
+                        </p>
+                    </center>
                 }
 
             }
@@ -110,16 +111,16 @@
 
 @if (Model.Substitutions.Count > 0)
 {
+    <h2>Zamjenski proizvodi</h2>
     <div class="row marginTop" id="rex">
-        <h2>Zamjenski proizvodi</h2>
         @foreach (var x in Model.Substitutions)
         {
             <div class="col-sm-4 col-lg-4 col-md-4">
                 <div class="thumbnail">
-                    <img src="~/images/capsule.png" style="min-height:150px;height:150px;" />
+                    <img src="~/images/capsule.png" id="poppy" />
                     <div class="caption">
                         <h3>
-                            <center><a asp-controller="Drugs" asp-action="Show" asp-route-id="@x.DrugId">@x.DrugName</a></center>
+                            <center><a asp-controller="Drugs" asp-action="Show" asp-route-id="@x.DrugId">@x.DrugName </a></center>
                         </h3>
                     </div>
                 </div>
@@ -191,12 +192,12 @@ else
                 @if (Context.User.Identity.Name == x.User.Email)
                 {
                     <div>
-                        <a asp-controller="Drug" asp-action="EditComment" asp-route-id1="@x.CommentId" asp-route-id2="@Model.DrugId" class="btn btn-warning btn-sm">Uredi</a>
+                        <a asp-controller="Drug" asp-action="EditComment" asp-route-id1="@x.CommentId" asp-route-id2="@Model.DrugId" class="glyphicon glyphicon-pencil text-info remove"></a>
                     </div>
                     <div><h8> </h8></div>
                     <form asp-controller="Drug" asp-action="DeleteComment" asp-route-id1="@x.CommentId" asp-route-id2="@Model.DrugId"
-                          method="POST" style="display: inline-block">
-                        <button type="submit" class="btn btn-danger btn-sm">Obriši</button>
+                          method="POST" style="display: inline-block" >
+                        <button type="submit" class="glyphicon glyphicon-trash text-danger remove" id="leka"></button>
                     </form>
 
                 }
@@ -204,7 +205,7 @@ else
                 {
                     <form asp-controller="Drug" asp-action="DeleteComment" asp-route-id1="@x.CommentId" asp-route-id2="@Model.DrugId"
                           method="POST" style="display: inline-block">
-                        <button type="submit" class="btn btn-danger btn-sm">Obriši</button>
+                        <button type="submit" class="glyphicon glyphicon-remove text-danger remove">Obriši</button>
                     </form>
 
                 }
@@ -217,33 +218,33 @@ else
 {
     @if (Context.User.Identity.IsAuthenticated == false)
     {
-                <div>
-                    <h3>
-                        Trenutno nema komentara    <a asp-controller="Account" asp-action="Login" class="btn btn-warning btn-sm">Komentiraj</a>
-                    </h3>
-                </div>
+        <div>
+            <h3>
+                Trenutno nema komentara    <a asp-controller="Account" asp-action="Login" class="btn btn-warning btn-sm">Komentiraj</a>
+            </h3>
+        </div>
 
     }
     else
     {
-                @if (Context.User.IsInRole("User"))
-                {
-                    <div>
-                        <h3>
-                            Trenutno nema komentara    <a asp-controller="Drug" asp-action="AddComment" asp-route-id="@Model.DrugId" class="btn btn-warning btn-sm">Komentiraj</a>
-                        </h3>
-                    </div>
-                }
-                else
-                {
-                    <div>
-                        <h3>
-                            Trenutno nema komentara 
-                        </h3>
-                    </div>
-                }
+        @if (Context.User.IsInRole("User"))
+        {
+            <div>
+                <h3>
+                    Trenutno nema komentara    <a asp-controller="Drug" asp-action="AddComment" asp-route-id="@Model.DrugId" class="btn btn-warning btn-sm">Komentiraj</a>
+                </h3>
+            </div>
+        }
+        else
+        {
+            <div>
+                <h3>
+                    Trenutno nema komentara 
+                </h3>
+            </div>
         }
     }
+}
 
 
 
@@ -258,7 +259,6 @@ else
 
     #rex {
         width: 80%;
-        padding: 40px;
     }
 
     /* Create two equal columns that floats next to each other */
@@ -296,5 +296,29 @@ else
         content: "";
         display: table;
         clear: both;
+    }
+
+    #poppy {
+        height: 150px
+    }
+
+
+    #xxx{
+        padding-top:20px
+    }
+    #leka {
+        background-color: Transparent;
+        background-repeat: no-repeat;
+        border: none;
+        cursor: pointer;
+        overflow: hidden;
+        outline: none;
+    }
+
+    .glyphicon.glyphicon-trash {
+        font-size: 25px;
+    }
+    .glyphicon.glyphicon-pencil {
+        font-size: 25px;
     }
 </style>

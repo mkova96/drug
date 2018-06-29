@@ -1,9 +1,10 @@
 ﻿@model PaginatedList2<DrugData.Models.Medication>
 
-        <h1>Proizvodi</h1>
+<div>
+    <text id="lol">Proizvodi </text>
 
-        <button class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Filtriraj po bolesti<span class="caret"></span></a>
+        <button class="dropdown" id="ppp">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><text>Filtriraj po bolesti</text><span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
                 <form asp-controller="Drugs" asp-action="Index" method="get" style="text-align:center">
                     @{
@@ -36,13 +37,12 @@
 
             </ul>
         </button>
+</div>
 
 
 
 
-
-
-<div class="row marginTop">
+<div class="row marginTop" id="zz">
     @foreach (var drink in Model)
     {
         @Html.Partial("DrugSummary", drink)
@@ -84,13 +84,13 @@
    asp-route-page="@(Model.PageIndex - 1)"
    asp-route-currentCategory="@ViewData["CurrentCategory"]"
    class="btn btn-default @prevDisabled">
-    Prošla
+    ◄
 </a>
 <a asp-action="Index"
    asp-route-page="@(Model.PageIndex + 1)"
    asp-route-currentCategory="@ViewData["CurrentCategory"]"
    class="btn btn-default @nextDisabled">
-    Sljedeća
+    ►
 </a>
 
 <style>
@@ -98,5 +98,9 @@
         display: inline-block;
         margin: 0;
     }
+    #lol {
+        font-size: 45px;
+    }
+
 
 </style>
