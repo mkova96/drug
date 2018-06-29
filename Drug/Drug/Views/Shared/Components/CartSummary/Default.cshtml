@@ -6,7 +6,7 @@
 {
     <ul class="nav navbar-nav navbar-right">
         <li>
-            <a asp-controller="Cart">
+            <a asp-controller="Cart" asp-action="Index">
                 <span class="glyphicon glyphicon-shopping-cart"></span>
                 <span id="cart-status">
                     @Model.Cart.DrugCarts.Count

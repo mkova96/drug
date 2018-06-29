@@ -118,6 +118,7 @@ namespace Drug.Controllers
             }
 
             int pageSize = 9;
+            ViewBag.Model = applicationDbContext;
             return View(await PaginatedList2<Medication>.CreateAsync(drinks, page ?? 1, pageSize));
         }
 
