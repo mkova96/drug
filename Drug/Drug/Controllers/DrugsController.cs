@@ -99,13 +99,13 @@ namespace Drug.Controllers
             }
             else
             {
-                if (string.Equals("Po cijeni silazno", _category, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals("Po cijeni ▼", _category, StringComparison.OrdinalIgnoreCase))
                 drinks = meds.ToList().OrderByDescending(p => p.Price);
 
-                else if (string.Equals("Po cijeni uzlazno", _category, StringComparison.OrdinalIgnoreCase))
+                else if (string.Equals("Po cijeni ▲", _category, StringComparison.OrdinalIgnoreCase))
                     drinks = meds.ToList().OrderBy(p => p.Price);
 
-                else if (string.Equals("Po isteku valjanosti uzlazno", _category, StringComparison.OrdinalIgnoreCase))
+                else if (string.Equals("Po isteku valjanosti ▲", _category, StringComparison.OrdinalIgnoreCase))
                     drinks = meds.ToList().OrderBy(p => p.DateExpires);
 
                 else

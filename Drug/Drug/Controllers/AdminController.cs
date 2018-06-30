@@ -1,6 +1,7 @@
 ﻿using DrugData;
 using DrugData.Models;
 using DrugData.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -13,6 +14,8 @@ using System.Threading.Tasks;
 
 namespace Lijek.Controllers
 {
+    [Authorize(Roles = "Admin,Owner")]
+
     public class AdminController:Controller
     {
         private readonly ApplicationDbContext _databaseContext;

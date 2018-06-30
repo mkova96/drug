@@ -13,6 +13,8 @@ using System.Threading.Tasks;
 
 namespace Lijek.Controllers
 {
+
+    [Authorize(Roles = "Admin")]
     public class UserController:Controller
     {
 

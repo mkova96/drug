@@ -14,8 +14,8 @@ namespace DrugData.Components
         public IViewComponentResult Invoke()
         {
             List<String> sortList = new List<String>();
-            sortList.Add("Po broju proizvoda silazno");
-            sortList.Add("Po broju proizvoda uzlazno");
+            sortList.Add("Po broju proizvoda ▼");
+            sortList.Add("Po broju proizvoda ▲");
 
             return View(sortList);
         }

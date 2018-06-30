@@ -1,6 +1,7 @@
 ﻿using DrugData;
 using DrugData.Models;
 using DrugData.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace Drug.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class PackageController:Controller
     {
         private readonly ApplicationDbContext _databaseContext;

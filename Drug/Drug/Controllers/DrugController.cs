@@ -14,6 +14,8 @@ using System.Threading.Tasks;
 
 namespace Drug.Controllers
 {
+    [Authorize(Roles = "Admin")]
+
     public class DrugController:Controller
     {
         private readonly ApplicationDbContext _databaseContext;

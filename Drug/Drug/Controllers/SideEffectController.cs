@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Lijek.Controllers
 {
-   // [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
 
     public class SideEffectController:Controller
     {

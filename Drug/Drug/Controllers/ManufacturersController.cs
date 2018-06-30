@@ -41,7 +41,7 @@ namespace Drug.Controllers
             }
             else
             {
-                if (string.Equals("Po broju proizvoda silazno", _category, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals("Po broju proizvoda ▼", _category, StringComparison.OrdinalIgnoreCase))
                     drinks = from s in _databaseContext.Manufacturer.Include(t => t.Drugs).Where(t => t.Drugs.Count > 0).OrderByDescending(p => p.Drugs.Count) select s;
                 else
                     drinks = from s in _databaseContext.Manufacturer.Include(t => t.Drugs).Where(t => t.Drugs.Count > 0).OrderBy(p => p.Drugs.Count) select s;
