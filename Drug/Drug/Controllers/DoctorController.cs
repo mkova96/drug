@@ -167,7 +167,14 @@ namespace Lijek.Controllers
             ViewData["Success"] = TempData["Success"];
             var model = new EditDoctorViewModel
             {
-                Doctor = user
+                Address = user.Address,
+                Biography=user.Biography,
+                Education=user.Education,
+                EMail=user.Email,
+                ImagePath=user.ImagePath,
+                Name=user.Name,
+                Surname=user.Surname,
+                Id=user.Id
             };
             return View(model);
         }
@@ -177,7 +184,7 @@ namespace Lijek.Controllers
         {
             if (id!=null)
             {
-                model.Doctor.Id = id;
+                model.Id = id;
 
             }
             ViewData["Cities"] = _databaseContext.City.OrderBy(p => p.CityPbr).ToList();
@@ -190,22 +197,22 @@ namespace Lijek.Controllers
             if (ModelState.IsValid)
             {
                 var user = _databaseContext.Doctor.FirstOrDefault(g => g.Id == id);
-                if (model.Doctor.Email==null)
+                /*if (model.Email==null)
                 {
                     TempData[Constants.Message] = $"Morate unijeti mail adresu";
                     TempData[Constants.ErrorOccurred] = true;
                     return View("Edit", model);
-                }
-                user.Email = model.Doctor.Email;
-                user.Name = model.Doctor.Name;
-                user.Surname = model.Doctor.Surname;
-                user.Address = model.Doctor.Address;
+                }*/
+                user.Email = model.EMail;
+                user.Name = model.Name;
+                user.Surname = model.Surname;
+                user.Address = model.Address;
                 user.City = city;
-                user.UserName = model.Doctor.Email;
-                user.NormalizedUserName = model.Doctor.Email.ToUpper();
-                user.NormalizedEmail = model.Doctor.Email.ToUpper();
-                user.Biography = model.Doctor.Biography;
-                user.ImagePath = model.Doctor.ImagePath;
+                user.UserName = model.EMail;
+                user.NormalizedUserName = model.EMail.ToUpper();
+                user.NormalizedEmail = model.EMail.ToUpper();
+                user.Biography = model.Biography;
+                user.ImagePath = model.ImagePath;
 
                 var x = _databaseContext.User.Where(g => (g.Email == user.Email && g.Id != id)).ToList();
                 if (x.Count > 0)

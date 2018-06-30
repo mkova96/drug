@@ -142,7 +142,9 @@ namespace Lijek.Controllers
 
             var model = new EditSideEffectViewModel
             {
-                SideEffect = ses
+                SideEffectId = ses.SideEffectId,
+                SideEffectName=ses.SideEffectName
+               
             };
             System.Diagnostics.Debug.WriteLine("ID" + ses.SideEffectId);
 
@@ -153,21 +155,21 @@ namespace Lijek.Controllers
         {
             if (id != 0)
             {
-                model.SideEffect.SideEffectId = id;
+                model.SideEffectId = id;
 
             }
 
             if (ModelState.IsValid)
             {
 
-                if (id == model.SideEffect.SideEffectId)
+                if (id == model.SideEffectId)
                 {
                     System.Diagnostics.Debug.WriteLine("YEEEA");
 
                 }
 
                 var ses = _databaseContext.SideEffect.FirstOrDefault(m => m.SideEffectId == id);
-                ses.SideEffectName = model.SideEffect.SideEffectName;
+                ses.SideEffectName = model.SideEffectName;
 
                 var x = _databaseContext.SideEffect.Where(g => (g.SideEffectName == ses.SideEffectName && g.SideEffectId != id)).ToList();
                 if (x.Count > 0)

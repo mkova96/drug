@@ -187,8 +187,10 @@ namespace Drug.Controllers
 
             var model = new EditPackageViewModel
             {
-                MeasureId = ses.Measure.MeasureId,
-                Package = ses
+                IndividualSize=ses.IndividualSize,
+                PackageId=ses.PackageId,
+                PackageType=ses.PackageType,
+                Quantity=ses.Quantity
             };
             return View(model);
         }
@@ -198,7 +200,7 @@ namespace Drug.Controllers
             ViewData["Measures"] = _databaseContext.Measure.ToList();
             if (id != 0)
             {
-                model.Package.PackageId = id;
+                model.PackageId = id;
 
             }
 
@@ -207,9 +209,9 @@ namespace Drug.Controllers
                     var ses = _databaseContext.Package.Include(p=>p.Measure).FirstOrDefault(m => m.PackageId == id);
                     ses.Measure = _databaseContext.Measure.ToList().First(c => c.MeasureId == model.MeasureId);
 
-                ses.PackageType = model.Package.PackageType;
-                ses.IndividualSize = model.Package.IndividualSize;
-                ses.Quantity = model.Package.Quantity;
+                ses.PackageType = model.PackageType;
+                ses.IndividualSize = model.IndividualSize;
+                ses.Quantity = model.Quantity;
                 ses.MeasureName = ses.Measure.MeasureName;
 
                 var x = _databaseContext.Package.Where(g => (g.PackageType == ses.PackageType && g.IndividualSize == ses.IndividualSize && g.Quantity == ses.Quantity && g.MeasureName == ses.MeasureName && g.PackageId != id)).ToList();

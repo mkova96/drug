@@ -136,7 +136,10 @@ namespace Lijek.Controllers
 
             var model = new EditManufacturerViewModel
             {
-                Manufacturer = man
+                About = man.About,
+                ImagePath=man.ImagePath,
+                ManufacturerId=man.ManufacturerId,
+                ManufacturerName=man.ManufacturerName
             };
             return View(model);
         }
@@ -145,7 +148,7 @@ namespace Lijek.Controllers
         {
             if (id != 0)
             {
-                model.Manufacturer.ManufacturerId = id;
+                model.ManufacturerId = id;
 
             }
 
@@ -153,9 +156,9 @@ namespace Lijek.Controllers
             {
                 var man = _databaseContext.Manufacturer.FirstOrDefault(m => m.ManufacturerId == id);
 
-                man.ManufacturerName = model.Manufacturer.ManufacturerName;
-                man.About = model.Manufacturer.About;
-                man.ImagePath = model.Manufacturer.ImagePath;
+                man.ManufacturerName = model.ManufacturerName;
+                man.About = model.About;
+                man.ImagePath = model.ImagePath;
 
                 var x = _databaseContext.Manufacturer.Where(g => (g.ManufacturerName == man.ManufacturerName && g.ManufacturerId!=id)).ToList();
                 if (x.Count>0)

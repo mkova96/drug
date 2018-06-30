@@ -175,9 +175,20 @@ else
                 <div>
                     <center><img src="~/images/user.png" class="imageCell" height="80px" /></center>
                 </div>
-                <div>
-                    <center><h5><b>@x.User.FullName</b></h5></center>
-                </div>
+                @if (User.IsInRole("Admin"))
+                {
+                    <div>
+                        <center><h5><b><a asp-controller="User" asp-action="Index" asp-route-searchString="@x.User.Email.ToString()">@x.User.FullName</a></b></h5></center>
+                    </div>
+
+                }
+                else
+                {
+                    <div>
+                        <center><h5><b>@x.User.FullName</b></h5></center>
+                    </div>
+                }
+
                 <div>
                     <center><h5>Član od: <b>@x.User.UserDate.ToString("dd/MM/yyyy")</b></center>
                 </div>
@@ -205,7 +216,7 @@ else
                 {
                     <form asp-controller="Drug" asp-action="DeleteComment" asp-route-id1="@x.CommentId" asp-route-id2="@Model.DrugId"
                           method="POST" style="display: inline-block">
-                        <button type="submit" class="glyphicon glyphicon-remove text-danger remove">Obriši</button>
+                        <button type="submit" class="glyphicon glyphicon-trash text-danger remove" id="leka"></button>
                     </form>
 
                 }

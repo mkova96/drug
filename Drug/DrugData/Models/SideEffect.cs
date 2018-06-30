@@ -11,7 +11,6 @@ namespace DrugData.Models
 
         public virtual ICollection<DrugSideEffect> DrugSideEffect { get; set; }
 
-        [Required(ErrorMessage = "Ime nuspojave je nužno.")]
         public string SideEffectName { get; set; }
     }
 }

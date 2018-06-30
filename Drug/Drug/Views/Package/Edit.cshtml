@@ -1,21 +1,21 @@
 ﻿@model DrugData.Models.ViewModels.EditPackageViewModel
 
-<form asp-action="Update" asp-route-id="@Model.Package.PackageId" method="post">
+<form asp-action="Update" asp-route-id="@Model.PackageId" method="post">
     <div asp-validation-summary="All" class="text-danger"></div>
 
     <h2>Uredi</h2>
     <div class="form-group">
-        <label asp-for="Package.PackageType">Naziv </label>
-        <input asp-for="Package.PackageType" id="da" class="form-control" />
+        <label asp-for="PackageType">Naziv </label>
+        <input asp-for="PackageType" id="da" class="form-control" />
     </div>
 
     <div class="form-group">
-        <label asp-for="Package.Quantity">Količina unutar pakiranja </label>
-        <input asp-for="Package.Quantity" id="da" class="form-control" />
+        <label asp-for="Quantity">Količina unutar pakiranja </label>
+        <input asp-for="Quantity" id="da" class="form-control" />
     </div>
     <div class="form-group">
-        <label asp-for="Package.IndividualSize">Pojedinačna veličina</label>
-        <input asp-for="Package.IndividualSize" id="da" class="form-control" />
+        <label asp-for="IndividualSize">Pojedinačna veličina</label>
+        <input asp-for="IndividualSize" id="da" class="form-control" />
     </div>
 
     <div class="form-group">

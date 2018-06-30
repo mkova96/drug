@@ -136,7 +136,9 @@ namespace Lijek.Controllers
 
             var model = new EditCategoryViewModel
             {
-                Category = cat
+                DiseaseId = cat.DiseaseId,
+                DiseaseName=cat.DiseaseName,
+                ICD=cat.ICD
             };
             return View(model);
         }
@@ -145,7 +147,7 @@ namespace Lijek.Controllers
         {
             if (id != 0)
             {
-                model.Category.DiseaseId = id;
+                model.DiseaseId = id;
 
             }
 
@@ -155,8 +157,8 @@ namespace Lijek.Controllers
 
                 .FirstOrDefault(m => m.DiseaseId == id);
 
-                cat.DiseaseName = model.Category.DiseaseName;
-                cat.ICD = model.Category.ICD;
+                cat.DiseaseName = model.DiseaseName;
+                cat.ICD = model.ICD;
 
                 var x = _databaseContext.Disease.Where(g => (g.DiseaseName == cat.DiseaseName && g.DiseaseId != id)).ToList();
                 if (x.Count > 0)

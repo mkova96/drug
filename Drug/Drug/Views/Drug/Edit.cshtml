@@ -1,6 +1,6 @@
 ﻿@model DrugData.Models.ViewModels.EditDrugViewModel
 
-<form asp-action="Update" asp-route-id="@Model.Drug.DrugId" method="post">
+<form asp-action="Update" asp-route-id="@Model.DrugId" method="post">
     <div asp-validation-summary="All" class="text-danger"></div>
     @if (@ViewData["Success"] != null)
     {
@@ -9,41 +9,41 @@
     <h2>Uredi</h2>
 
     <div class="form-group">
-        <label asp-for="Drug.DrugName">Naziv</label>
-        <input asp-for="Drug.DrugName" id="da" class="form-control" />
+        <label asp-for="DrugName">Naziv</label>
+        <input asp-for="DrugName" id="da" class="form-control" />
     </div>
     <div class="form-group">
-        <label asp-for="Drug.DateProduced">Datum proizvodnje</label>
-        <input asp-for="Drug.DateProduced" class="form-control" />
+        <label asp-for="DateProduced">Datum proizvodnje</label>
+        <input asp-for="DateProduced" class="form-control" />
     </div>
     <div class="form-group">
         @if (Model.Drug.DateExpires <= DateTime.Now)
         {
-            <label asp-for="Drug.DateProduced"><font color="red">Datum isteka valjanosti</font></label>
+            <label asp-for="DateProduced"><font color="red">Datum isteka valjanosti</font></label>
 
         }
         else
         {
-            <label asp-for="Drug.DateExpires">Datum isteka valjanosti</label>
+            <label asp-for="DateExpires">Datum isteka valjanosti</label>
 
         }
-        <input asp-for="Drug.DateExpires" class="form-control" />
+        <input asp-for="DateExpires" class="form-control" />
     </div>
     <div class="form-group">
-        <label asp-for="Drug.Price">Cijena</label>
-        <input asp-for="Drug.Price" id="da" class="form-control" />
+        <label asp-for="Price">Cijena</label>
+        <input asp-for="Price" id="da" class="form-control" />
         <div class="form-group">
             <label asp-for="CurrencyId">Valuta</label>
             <select asp-for="CurrencyId" asp-items="@(new SelectList((IEnumerable<Currency>) @ViewData["Currencies"],"CurrencyId", "CurrencyName"))" class="form-control"></select>
         </div>
     </div>
     <div class="form-group">
-        <label asp-for="Drug.ImagePath">Slika</label>
-        <input asp-for="Drug.ImagePath" id="da" class="form-control" />
+        <label asp-for="ImagePath">Poveznica na sliku</label>
+        <input asp-for="ImagePath" id="da" class="form-control" />
     </div>
     <div class="form-group">
-        <label asp-for="Drug.Usage">Uporaba</label>
-        <input asp-for="Drug.Usage" id="da" class="form-control" />
+        <label asp-for="Usage">Uporaba</label>
+        <input asp-for="Usage" id="da" class="form-control" />
     </div>
     <div class="form-group">
         <label asp-for="PackageId">Pakiranje</label>
@@ -53,13 +53,13 @@
 
         @if (Model.Drug.Quantity < 5)
         {
-            <label asp-for="Drug.Quantity"><font color="red">Količina</font></label>
+            <label asp-for="Quantity"><font color="red">Količina</font></label>
         }
         else
         {
-            <label asp-for="Drug.Quantity">Količina</label>
+            <label asp-for="Quantity">Količina</label>
         }
-        <input asp-for="Drug.Quantity" class="form-control" />
+        <input asp-for="Quantity" class="form-control" />
     </div>
     <div class="form-group">
         <label asp-for="CategoryIds">Bolesti</label>

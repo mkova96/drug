@@ -1,24 +1,24 @@
 ﻿@model DrugData.Models.ViewModels.EditUserViewModel
 
-<form asp-action="Update" asp-route-id="@Model.User.Id" method="post">
+<form asp-action="Update" asp-route-id="@Model.Id" method="post">
     <div asp-validation-summary="All" class="text-danger"></div>
 
     <h2>Uredi</h2>
     <div class="form-group">
-        <label asp-for="User.Name">Ime</label>
-        <input type="text" id="da" class="form-control" asp-for="User.Name">
+        <label asp-for="Name">Ime</label>
+        <input type="text" id="da" class="form-control" asp-for="Name">
     </div>
     <div class="form-group">
-        <label asp-for="User.Surname">Prezime</label>
-        <input type="text" id="da" class="form-control" asp-for="User.Surname">
+        <label asp-for="Surname">Prezime</label>
+        <input type="text" id="da" class="form-control" asp-for="Surname">
     </div>
     <div class="form-group">
-        <label asp-for="User.Email">E-Mail adresa</label>
-        <input type="text" id="da" class="form-control" asp-for="User.Email">
+        <label asp-for="Email">E-Mail adresa</label>
+        <input type="text" id="da" class="form-control" asp-for="Email">
     </div>
     <div class="form-group">
-        <label asp-for="User.Address">Adresa</label>
-        <input asp-for="User.Address" id="da" class="form-control" />
+        <label asp-for="Address">Adresa</label>
+        <input asp-for="Address" id="da" class="form-control" />
     </div>
     <div class="form-group">
         <label asp-for="CityId">Grad</label>

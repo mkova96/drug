@@ -26,10 +26,10 @@
             <td class="text-center">@item.ManufacturerId</td>
             <td class="text-center">@item.ManufacturerName</td>
             <td class="text-center">
-                <a asp-action="Edit" asp-route-id="@item.ManufacturerId" class="btn btn-warning btn-sm">Uredi</a>
+                <a asp-action="Edit" asp-route-id="@item.ManufacturerId" class="btn btn-warning btn-sm">✎</a>
                 <form asp-action="Delete" asp-route-id="@item.ManufacturerId" asp-route-page="@(Model.PageIndex)"
                       method="POST" style="display: inline-block">
-                    <button type="submit" class="btn btn-danger btn-sm">Obriši</button>
+                    <button type="submit" class="btn btn-danger btn-sm">✘</button>
                 </form>
             </td>
         <tr></tr>
@@ -39,7 +39,7 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="column1">
-                                <img src="~/images/pliva.png" class="imageCell" height="190" width="150" />
+                                <img src=@item.ImagePath class="imageCell" height="190" width="150" />
                             </div>
                             <div class="column">
                                 <div>

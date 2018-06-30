@@ -117,7 +117,7 @@ namespace Drug.Controllers
                 currentCategory = _category;
             }
 
-            int pageSize = 9;
+            int pageSize = 6;
             ViewBag.Model = applicationDbContext;
             return View(await PaginatedList2<Medication>.CreateAsync(drinks, page ?? 1, pageSize));
         }

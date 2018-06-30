@@ -1,11 +1,11 @@
 ﻿@model DrugData.Models.ViewModels.EditSideEffectViewModel
 
-<form asp-action="Update" asp-route-id="@Model.SideEffect.SideEffectId" method="post">
+<form asp-action="Update" asp-route-id="@Model.SideEffectId" method="post">
     <div asp-validation-summary="All" class="text-danger"></div>
     <h2>Uredi</h2>
     <div class="form-group">
-        <label asp-for="SideEffect.SideEffectName">Naziv </label>
-        <input asp-for="SideEffect.SideEffectName" id="da" class="form-control" />
+        <label asp-for="SideEffectName">Naziv </label>
+        <input asp-for="SideEffectName" id="da" class="form-control" />
     </div>
 
     <div class="text-center">

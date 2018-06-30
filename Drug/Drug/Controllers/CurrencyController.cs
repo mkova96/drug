@@ -137,7 +137,8 @@ namespace Drug.Controllers
 
             var model = new EditCurrencyViewModel
             {
-                Currency = ses
+                CurrencyId = ses.CurrencyId,
+                CurrencyName=ses.CurrencyName
             };
             return View(model);
         }
@@ -146,7 +147,7 @@ namespace Drug.Controllers
         {
             if (id != 0)
             {
-                model.Currency.CurrencyId = id;
+                model.CurrencyId = id;
 
             }
 
@@ -156,7 +157,7 @@ namespace Drug.Controllers
 
                 .FirstOrDefault(m => m.CurrencyId == id);
 
-                ses.CurrencyName = model.Currency.CurrencyName;
+                ses.CurrencyName = model.CurrencyName;
 
                 var x = _databaseContext.Currency.Where(g => (g.CurrencyName == ses.CurrencyName && g.CurrencyId != id)).ToList();
                 if (x.Count > 0)

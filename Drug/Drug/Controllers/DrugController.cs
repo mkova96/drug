@@ -256,7 +256,7 @@ namespace Drug.Controllers
 
                 if (z != null)
                 {
-                    TempData[Constants.Message] = $"Takav lijek već postoji.\n";
+                    TempData[Constants.Message] = $"Takav proizvod već postoji.\n";
                     TempData[Constants.ErrorOccurred] = true;
                     return View("Add", model);
                 }
@@ -271,7 +271,7 @@ namespace Drug.Controllers
 
                     TempData["Success"] = true;
                     _databaseContext.SaveChanges();
-                    TempData[Constants.Message] = $"Lijek je dodan";
+                    TempData[Constants.Message] = $"Proizvod je dodan";
                     TempData[Constants.ErrorOccurred] = false;
             }
             else
@@ -313,8 +313,24 @@ namespace Drug.Controllers
             ViewData["Measures"] = _databaseContext.Measure.ToList();
 
 
-            return View(new EditDrugViewModel { Drug = Drug, SideEffectIds = sesIds, CategoryIds = categoryIds,
-                ManufacturerId =Drug.Manufacturer.ManufacturerId,PackageId=Drug.Package.PackageId,CurrencyId=Drug.Currency.CurrencyId });
+            return View(new EditDrugViewModel {
+                Drug = Drug,
+                SideEffectIds = sesIds,
+                CategoryIds = categoryIds,
+                ManufacturerId =Drug.Manufacturer.ManufacturerId,
+                PackageId =Drug.Package.PackageId,
+                CurrencyId =Drug.Currency.CurrencyId,
+
+                DateExpires=Drug.DateExpires,
+                DateProduced=Drug.DateProduced,
+                DrugId=Drug.DrugId,
+                DrugName=Drug.DrugName,
+                ImagePath=Drug.ImagePath,
+                Price=Drug.Price,
+                Quantity=Drug.Quantity,
+                Usage=Drug.Usage
+            }
+            );
         }
 
         [HttpPost]
@@ -330,7 +346,7 @@ namespace Drug.Controllers
 
             if (id!=0)
             {
-                model.Drug.DrugId = id;
+                model.DrugId = id;
 
             }
             if (!ModelState.IsValid)
@@ -361,19 +377,20 @@ namespace Drug.Controllers
             Drug.Currency = _databaseContext.Currency.ToList().First(c => c.CurrencyId == model.CurrencyId);
             Drug.Package = _databaseContext.Package.ToList().First(c => c.PackageId == model.PackageId);
 
-            Drug.DrugName = model.Drug.DrugName;
-            Drug.DateProduced = model.Drug.DateProduced;
-            Drug.DateExpires = model.Drug.DateExpires;
-            Drug.Quantity = model.Drug.Quantity;
-            Drug.Price = model.Drug.Price;
-            Drug.DrugName = model.Drug.DrugName;
-            Drug.ImagePath = model.Drug.ImagePath;
+            Drug.DrugName = model.DrugName;
+            Drug.DateProduced = model.DateProduced;
+            Drug.DateExpires = model.DateExpires;
+            Drug.Quantity = model.Quantity;
+            Drug.Price = model.Price;
+            Drug.DrugName = model.DrugName;
+            Drug.ImagePath = model.ImagePath;
+            Drug.Usage = model.Usage;
 
             var z = _databaseContext.Drug.FirstOrDefault(g => (g.DrugName == Drug.DrugName && g.Manufacturer == Drug.Manufacturer && g.Package == Drug.Package));
 
             if (z != null)
             {
-                TempData[Constants.Message] = $"Takav lijek već postoji.\n";
+                TempData[Constants.Message] = $"Takav proizvod već postoji.\n";
                 TempData[Constants.ErrorOccurred] = true;
                 return View(nameof(Edit), model);
             }
@@ -408,6 +425,8 @@ namespace Drug.Controllers
                 Drug.DrugSideEffects.Add(new DrugSideEffect { SideEffect = cat, Drug = Drug });
             }
             _databaseContext.SaveChanges();
+            TempData[Constants.Message] = $"Proizvod je promjenjen.";
+            TempData[Constants.ErrorOccurred] = true;
 
             return RedirectToAction(nameof(Index));
         }
@@ -543,12 +562,12 @@ namespace Drug.Controllers
             {
                 _databaseContext.Comment.Remove(ses);
                 _databaseContext.SaveChanges();
-                TempData[Constants.Message] = $"Pakiranje je obrisano";
+                TempData[Constants.Message] = $"Komentar je obrisan";
                 TempData[Constants.ErrorOccurred] = false;
             }
             catch (Exception exc)
             {
-                TempData[Constants.Message] = $"Pakiranje nije moguće obrisati jer postoje lijekovi koji ga sadrže.";
+                TempData[Constants.Message] = $"Komentar nije moguće obrisati";
                 TempData[Constants.ErrorOccurred] = true;
             }
 

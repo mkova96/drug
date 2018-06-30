@@ -8,8 +8,6 @@ namespace DrugData.Models
     public class Measure
     {
         public int MeasureId { get; set; }
-
-        [Required(ErrorMessage = "Naziv mjerne jedinice je obavezan")]
         public string MeasureName{ get; set; }
     }
 }

@@ -136,7 +136,8 @@ namespace Drug.Controllers
 
             var model = new EditMeasureViewModel
             {
-                Measure = ses
+                MeasureId=ses.MeasureId,
+                MeasureName=ses.MeasureName
             };
             return View(model);
         }
@@ -145,7 +146,7 @@ namespace Drug.Controllers
         {
             if (id != 0)
             {
-                model.Measure.MeasureId = id;
+                model.MeasureId = id;
 
             }
 
@@ -155,7 +156,7 @@ namespace Drug.Controllers
 
                 .FirstOrDefault(m => m.MeasureId == id);
 
-                ses.MeasureName = model.Measure.MeasureName;
+                ses.MeasureName = model.MeasureName;
 
                 var x = _databaseContext.Measure.Where(g => (g.MeasureName == ses.MeasureName && g.MeasureId != id)).ToList();
                 if (x.Count > 0)

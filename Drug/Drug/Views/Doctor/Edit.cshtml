@@ -1,29 +1,29 @@
 ﻿@model DrugData.Models.ViewModels.EditDoctorViewModel
 
-<form asp-action="Update" asp-route-id="@Model.Doctor.Id" method="post">
+<form asp-action="Update" asp-route-id="@Model.Id" method="post">
     <div asp-validation-summary="All" class="text-danger"></div>
 
     <h2>Uredi</h2>
     <div class="form-group">
-        <label asp-for="Doctor.Name">Ime</label>
-        <input type="text" id="da" class="form-control" asp-for="Doctor.Name">
+        <label asp-for="Name">Ime</label>
+        <input type="text" id="da" class="form-control" asp-for="Name">
     </div>
     <div class="form-group">
-        <label asp-for="Doctor.Surname">Prezime</label>
-        <input type="text" id="da" class="form-control" asp-for="Doctor.Surname">
+        <label asp-for="Surname">Prezime</label>
+        <input type="text" id="da" class="form-control" asp-for="Surname">
     </div>
     <div class="form-group">
-        <label asp-for="Doctor.Email">E-Mail adresa</label>
-        <input type="text" id="da" class="form-control" asp-for="Doctor.Email">
+        <label asp-for="EMail">E-Mail adresa</label>
+        <input type="text" id="da" class="form-control" asp-for="EMail">
     </div>
     <div class="form-group">
-        <label asp-for="Doctor.ImagePath">Slika</label>
-        <input asp-for="Doctor.ImagePath" id="da" class="form-control" />
+        <label asp-for="ImagePath">Slika</label>
+        <input asp-for="ImagePath" id="da" class="form-control" />
     </div>
 
     <div class="form-group">
-        <label asp-for="Doctor.Address">Adresa</label>
-        <input asp-for="Doctor.Address" id="da" class="form-control" />
+        <label asp-for="Address">Adresa</label>
+        <input asp-for="Address" id="da" class="form-control" />
     </div>
     <div class="form-group">
         <label asp-for="CityId">Grad</label>
@@ -34,12 +34,12 @@
     </div>
 
     <div class="form-group">
-        <label asp-for="Doctor.Biography">Kratka biografija  </label>
-        <textarea asp-for="Doctor.Biography" class="form-control"></textarea>
+        <label asp-for="Biography">Kratka biografija  </label>
+        <textarea asp-for="Biography" class="form-control"></textarea>
     </div>
     <div class="form-group">
-        <label asp-for="Doctor.Education">Obrazovanje </label>
-        <input type="text" id="da" class="form-control" asp-for="Doctor.Education">
+        <label asp-for="Education">Obrazovanje </label>
+        <input type="text" id="da" class="form-control" asp-for="Education">
     </div>
 
     <div class="text-center">

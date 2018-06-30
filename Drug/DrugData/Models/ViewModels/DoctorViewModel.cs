@@ -7,6 +7,7 @@ namespace DrugData.Models.ViewModels
 {
     public class DoctorViewModel
     {
+
         [Required(ErrorMessage = "Morate unijeti ime ljekarnika")]
         public string Name { get; set; }
 
@@ -27,7 +28,7 @@ namespace DrugData.Models.ViewModels
         [Compare("Password", ErrorMessage = "Lozinke se ne podudaraju")]
         public string ConfirmPassword { get; set; }
 
-        [Required(ErrorMessage = "Morate unijeti ime biografiju ljekarnika")]
+        [Required(ErrorMessage = "Morate unijeti biografiju ljekarnika")]
         [DataType(DataType.MultilineText)]
         public String About { get; set; }
 

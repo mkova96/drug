@@ -49,7 +49,7 @@ namespace Lijek.Controllers
                            select s;
             if (!String.IsNullOrEmpty(searchString))
             {
-                students = students.Where(s => s.Name.Contains(searchString) || s.Surname.Contains(searchString));
+                students = students.Where(s => s.Name.Contains(searchString) || s.Surname.Contains(searchString) || s.Email.Contains(searchString));
             }
             switch (sortOrder)
             {

@@ -15,10 +15,10 @@ namespace DrugData.Components
         public IViewComponentResult Invoke()
         {
             List<String> sortList = new List<String>();
-            sortList.Add("Po cijeni silazno");
-            sortList.Add("Po cijeni uzlazno");
-            sortList.Add("Po isteku valjanosti silazno");
-            sortList.Add("Po isteku valjanosti uzlazno");
+            sortList.Add("Po cijeni ▼");
+            sortList.Add("Po cijeni ▲");
+            sortList.Add("Po isteku valjanosti ▼");
+            sortList.Add("Po isteku valjanosti ▲");
 
             return View(sortList);
         }

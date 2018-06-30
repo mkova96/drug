@@ -38,12 +38,12 @@
                     <a asp-controller="Drugs" asp-action="Show" asp-route-id="@Model.DrugId">@Model.DrugName @Model.Package.IndividualSize@Model.Package.Measure.MeasureName</a>
                     @if (Model.Currency.CurrencyName == "HRK")
                     {
-                    <h4>@Model.Price.ToString() kn</h4>
+                    <h4><b>@Model.Price.ToString() kn</b></h4>
 
                                     }
                     else
                     {
-                        @Model.Price.ToString()@Model.Currency.CurrencyName.ToString()
+                        <b>@Model.Price.ToString()@Model.Currency.CurrencyName.ToString()</b>
 
 
 

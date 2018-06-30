@@ -104,8 +104,8 @@ namespace Lijek.Controllers
             {
                 var doc = new User
                 {
-                    UserName = model.EMail,
-                    Email = model.EMail,
+                    UserName = model.Email,
+                    Email = model.Email,
                     Name = model.Name,
                     Surname = model.Surname,
                     UserDate = DateTime.Now,
@@ -162,7 +162,11 @@ namespace Lijek.Controllers
             ViewData["Success"] = TempData["Success"];
             var model = new EditUserViewModel
             {
-                User = user
+                Address = user.Address,
+                Email=user.Email,
+                Id=user.Id,
+                Name=user.Name,
+                Surname=user.Surname
             };
             return View(model);
         }
@@ -174,7 +178,7 @@ namespace Lijek.Controllers
 
             if (id != null)
             {
-                model.User.Id = id;
+                model.Id = id;
 
             }
             var city = _databaseContext.City.FirstOrDefault(m => m.CityId == model.CityId);
@@ -185,20 +189,14 @@ namespace Lijek.Controllers
             if (ModelState.IsValid)
                 {
                     var user = _databaseContext.Users.FirstOrDefault(g => g.Id == id);
-                    if (model.User.Email == null)
-                    {
-                        TempData[Constants.Message] = $"Morate unijeti mail adresu";
-                        TempData[Constants.ErrorOccurred] = true;
-                        return View("Edit", model);
-                    }
-                    user.Email = model.User.Email;
-                    user.Name = model.User.Name;
-                    user.Surname = model.User.Surname;
-                    user.Address = model.User.Address;
+                    user.Email = model.Email;
+                    user.Name = model.Name;
+                    user.Surname = model.Surname;
+                    user.Address = model.Address;
                     user.City = city;
-                    user.UserName = model.User.Email;
-                    user.NormalizedUserName = model.User.Email.ToUpper();
-                    user.NormalizedEmail =  model.User.Email.ToUpper();
+                    user.UserName = model.Email;
+                    user.NormalizedUserName = model.Email.ToUpper();
+                    user.NormalizedEmail =  model.Email.ToUpper();
 
                 var x = _databaseContext.User.Where(g => (g.Email == user.Email && g.Id != id)).ToList();
                 if (x.Count > 0)

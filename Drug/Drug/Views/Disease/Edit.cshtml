@@ -1,16 +1,16 @@
 ﻿@model DrugData.Models.ViewModels.EditCategoryViewModel
 
-<form asp-action="Update" asp-route-id="@Model.Category.DiseaseId" method="post">
+<form asp-action="Update" asp-route-id="@Model.DiseaseId" method="post">
     <div asp-validation-summary="All" class="text-danger"></div>
 
     <h2>Uredi</h2>
     <div class="form-group">
-        <label asp-for="Category.DiseaseName">Naziv </label>
-        <input asp-for="Category.DiseaseName" id="da" class="form-control" />
+        <label asp-for="DiseaseName">Naziv </label>
+        <input asp-for="DiseaseName" id="da" class="form-control" />
     </div>
     <div class="form-group">
-        <label asp-for="Category.ICD">Međunarodna klasifikacija bolesti </label>
-        <input asp-for="Category.ICD" id="da" class="form-control">
+        <label asp-for="ICD">Međunarodna klasifikacija bolesti </label>
+        <input asp-for="ICD" id="da" maxlength="3" class="form-control">
     </div>
 
     <div class="text-center">
