@@ -12,3 +12,17 @@ C:\Users\MARIO\source\repos\Drug\Drug\obj\Debug\netcoreapp2.0\Drug1.dll
 C:\Users\MARIO\source\repos\Drug\Drug\obj\Debug\netcoreapp2.0\Drug1.pdb
 C:\Users\MARIO\source\repos\Drug\Drug\obj\Debug\netcoreapp2.0\Drug.csprojAssemblyReference.cache
 C:\Users\MARIO\source\repos\Drug\Drug\obj\Debug\netcoreapp2.0\Drug.csproj.CopyComplete
+C:\Users\MARIO\Drug\Drug\Drug\bin\Debug\netcoreapp2.0\Drug1.deps.json
+C:\Users\MARIO\Drug\Drug\Drug\bin\Debug\netcoreapp2.0\Drug1.runtimeconfig.json
+C:\Users\MARIO\Drug\Drug\Drug\bin\Debug\netcoreapp2.0\Drug1.runtimeconfig.dev.json
+C:\Users\MARIO\Drug\Drug\Drug\bin\Debug\netcoreapp2.0\Drug1.dll
+C:\Users\MARIO\Drug\Drug\Drug\bin\Debug\netcoreapp2.0\Drug1.pdb
+C:\Users\MARIO\Drug\Drug\Drug\bin\Debug\netcoreapp2.0\DrugData.dll
+C:\Users\MARIO\Drug\Drug\Drug\bin\Debug\netcoreapp2.0\DrugData.pdb
+C:\Users\MARIO\Drug\Drug\Drug\obj\Debug\netcoreapp2.0\Drug.csprojAssemblyReference.cache
+C:\Users\MARIO\Drug\Drug\Drug\obj\Debug\netcoreapp2.0\Drug.csproj.CoreCompileInputs.cache
+C:\Users\MARIO\Drug\Drug\Drug\obj\Debug\netcoreapp2.0\Drug.AssemblyInfoInputs.cache
+C:\Users\MARIO\Drug\Drug\Drug\obj\Debug\netcoreapp2.0\Drug.AssemblyInfo.cs
+C:\Users\MARIO\Drug\Drug\Drug\obj\Debug\netcoreapp2.0\Drug.csproj.CopyComplete
+C:\Users\MARIO\Drug\Drug\Drug\obj\Debug\netcoreapp2.0\Drug1.dll
+C:\Users\MARIO\Drug\Drug\Drug\obj\Debug\netcoreapp2.0\Drug1.pdb
