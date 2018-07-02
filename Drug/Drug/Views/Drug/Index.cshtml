@@ -22,7 +22,7 @@
     {
         <tr data-toggle="collapse" id="xman" data-target="@("#" + item.DrugId.ToString())" style="cursor:pointer;">
             <td class="text-center">@item.DrugId</td>
-            <td class="text-center">@item.DrugName @item.Package.IndividualSize @item.Package.Measure.MeasureName</td>
+            <td class="text-center">@item.DrugName @item.Package.IndividualSize@item.Package.Measure.MeasureName</td>
             <td class="text-center">
                 <a asp-action="Edit" asp-route-id="@item.DrugId" class="btn btn-warning btn-sm">✎</a>
                 <form asp-action="Delete" asp-route-id="@item.DrugId" asp-route-page="@(Model.PageIndex)"
@@ -43,7 +43,7 @@
                             </div>
                             <div class="column2">
                                 <div>
-                                    <h1><b><center>@item.DrugName @item.Package.IndividualSize @item.Package.Measure.MeasureName</center></b></h1>
+                                    <h1><b><center>@item.DrugName @item.Package.IndividualSize@item.Package.Measure.MeasureName</center></b></h1>
                                 </div>
                                 <div><h3></h3></div>
                                 <div>

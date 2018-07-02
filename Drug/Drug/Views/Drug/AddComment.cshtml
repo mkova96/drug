@@ -2,15 +2,13 @@
 
 <form asp-action="CreateComment" asp-route-id="@Model.Drug.DrugId" method="post">
     <div asp-validation-summary="All" class="text-danger"></div>
-    @if (@ViewData["Success"] != null)
-    {
-        <div class="alert alert-success">Komentar spremljen</div>
-    }
     <h2>Komentar</h2>
 
     <div class="form-group">
         <label asp-for="Content">Sadržaj</label>
-        <input asp-for="Content" id="da" class="form-control" />
+        <input type="text" required="" oninvalid="this.setCustomValidity('Unesite komentar')"
+ oninput="setCustomValidity('')" id="da" class="form-control" asp-for="Content">
+        @*<input asp-for="Content" id="da" class="form-control" />*@
     </div>
 
     <div class="text-center">

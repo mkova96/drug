@@ -91,7 +91,7 @@ namespace Drug.Controllers
                     // Additional validation before creating the Company
                     var requiredFields = new[]
                     {
-                        new Tuple<string, object>("Name", model.Measure.MeasureName),
+                        new Tuple<string, object>("Naziv mjerne jedinice", model.Measure.MeasureName),
 
                     };
 
@@ -99,12 +99,12 @@ namespace Drug.Controllers
                     {
                         if (field.Item2 == null || field.Item2.Equals(""))
                         {
-                            ModelState.AddModelError(string.Empty, $"{field.Item1} field is required.");
+                            ModelState.AddModelError(string.Empty, $"{field.Item1} je obavezan.");
                         }
                     }
                     if (!ModelState.IsValid)
                     {
-                        return View(model);
+                        return View("Add", model);
                     }
 
                     man = model.Measure;
@@ -114,7 +114,7 @@ namespace Drug.Controllers
                     {
                         TempData[Constants.Message] = $"Mjerna jedinica tog imena već postoji.\n";
                         TempData[Constants.ErrorOccurred] = true;
-                        return RedirectToAction(nameof(Add));
+                        return View("Add", model);
                     }
                     _databaseContext.Measure.Add(man);
                 }
@@ -134,7 +134,7 @@ namespace Drug.Controllers
                 {
                     TempData[Constants.Message] = $"Takvo pakiranje već postoji.\n";
                     TempData[Constants.ErrorOccurred] = true;
-                    return RedirectToAction(nameof(Add));
+                    return View("Add", model);
                 }
                 _databaseContext.Package.Add(ses);
 
@@ -165,7 +165,7 @@ namespace Drug.Controllers
             }
             catch (Exception exc)
             {
-                TempData[Constants.Message] = $"Pakiranje nije moguće obrisati jer postoje lijekovi koji ga sadrže.";
+                TempData[Constants.Message] = $"Pakiranje nije moguće obrisati jer postoje proizvodi koji ga sadrže.";
                 TempData[Constants.ErrorOccurred] = true;
             }
             var x = _databaseContext.Package.ToList().Count;
@@ -221,7 +221,7 @@ namespace Drug.Controllers
                 {
                     TempData[Constants.Message] = $"Takvo pakiranje već postoji.\n";
                     TempData[Constants.ErrorOccurred] = true;
-                    return RedirectToAction("Edit", new { id = id });
+                    return View("Edit", model);
                 }
 
                 TempData["Success"] = true;

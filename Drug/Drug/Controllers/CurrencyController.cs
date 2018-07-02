@@ -86,7 +86,7 @@ namespace Drug.Controllers
                 {
                     TempData[Constants.Message] = $"Valuta tog imena već postoji.\n";
                     TempData[Constants.ErrorOccurred] = true;
-                    return RedirectToAction(nameof(Add));
+                    return View("Add", model);
                 }
                 _databaseContext.Currency.Add(ses);
 
@@ -117,7 +117,7 @@ namespace Drug.Controllers
             }
             catch (Exception exc)
             {
-                TempData[Constants.Message] = $"Valutu nije moguće obrisati jer postoje lijekovi koju ju sadrže.";
+                TempData[Constants.Message] = $"Valutu nije moguće obrisati jer postoje proizvodi koju ju sadrže.";
                 TempData[Constants.ErrorOccurred] = true;
             }
 
@@ -167,7 +167,7 @@ namespace Drug.Controllers
                 {
                     TempData[Constants.Message] = $"Valuta tog imena već postoji.\n";
                     TempData[Constants.ErrorOccurred] = true;
-                    return RedirectToAction("Edit", new { id = id });
+                    return View("Edit", model);
                 }
 
                 TempData["Success"] = true;

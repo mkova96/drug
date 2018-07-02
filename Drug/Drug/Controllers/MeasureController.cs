@@ -86,7 +86,7 @@ namespace Drug.Controllers
                 {
                     TempData[Constants.Message] = $"Mjerna jedinica tog imena već postoji.\n";
                     TempData[Constants.ErrorOccurred] = true;
-                    return RedirectToAction(nameof(Add));
+                    return View("Add", model);
                 }
                 _databaseContext.Measure.Add(ses);
 
@@ -166,7 +166,7 @@ namespace Drug.Controllers
                 {
                     TempData[Constants.Message] = $"Mjerna jedinica tog imena već postoji.\n";
                     TempData[Constants.ErrorOccurred] = true;
-                    return RedirectToAction("Edit", new { id = id });
+                    return View("Edit", model);
                 }
 
                 TempData["Success"] = true;

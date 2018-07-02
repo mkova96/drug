@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 
 namespace Lijek.Controllers
 {
-    [Authorize(Roles = "Admin")]
 
     public class DoctorController:Controller
     {
@@ -36,6 +35,7 @@ namespace Lijek.Controllers
             _userManager = userManager;
             _roleManager = roleManager;
         }
+        [Authorize(Roles = "Admin")]
 
         public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
@@ -86,6 +86,7 @@ namespace Lijek.Controllers
             return View(docs);
         }
 
+        [Authorize(Roles = "Admin")]
 
         [HttpGet]
         public ViewResult Add(string returnUrl = null)
@@ -95,6 +96,7 @@ namespace Lijek.Controllers
 
             return View(new DoctorViewModel());
         }
+        [Authorize(Roles = "Admin")]
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -160,6 +162,7 @@ namespace Lijek.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+        [Authorize(Roles = "Admin")]
 
         [HttpGet]
         public ViewResult Edit(string id)
@@ -180,6 +183,7 @@ namespace Lijek.Controllers
             };
             return View(model);
         }
+        [Authorize(Roles = "Admin")]
 
         [HttpPost]
         public IActionResult Update(string id, EditDoctorViewModel model)
@@ -248,6 +252,7 @@ namespace Lijek.Controllers
                 ModelState.AddModelError(string.Empty, error.Description);
             }
         }
+        [Authorize(Roles = "Admin")]
 
         [HttpPost]
         public async Task<IActionResult> Delete(string id, int? page)

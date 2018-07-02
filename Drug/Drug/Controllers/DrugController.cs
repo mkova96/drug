@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 
 namespace Drug.Controllers
 {
-    [Authorize(Roles = "Admin")]
 
     public class DrugController:Controller
     {
@@ -30,6 +29,7 @@ namespace Drug.Controllers
             _userManager = userManager;
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             ViewData["CurrentSort"] = sortOrder;
@@ -85,6 +85,7 @@ namespace Drug.Controllers
             return View(drug);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public ViewResult Add()
         {
@@ -100,6 +101,7 @@ namespace Drug.Controllers
             return View(new DrugViewModel());
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -164,6 +166,7 @@ namespace Drug.Controllers
                     var m = _databaseContext.Measure.FirstOrDefault(t => t.MeasureId == model.MeasureId);
                     pac = model.Package;
                     pac.Measure = m;
+                    pac.MeasureName = m.MeasureName;
 
                     y = _databaseContext.Package.FirstOrDefault(g => (g.PackageType == pac.PackageType && g.IndividualSize == pac.IndividualSize && g.Quantity == pac.Quantity && g.Measure == pac.Measure));
 
@@ -293,6 +296,7 @@ namespace Drug.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public ViewResult Edit(int id)
         {
@@ -335,6 +339,7 @@ namespace Drug.Controllers
             );
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult Update(int id, EditDrugViewModel model)
         {
@@ -388,7 +393,7 @@ namespace Drug.Controllers
             Drug.ImagePath = model.ImagePath;
             Drug.Usage = model.Usage;
 
-            var z = _databaseContext.Drug.FirstOrDefault(g => (g.DrugName == Drug.DrugName && g.Manufacturer == Drug.Manufacturer && g.Package == Drug.Package));
+            var z = _databaseContext.Drug.FirstOrDefault(g => (g.DrugName == Drug.DrugName && g.Manufacturer == Drug.Manufacturer && g.Package == Drug.Package && g.DrugId != id));
 
             if (z != null)
             {
@@ -401,6 +406,21 @@ namespace Drug.Controllers
                 TempData[Constants.Message] = $"Datum isteka roka mora biti veći od datuma proizvodnje.\n";
                 TempData[Constants.ErrorOccurred] = true;
                 return View(nameof(Edit), model);
+            }
+            try
+            {
+                if (model.SubstitutionType == "existing" && !model.DrugIds.Any())
+                {
+
+                }
+
+            }
+            catch (Exception exc)
+            {
+                System.Diagnostics.Debug.WriteLine("konj");
+                TempData[Constants.Message] = $"Zamjenski proizvodi su obavezni.\n";
+                TempData[Constants.ErrorOccurred] = true;
+                return View("Edit", model);
             }
 
             if (model.SubstitutionType == "existing")
@@ -428,15 +448,17 @@ namespace Drug.Controllers
             }
             _databaseContext.SaveChanges();
             TempData[Constants.Message] = $"Proizvod je promjenjen.";
-            TempData[Constants.ErrorOccurred] = true;
+            TempData[Constants.ErrorOccurred] = false;
 
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult Delete(int id, int? page)
         {
-            var drug = _databaseContext.Drug.FirstOrDefault(t => t.DrugId == id);
+            var drug = _databaseContext.Drug.Include(t=>t.Substitutions).FirstOrDefault(t => t.DrugId == id);
+            drug.Substitutions.Clear();
 
             var ses = _databaseContext.DrugSideEffect.Where(i => i.Drug == drug);
             foreach (var z in ses)
@@ -468,6 +490,8 @@ namespace Drug.Controllers
             {
                 TempData[Constants.Message] = $"Proizvod nije moguće obrisati jer postoje narudžbe koji ga sadrže.";
                 TempData[Constants.ErrorOccurred] = true;
+
+                System.Diagnostics.Debug.WriteLine(exc.Source);
             }
 
             var x = _databaseContext.Drug.ToList().Count;
@@ -495,6 +519,13 @@ namespace Drug.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateComment(int id, CommentViewModel model)
         {
+            if (model.Content == null)
+            {
+                TempData[Constants.Message] = $"Komentar mora imati sadržaj.";
+                TempData[Constants.ErrorOccurred] = true;
+                return View("AddComment", model);
+
+            }
             var sender = await _userManager.GetUserAsync(User);
 
             var Drug = _databaseContext.Drug.Include(t => t.Comments).ThenInclude(eu=>eu.User)
@@ -528,26 +559,33 @@ namespace Drug.Controllers
         [HttpGet]
         public ViewResult EditComment(int id1,int id2)
         {
+
             var Comment = _databaseContext.Comment
                  .First(g => g.CommentId == id1);
             var drug = _databaseContext.Drug.FirstOrDefault(g => g.DrugId == id2);
 
-            return View(new EditCommentViewModel { Comment = Comment,Drug=drug });
+            return View(new EditCommentViewModel { CommentId = Comment.CommentId,
+                Content=Comment.Content, Drug =drug });
         }
 
         [HttpPost]
         public IActionResult UpdateComment(int id1,int id2, EditCommentViewModel model)
         {
+            if (id1 != 0)
+            {
+                model.CommentId = id1;
+
+            }
             if (!ModelState.IsValid)
             {
-                return View(nameof(EditCommentViewModel), model);
+                return View(nameof(EditComment), model);
             }
             var Comment = _databaseContext.Comment
                 .First(g => g.CommentId == id1);
 
             var drug = _databaseContext.Drug.FirstOrDefault(t => t.DrugId == id2);
 
-            Comment.Content = model.Comment.Content;
+            Comment.Content = model.Content;
             _databaseContext.SaveChanges();
 
             return RedirectToAction("Show", "Drugs", new { Id = drug.DrugId });

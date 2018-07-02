@@ -271,7 +271,8 @@ namespace Lijek.Controllers
             {
                 --page;
             }
-
+            TempData[Constants.Message] = $"Admin je obrisan";
+            TempData[Constants.ErrorOccurred] = false;
 
             return RedirectToAction(nameof(Index), new { page = page });
         }

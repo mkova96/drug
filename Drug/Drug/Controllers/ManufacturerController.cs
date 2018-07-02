@@ -86,7 +86,7 @@ namespace Lijek.Controllers
                 {
                     TempData[Constants.Message] = $"Proizvođač tog imena već postoji.\n";
                     TempData[Constants.ErrorOccurred] = true;
-                    return RedirectToAction(nameof(Add));
+                    return View("Add", model);
                 }
                 _databaseContext.Manufacturer.Add(man);
 
@@ -117,7 +117,7 @@ namespace Lijek.Controllers
             }
             catch (Exception exc)
             {
-                TempData[Constants.Message] = $"Proizvođača nije moguće obrisati jer postoje lijekovi koji ga sadrže.";
+                TempData[Constants.Message] = $"Proizvođača nije moguće obrisati jer postoje proizvodi koji ga sadrže.";
                 TempData[Constants.ErrorOccurred] = true;
             }
             var x = _databaseContext.Manufacturer.ToList().Count;
@@ -168,7 +168,7 @@ namespace Lijek.Controllers
                 {
                     TempData[Constants.Message] = $"Proizvođač tog imena već postoji.\n";
                     TempData[Constants.ErrorOccurred] = true;
-                    return RedirectToAction("Edit", new { id = id });
+                    return View("Edit", model);
                 }
 
                 TempData["Success"] = true;

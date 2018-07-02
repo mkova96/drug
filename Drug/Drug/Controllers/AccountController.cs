@@ -69,8 +69,8 @@ namespace Lijek.Controllers
                 await _roleManager.CreateAsync(role);
                 var admin = new User
                 {
-                    Name = "Mario",
-                    Surname = "Kovačević",
+                    Name = "Ljekarna",
+                    Surname = "Sanitas",
                     Address = "Hipokratova 99",
                     UserName = "sanitas@ljekarna.com",
                     Email = "sanitas@ljekarna.com",
@@ -82,6 +82,25 @@ namespace Lijek.Controllers
                 var result1 = await _userManager.CreateAsync(admin, "sanitas500");
                 await _userManager.AddToRoleAsync(admin, "Owner");
             }
+            /*if (!await _roleManager.RoleExistsAsync("Admin"))
+            {
+                var role = new IdentityRole("Admin");
+                await _roleManager.CreateAsync(role);
+                var admin = new User
+                {
+                    Name = "Marko",
+                    Surname = "Marić",
+                    Address = "Ilica 21",
+                    UserName = "maric@gmail.com",
+                    Email = "maric@gmail.com",
+                    City = _databaseContext.City.FirstOrDefault(c => c.CityId == 1),
+                    IsAdmin = true,
+                    IsDoctor = false
+
+                };
+                var result1 = await _userManager.CreateAsync(admin, "liverpool5");
+                await _userManager.AddToRoleAsync(admin, "Admin");
+            }*/
 
             if (!await _roleManager.RoleExistsAsync("User"))
             {
