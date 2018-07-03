@@ -1,9 +1,22 @@
 ﻿@model Medication
 <div class="row">
     <div class="column1">
+        <div> </div>
+        @if (User.IsInRole("Admin"))
+        {
         <div>
-            <center><img src=@Model.ImagePath class="imageCell" height="200" /></center>
+            <center><a asp-controller="Drug" asp-action="Index" asp-route-searchString="@Model.DrugName.ToString()"><img src=@Model.ImagePath class="imageCell" height="200" /></a></center>
         </div>
+
+        }
+        else
+        {
+            <div>
+                <center><img src=@Model.ImagePath class="imageCell" height="200" /></center>
+            </div>
+
+        }
+        
         <div>
             @if (!User.Identity.IsAuthenticated)
             {
@@ -147,7 +160,7 @@ else
     }
     else
     {
-        if (Context.User.IsInRole("Admin") || Context.User.IsInRole("Owner"))
+        if (Context.User.IsInRole("Admin") || Context.User.IsInRole("Owner") || Context.User.IsInRole("Doctor"))
         {
             <div>
                 <h2>

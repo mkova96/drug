@@ -4,9 +4,9 @@
 @model UserViewModel
 <form asp-action="Create" method="POST">
     <div asp-validation-summary="All" class="text-danger"></div>
-    <h3>
+    <h2>
         Novi admin
-    </h3>
+    </h2>
     <div class="form-group">
         <label asp-for="Name">Ime</label>
         <input type="text" id="da" class="form-control" asp-for="Name">

@@ -6,7 +6,8 @@
 
     <div class="form-group">
         <label asp-for="Content">Sadržaj</label>
-        <input asp-for="Content" id="da" class="form-control" />
+        <input asp-for="Content" required="" oninvalid="this.setCustomValidity('Unesite komentar')"
+ oninput="setCustomValidity('')" id="da" class="form-control" />
     </div>
 
     <div class="text-center">
