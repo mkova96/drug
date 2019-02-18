@@ -8207,11 +8207,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\MARIO\\source\\repos\\Drug\\DrugData\\DrugData.csproj",
+      "projectUniqueName": "C:\\Users\\MARIO\\Drug\\Drug\\DrugData\\DrugData.csproj",
       "projectName": "DrugData",
-      "projectPath": "C:\\Users\\MARIO\\source\\repos\\Drug\\DrugData\\DrugData.csproj",
+      "projectPath": "C:\\Users\\MARIO\\Drug\\Drug\\DrugData\\DrugData.csproj",
       "packagesPath": "C:\\Users\\MARIO\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\MARIO\\source\\repos\\Drug\\DrugData\\obj\\",
+      "outputPath": "C:\\Users\\MARIO\\Drug\\Drug\\DrugData\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

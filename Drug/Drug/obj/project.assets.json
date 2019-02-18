@@ -12662,11 +12662,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\MARIO\\source\\repos\\Drug\\Drug\\Drug.csproj",
+      "projectUniqueName": "C:\\Users\\MARIO\\Drug\\Drug\\Drug\\Drug.csproj",
       "projectName": "Drug1",
-      "projectPath": "C:\\Users\\MARIO\\source\\repos\\Drug\\Drug\\Drug.csproj",
+      "projectPath": "C:\\Users\\MARIO\\Drug\\Drug\\Drug\\Drug.csproj",
       "packagesPath": "C:\\Users\\MARIO\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\MARIO\\source\\repos\\Drug\\Drug\\obj\\",
+      "outputPath": "C:\\Users\\MARIO\\Drug\\Drug\\Drug\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -12685,8 +12685,8 @@
       "frameworks": {
         "netcoreapp2.0": {
           "projectReferences": {
-            "C:\\Users\\MARIO\\source\\repos\\Drug\\DrugData\\DrugData.csproj": {
-              "projectPath": "C:\\Users\\MARIO\\source\\repos\\Drug\\DrugData\\DrugData.csproj"
+            "C:\\Users\\MARIO\\Drug\\Drug\\DrugData\\DrugData.csproj": {
+              "projectPath": "C:\\Users\\MARIO\\Drug\\Drug\\DrugData\\DrugData.csproj"
             }
           }
         }
